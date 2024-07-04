@@ -38,6 +38,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.57.0"],\
           ["eslint-plugin-react-hooks", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:4.6.2"],\
           ["eslint-plugin-react-refresh", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:0.4.7"],\
+          ["gsap", "npm:3.12.5"],\
           ["postcss", "npm:8.4.39"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:18.3.1"],\
@@ -66,6 +67,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.57.0"],\
           ["eslint-plugin-react-hooks", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:4.6.2"],\
           ["eslint-plugin-react-refresh", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:0.4.7"],\
+          ["gsap", "npm:3.12.5"],\
           ["postcss", "npm:8.4.39"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:18.3.1"],\
@@ -2346,6 +2348,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/graphemer-npm-1.4.0-0627732d35-10c0.zip/node_modules/graphemer/",\
         "packageDependencies": [\
           ["graphemer", "npm:1.4.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["gsap", [\
+      ["npm:3.12.5", {\
+        "packageLocation": "../../../.yarn/berry/cache/gsap-npm-3.12.5-5f40c203df-10c0.zip/node_modules/gsap/",\
+        "packageDependencies": [\
+          ["gsap", "npm:3.12.5"]\
         ],\
         "linkType": "HARD"\
       }]\
