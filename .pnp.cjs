@@ -38,12 +38,14 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.57.0"],\
           ["eslint-plugin-react-hooks", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:4.6.2"],\
           ["eslint-plugin-react-refresh", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:0.4.7"],\
+          ["gsap", "npm:3.12.5"],\
           ["postcss", "npm:8.4.39"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:18.3.1"],\
           ["react-router-dom", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:6.24.0"],\
           ["tailwindcss", "npm:3.4.4"],\
           ["tailwindcss-animate", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:1.0.7"],\
+          ["tailwindcss-filters", "npm:3.0.0"],\
           ["typescript", "patch:typescript@npm%3A5.5.2#optional!builtin<compat/typescript>::version=5.5.2&hash=379a07"],\
           ["vite", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:5.3.2"]\
         ],\
@@ -66,12 +68,14 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.57.0"],\
           ["eslint-plugin-react-hooks", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:4.6.2"],\
           ["eslint-plugin-react-refresh", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:0.4.7"],\
+          ["gsap", "npm:3.12.5"],\
           ["postcss", "npm:8.4.39"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:18.3.1"],\
           ["react-router-dom", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:6.24.0"],\
           ["tailwindcss", "npm:3.4.4"],\
           ["tailwindcss-animate", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:1.0.7"],\
+          ["tailwindcss-filters", "npm:3.0.0"],\
           ["typescript", "patch:typescript@npm%3A5.5.2#optional!builtin<compat/typescript>::version=5.5.2&hash=379a07"],\
           ["vite", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:5.3.2"]\
         ],\
@@ -2350,6 +2354,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["gsap", [\
+      ["npm:3.12.5", {\
+        "packageLocation": "../../../.yarn/berry/cache/gsap-npm-3.12.5-5f40c203df-10c0.zip/node_modules/gsap/",\
+        "packageDependencies": [\
+          ["gsap", "npm:3.12.5"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["has-flag", [\
       ["npm:3.0.0", {\
         "packageLocation": "../../../.yarn/berry/cache/has-flag-npm-3.0.0-16ac11fe05-10c0.zip/node_modules/has-flag/",\
@@ -2772,6 +2785,15 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["locate-path", "npm:6.0.0"],\
           ["p-locate", "npm:5.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["lodash", [\
+      ["npm:4.17.21", {\
+        "packageLocation": "../../../.yarn/berry/cache/lodash-npm-4.17.21-6382451519-10c0.zip/node_modules/lodash/",\
+        "packageDependencies": [\
+          ["lodash", "npm:4.17.21"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3931,6 +3953,16 @@ const RAW_RUNTIME_STATE =
         "packagePeers": [\
           "@types/tailwindcss",\
           "tailwindcss"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["tailwindcss-filters", [\
+      ["npm:3.0.0", {\
+        "packageLocation": "../../../.yarn/berry/cache/tailwindcss-filters-npm-3.0.0-499fe1d27c-10c0.zip/node_modules/tailwindcss-filters/",\
+        "packageDependencies": [\
+          ["tailwindcss-filters", "npm:3.0.0"],\
+          ["lodash", "npm:4.17.21"]\
         ],\
         "linkType": "HARD"\
       }]\
