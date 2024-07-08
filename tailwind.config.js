@@ -78,5 +78,5 @@ export default {
       require("tailwindcss-filters"), // 필요한 경우 tailwindcss-filters 플러그인 설치
     ],
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("daisyui")],
 };
