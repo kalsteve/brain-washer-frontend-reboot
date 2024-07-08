@@ -64,7 +64,19 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      backdropFilter: {
+        // backdrop-filter 유틸리티 활성화
+        none: "none",
+        blur: "blur(20px)",
+      },
+      backgroundColor: {
+        // 배경색 투명도 설정
+        glass: "rgba(255, 255, 255, 0.1)", // 투명한 흰색
+      },
     },
+    plugins: [
+      require("tailwindcss-filters"), // 필요한 경우 tailwindcss-filters 플러그인 설치
+    ],
   },
   plugins: [require("tailwindcss-animate")],
 };

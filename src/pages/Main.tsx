@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 export default function Main() {
   return (
     <div className="flex flex-row w-screen h-screen">
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="flex w-full flex-col items-center justify-center min-h-screen bg-gradient-to-b from-[#1e1e1e] to-[#121212] text-white">
         <div className="w-[80%] h-[60%] px-6 py-12 sm:px-10 sm:py-16 bg-[#1e1e1e] rounded-2xl shadow-lg">
           <div className="grid gap-8 h-full">

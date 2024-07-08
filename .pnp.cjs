@@ -45,6 +45,7 @@ const RAW_RUNTIME_STATE =
           ["react-router-dom", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:6.24.0"],\
           ["tailwindcss", "npm:3.4.4"],\
           ["tailwindcss-animate", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:1.0.7"],\
+          ["tailwindcss-filters", "npm:3.0.0"],\
           ["typescript", "patch:typescript@npm%3A5.5.2#optional!builtin<compat/typescript>::version=5.5.2&hash=379a07"],\
           ["vite", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:5.3.2"]\
         ],\
@@ -74,6 +75,7 @@ const RAW_RUNTIME_STATE =
           ["react-router-dom", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:6.24.0"],\
           ["tailwindcss", "npm:3.4.4"],\
           ["tailwindcss-animate", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:1.0.7"],\
+          ["tailwindcss-filters", "npm:3.0.0"],\
           ["typescript", "patch:typescript@npm%3A5.5.2#optional!builtin<compat/typescript>::version=5.5.2&hash=379a07"],\
           ["vite", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:5.3.2"]\
         ],\
@@ -2787,6 +2789,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["lodash", [\
+      ["npm:4.17.21", {\
+        "packageLocation": "../../../.yarn/berry/cache/lodash-npm-4.17.21-6382451519-10c0.zip/node_modules/lodash/",\
+        "packageDependencies": [\
+          ["lodash", "npm:4.17.21"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["lodash.merge", [\
       ["npm:4.6.2", {\
         "packageLocation": "../../../.yarn/berry/cache/lodash.merge-npm-4.6.2-77cb4416bf-10c0.zip/node_modules/lodash.merge/",\
@@ -3942,6 +3953,16 @@ const RAW_RUNTIME_STATE =
         "packagePeers": [\
           "@types/tailwindcss",\
           "tailwindcss"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["tailwindcss-filters", [\
+      ["npm:3.0.0", {\
+        "packageLocation": "../../../.yarn/berry/cache/tailwindcss-filters-npm-3.0.0-499fe1d27c-10c0.zip/node_modules/tailwindcss-filters/",\
+        "packageDependencies": [\
+          ["tailwindcss-filters", "npm:3.0.0"],\
+          ["lodash", "npm:4.17.21"]\
         ],\
         "linkType": "HARD"\
       }]\

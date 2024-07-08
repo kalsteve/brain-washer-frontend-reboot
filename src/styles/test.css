@@ -3,7 +3,7 @@ body {
   width: 100vw;
   display: flex;
   margin: 0;
-  background: linear-gradient(135deg, #295fd5, #9d8ce0);
+  background-image: url("https://i.ibb.co/s3QC5vr/3.jpg");
   align-items: center;
   justify-content: center;
   user-select: none;
@@ -16,10 +16,10 @@ body {
 }
 
 .item {
-  width: 15vw;
-  height: 75vh;
+  width: 25vw;
+  height: 45vh;
   background-position: center;
-  background-size: 75vh;
+  background-size: 45vh;
   margin: 1vw;
   border-radius: 3vw;
   display: inline-block;
