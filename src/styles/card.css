@@ -1,4 +1,4 @@
-:root {
+/* :root {
   --card-height: 300px;
   --card-width: calc(var(--card-height) / 1.5);
 }
@@ -107,4 +107,4 @@ body {
 .card:hover .character {
   opacity: 1;
   transform: translate3d(0%, -30%, 100px);
-}
+} */
