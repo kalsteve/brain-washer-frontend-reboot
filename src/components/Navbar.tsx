@@ -1,16 +1,18 @@
 export default function Navbar() {
   return (
-    <nav className="bg-[#1e1e1e] shadow-lg w-[20%]">
-      <div className="flex flex-col items-center justify-between max-w-6xl mx-auto px-6 py-4">
-        <div>
-          <h1 className="text-xl font-semibold text-white">Navbar</h1>
-        </div>
-        <div>
-          <ul>
-            <li className="text-white">채팅창 목록</li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <div className="absolute top-0 flex w-full px-[10%] items-center h-[15%]">
+      <ul className="flex-1 flex flex-row">
+        <img
+          alt="Brain Washer logo"
+          src="https://i.ibb.co/Mk5gYZq/brainwasher-logo-text.png"
+        />
+      </ul>
+      <ul className="flex-1 flex justify-center text-2xl gap-20">
+        <li className="">캐릭터 선택</li>
+        <li className="">저장한 음성 및 이미지</li>
+      </ul>
+      <div className="flex-1"></div>
+      {/* 이 부분은 오른쪽 공간을 확보하기 위해 추가합니다. */}
+    </div>
   );
 }
