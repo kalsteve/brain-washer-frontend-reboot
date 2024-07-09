@@ -1,6 +1,6 @@
 export default function Navbar() {
   return (
-    <div className="flex w-full px-[10%] items-center h-[15%]">
+    <div className="flex w-full px-[10%] items-center h-[10%]">
       <ul className="flex-1 flex flex-row">
         <img
           alt="Brain Washer logo"
