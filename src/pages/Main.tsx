@@ -1,9 +1,17 @@
 import Navbar from "../components/Navbar";
 import CharacterCard from "../components/CharacterCard";
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const CharacterSelect = () => {
   return (
-    <div className="flex w-full flex-col items-center justify-center h-full text-white">
+    <div
+      className="flex w-full flex-col items-center justify-center h-full text-white"
+      data-aos="zoom-in"
+      data-aos-duration="1000"
+      data-aos-easing="linear"
+    >
       <div className="w-[80%] h-[60%] px-6 py-12 sm:px-10 sm:py-16 rounded-3xl shadow-xl backdrop-filter backdrop-blur bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10">
         <div className="grid gap-8 h-full">
           <div className="text-center my-auto">
@@ -40,14 +48,26 @@ const CharacterSelect = () => {
 const Onboarding = () => {
   return (
     <div className="w-screen h-[90%] flex flex-col text-white items-start px-[10%] justify-around">
-      <div className="flex flex-col w-[30%] space-y-4">
+      <div
+        className="flex flex-col w-[30%] space-y-4"
+        data-aos="fade-down-right"
+        data-aos-duration="1000"
+        data-aos-delay="500"
+        data-aos-easing="ease-in-out"
+      >
         <h2 className="text-[4rem] m-0 font-bold">BrainWasher</h2>
         <h2 className="text-[2rem] m-0">
           여행가서 낭비할 시간에 밤새서 개발하고 자소서 준비하고 대충 서비스
           소개하는 내용
         </h2>
       </div>
-      <div className="flex flex-row w-full self-end text-end space-x-10">
+      <div
+        className="flex flex-row w-full self-end text-end space-x-10"
+        data-aos="fade-up-left"
+        data-aos-duration="1000"
+        data-aos-delay="1000"
+        data-aos-easing="ease-in-out"
+      >
         <div className="flex flex-col space-y-4 justify-center w-[30%] ml-auto">
           <h2 className="text-[3rem] m-0 font-bold">독한말 솔루션</h2>
           <h2 className="text-[2rem] m-0">
@@ -63,7 +83,13 @@ const Onboarding = () => {
           imageSizeClass="w-24 h-24 lg:w-32 lg:h-32 xl:w-48 xl:h-48 2xl:w-48 2xl:h-48"
         />
       </div>
-      <div className="flex flex-row self-center space-x-4">
+      <div
+        className="flex flex-row self-center space-x-4 animate-bounce"
+        data-aos="zoom-in"
+        data-aos-duration="1000"
+        data-aos-delay="2000"
+        data-aos-easing="linear"
+      >
         <p className="my-auto text-2xl">Scroll Down</p>
         <img
           src="https://i.ibb.co/cN37MBb/chevron-down.png"
@@ -76,6 +102,9 @@ const Onboarding = () => {
 };
 
 export default function Main() {
+  useEffect(() => {
+    AOS.init();
+  });
   return (
     <div className="flex flex-col w-screen min-h-[200vh]">
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed z-10" />
