@@ -28,7 +28,7 @@ __metadata:
     postcss: "npm:^8.4.39"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
-    react-router-dom: "npm:^6.24.0"
+    react-router-dom: "npm:^6.24.1"
     tailwindcss: "npm:^3.4.4"
     tailwindcss-animate: "npm:^1.0.7"
     tailwindcss-filters: "npm:^3.0.0"
@@ -3047,7 +3047,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.24.0":
+"react-router-dom@npm:^6.24.1":
   version: 6.24.1
   resolution: "react-router-dom@npm:6.24.1"
   dependencies:

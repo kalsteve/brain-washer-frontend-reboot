@@ -22,6 +22,7 @@ const readChatRoom = async (chat_id: number) => {
     console.error(error);
   }
 };
+
 // 채팅 보내기
 const sendChat = async (chat_id: number, content: string) => {
   try {
@@ -33,6 +34,7 @@ const sendChat = async (chat_id: number, content: string) => {
     console.error(error);
   }
 };
+
 // 채팅 내역 조회
 const getChatHistory = async (chat_id: number) => {
   try {
@@ -42,3 +44,5 @@ const getChatHistory = async (chat_id: number) => {
     console.error(error);
   }
 };
+
+export { createChatRoom, readChatRoom, sendChat, getChatHistory };
