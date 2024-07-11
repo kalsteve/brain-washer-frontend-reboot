@@ -24,12 +24,23 @@ const readChatRoom = async (chat_id: number) => {
 };
 
 // 채팅 보내기
-const sendChat = async (chat_id: number, content: string) => {
+const sendChat = async (chat_id: number | null, content: string) => {
+  if (chat_id === null) {
+    console.error("Invalid chat ID");
+    return;
+  }
   try {
-    const response = await axiosInstance.post(`/chats/${chat_id}`, {
-      content: content,
-    });
-    return response.data;
+    const response = await fetch(
+      `http://0.0.0.0:8000/api/v1/chats/${chat_id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({ content: content }).toString(),
+      }
+    );
+    return response;
   } catch (error) {
     console.error(error);
   }

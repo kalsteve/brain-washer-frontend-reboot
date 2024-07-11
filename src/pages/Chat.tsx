@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AudioPlayer from "../components/AudioPlayer";
+import { useParams } from "react-router-dom";
+import { sendChat } from "../api/chat";
+import axios from "axios";
 
 interface ChatProps {
   name?: string;
@@ -114,12 +117,66 @@ const ChatMessage = ({
   );
 };
 
-const ChatInput = () => {
+const ChatInput = ({
+  chat_id,
+  onNewMessage,
+}: {
+  chat_id: number | null;
+  onNewMessage: (message: string) => void;
+}) => {
+  const [chatContent, setChatContent] = useState("");
+  const contentEditableRef = useRef<HTMLDivElement>(null);
+
+  const handleInput = () => {
+    if (contentEditableRef.current) {
+      setChatContent(contentEditableRef.current.innerText);
+    }
+  };
+
+  const handleSendChat = async () => {
+    if (chat_id === null || chatContent.trim() === "") {
+      console.error("Invalid chat ID or empty content");
+      return;
+    }
+
+    try {
+      const response = await sendChat(chat_id, chatContent);
+
+      if (!response || !response.body) {
+        console.error("No response body");
+        return;
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+
+      let done = false;
+
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+
+        // 청크를 디코딩하고 "data:" 접두사 제거
+        const chunk = decoder.decode(value, { stream: true });
+        const cleanChunk = chunk
+          .split("\n")
+          .filter((line) => line.startsWith("data:"))
+          .map((line) => line.replace(/^data:\s*/, ""))
+          .join("\n");
+        onNewMessage(cleanChunk); // 새로운 메시지를 부모 컴포넌트에 전달
+      }
+    } catch (error) {
+      console.error("Error sending chat or receiving stream", error);
+    }
+  };
+
   return (
     <div className="chat-input mx-[3%] h-[25%] items-center shadow-lg flex">
       <div className="flex-grow w-full h-full bg-glass rounded-lg text-lg p-6 text-white flex items-center">
         <div
           contentEditable
+          ref={contentEditableRef}
+          onInput={handleInput}
           className="flex-grow bg-transparent outline-none h-full justify-start"
         />
         <svg
@@ -129,6 +186,7 @@ const ChatInput = () => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="cursor-pointer hover:opacity-70 mb-auto transition-opacity duration-300 ease-in-out"
+          onClick={handleSendChat}
         >
           <circle cx="24" cy="24" r="24" fill="url(#paint0_linear_598_542)" />
           <path
@@ -168,7 +226,17 @@ const ChatInput = () => {
     </div>
   );
 };
+
 export default function Chat({ name, description, image }: ChatProps) {
+  const { chat_id } = useParams();
+  // chat_id가 undefined가 아닌지 확인하고, number로 변환합니다.
+  const chatIdNumber = chat_id ? parseInt(chat_id) : null;
+  const [currentMessage, setCurrentMessage] = useState<string>("");
+
+  const handleNewMessage = (message: string) => {
+    setCurrentMessage((prevMessage) => prevMessage + message);
+  };
+
   const audioStreamUrl = "http://0.0.0.0:8000/api/v1/voices/tts/stream";
   return (
     <div className="flex flex-row w-screen h-screen px-[3%] py-[3%] gap-10">
@@ -278,14 +346,10 @@ export default function Chat({ name, description, image }: ChatProps) {
       {/* 채팅창 */}
       <div className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]">
         <ChatHeader name={name} image={image} />
-        <ChatMessage
-          image={image}
-          message={
-            "꼭 기억해두기 바랍니다. 왜냐면 주변에 보면 늘 남 욕만 하고, 굉장히 비관적인 사람이 있어요. 반면에 해피 바이러스, 그 사람만 보기만 해도 늘 재미있고, 웃기고, 유머감각이 있고. 남친 여친 결정할 때 그걸 중요하게 생각해야 된다, 알겠나?"
-          }
-          audioStreamUrl={audioStreamUrl}
-        />
-        <ChatInput />
+        <div className="flex flex-col space-y-4 overflow-auto">
+          <ChatMessage message={currentMessage} image={image} />
+        </div>
+        <ChatInput chat_id={chatIdNumber} onNewMessage={handleNewMessage} />
       </div>
     </div>
   );
