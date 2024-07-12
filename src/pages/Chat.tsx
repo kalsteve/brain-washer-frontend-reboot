@@ -346,7 +346,7 @@ export default function Chat({ name, description, image }: ChatProps) {
       {/* 채팅창 */}
       <div className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]">
         <ChatHeader name={name} image={image} />
-        <div className="flex flex-col space-y-4 overflow-auto">
+        <div className="flex flex-col space-y-4 overflow-auto mb-auto">
           <ChatMessage message={currentMessage} image={image} />
         </div>
         <ChatInput chat_id={chatIdNumber} onNewMessage={handleNewMessage} />
