@@ -290,6 +290,18 @@ export default function Chat({ name, description, image }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentResponse, setCurrentResponse] = useState<string>("");
 
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, currentResponse]);
+
   const handleNewMessage = (message: Message) => {
     setMessages((prevMessages) => [...prevMessages, message]);
   };
@@ -436,6 +448,7 @@ export default function Chat({ name, description, image }: ChatProps) {
               isUser={false}
             />
           )}
+          <div ref={messagesEndRef} />
         </div>
         <ChatInput
           chat_id={chatIdNumber}
