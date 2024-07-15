@@ -17,6 +17,18 @@ interface Message {
   createdAt?: string;
 }
 
+const formatToKoreanTime = (createdAt: string) => {
+  const date = new Date(createdAt);
+  const year = date.getFullYear().toString().slice(2);
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = date.getHours();
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const ampm = hours >= 12 ? "오후" : "오전";
+  const formattedHours = hours % 12 || 12; // 0시를 12시로 표현
+  return `${year}-${month}-${day} ${ampm} ${formattedHours}:${minutes}`;
+};
+
 const ChatHeader = ({ name, image }: ChatProps) => {
   const navigate = useNavigate();
   return (
@@ -82,7 +94,9 @@ const ChatMessage = ({
         </div>
       )}
       <div
-        className="chat-bubble shadow-lg bg-glass max-w-lg px-[2%] py-[1%] text-lg"
+        className={`chat-bubble shadow-lg ${
+          isUser ? "bg-[#2196F3] opacity-80 text-white" : "bg-glass"
+        } max-w-lg px-[2%] py-[1%] text-lg`}
         onClick={() => setIsShow(!isShow)}
       >
         {message}
@@ -127,7 +141,11 @@ const ChatMessage = ({
             </div>
           </div>
         )}
-        <div className="text-right text-sm text-gray-500 mt-1">{createdAt}</div>
+        {!isUser && (
+          <div className="text-right text-sm text-gray-500 mt-1">
+            {createdAt ? formatToKoreanTime(createdAt) : ""}
+          </div>
+        )}
       </div>
     </div>
   );
