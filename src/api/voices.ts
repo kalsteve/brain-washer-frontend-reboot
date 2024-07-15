@@ -11,7 +11,7 @@ const getAllTts = async () => {
 };
 
 // 채팅방 별 목소리 목록 조회
-const getTtsByChatId = async (chatId) => {
+const getTtsByChatId = async (chatId: number) => {
   try {
     const response = await axiosInstance.get(`/voices/chat/${chatId}`);
     return response.data;
@@ -21,7 +21,7 @@ const getTtsByChatId = async (chatId) => {
 };
 
 // 저장한 목소리 상세 조회
-const getTtsById = async (voiceId) => {
+const getTtsById = async (voiceId: number) => {
   try {
     const response = await axiosInstance.get(`/voices/${voiceId}`);
     return response.data;
@@ -31,7 +31,7 @@ const getTtsById = async (voiceId) => {
 };
 
 // 저장한 목소리 소프트 삭제
-const softDeleteTts = async (voiceId) => {
+const softDeleteTts = async (voiceId: number) => {
   try {
     const response = await axiosInstance.put(`/voices/${voiceId}`, {
       deleted: true,
@@ -43,7 +43,7 @@ const softDeleteTts = async (voiceId) => {
 };
 
 // 저장한 목소리 하드 삭제
-const deleteTts = async (voiceId) => {
+const deleteTts = async (voiceId: number) => {
   try {
     const response = await axiosInstance.delete(`/voices/${voiceId}`);
     return response.data;
@@ -53,7 +53,7 @@ const deleteTts = async (voiceId) => {
 };
 
 // 사용자가 선택한 목소리 저장
-const saveSelectedTts = async (bubbleId, selectedTtsData) => {
+const saveSelectedTts = async (bubbleId: number, selectedTtsData: string) => {
   try {
     const response = await axiosInstance.post(
       `/voices/${bubbleId}`,
@@ -63,4 +63,13 @@ const saveSelectedTts = async (bubbleId, selectedTtsData) => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export {
+  getAllTts,
+  getTtsByChatId,
+  getTtsById,
+  softDeleteTts,
+  deleteTts,
+  saveSelectedTts,
 };
