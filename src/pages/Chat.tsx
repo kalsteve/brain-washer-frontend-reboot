@@ -75,7 +75,6 @@ const ChatHeader = ({ name, image }: ChatProps) => {
 const ChatMessage = ({
   message,
   image,
-  audioStreamUrl,
   isUser,
   createdAt,
 }: ChatProps & { message: string; isUser: boolean }) => {
@@ -100,9 +99,6 @@ const ChatMessage = ({
         onClick={() => setIsShow(!isShow)}
       >
         {message}
-        {audioStreamUrl && (
-          <AudioPlayer audioStreamUrl={audioStreamUrl} content="content" />
-        )}
         {isShow && !isUser && (
           <div className="flex justify-end w-full my-[1rem]">
             <div className="flex flex-row gap-4">
@@ -155,10 +151,12 @@ const ChatInput = ({
   chat_id,
   onNewMessage,
   onUpdateResponse,
+  setAudioData,
 }: {
   chat_id: number | null;
   onNewMessage: (message: Message) => void;
   onUpdateResponse: (message: string) => void;
+  setAudioData: (audioData: Uint8Array[]) => void;
 }) => {
   const [chatContent, setChatContent] = useState("");
   const contentEditableRef = useRef<HTMLDivElement>(null);
@@ -199,31 +197,65 @@ const ChatInput = ({
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");
-
-      let done = false;
       let accumulatedMessage = "";
+      let audioDataChunks = [];
+      let done = false;
+      let partialChunk = "";
 
       while (!done) {
         const { value, done: doneReading } = await reader.read();
         done = doneReading;
 
         const chunk = decoder.decode(value, { stream: true });
-        const cleanChunk = chunk
-          .split("\n")
-          .filter((line) => line.startsWith("data:"))
-          .map((line) => line.replace(/^data:\s*/, ""))
-          .join("\n");
+        console.log(chunk);
+        partialChunk += chunk;
 
-        accumulatedMessage += cleanChunk;
-        onUpdateResponse(accumulatedMessage);
+        const lines = partialChunk
+          .split("\n")
+          .filter((line) => line.trim() !== "");
+
+        if (!done) {
+          partialChunk = lines.pop() || "";
+        } else {
+          partialChunk = "";
+        }
+
+        for (const line of lines) {
+          if (line.startsWith("data: ")) {
+            try {
+              const data = JSON.parse(line.substring(6));
+
+              if (data.message) {
+                accumulatedMessage += data.message;
+                onUpdateResponse(accumulatedMessage);
+              }
+
+              if (data.audio) {
+                const binaryData = hexToBinary(data.audio);
+                audioDataChunks.push(binaryData);
+              }
+            } catch (error) {
+              console.error("Error parsing JSON:", error, line);
+            }
+          }
+        }
       }
 
       // 스트림이 끝난 후 최종 메시지를 추가하고, 현재 응답 초기화
       onNewMessage({ content: accumulatedMessage, isUser: false });
+      setAudioData(audioDataChunks);
       onUpdateResponse("");
     } catch (error) {
       console.error("Error sending chat or receiving stream", error);
     }
+  };
+
+  const hexToBinary = (hex: any) => {
+    const bytes = new Uint8Array(hex.length / 2);
+    for (let i = 0; i < hex.length; i += 2) {
+      bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+    }
+    return bytes;
   };
 
   return (
@@ -289,6 +321,7 @@ export default function Chat({ name, description, image }: ChatProps) {
   const chatIdNumber = chat_id ? parseInt(chat_id) : null;
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentResponse, setCurrentResponse] = useState<string>("");
+  const [audioData, setAudioData] = useState<Uint8Array[]>([]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -336,6 +369,7 @@ export default function Chat({ name, description, image }: ChatProps) {
             alt={name}
             className={`rounded-full object-cover shadow-2xl size-48 mx-auto`}
           />
+          <AudioPlayer audioData={audioData} />
           <div className="text-center space-y-2 mt-4">
             <h3 className="text-3xl font-semibold text-white">{name}</h3>
             <p className="text-muted-foreground text-lg">{description}</p>
@@ -454,6 +488,7 @@ export default function Chat({ name, description, image }: ChatProps) {
           chat_id={chatIdNumber}
           onNewMessage={handleNewMessage}
           onUpdateResponse={handleUpdateResponse}
+          setAudioData={setAudioData}
         />
       </div>
     </div>
