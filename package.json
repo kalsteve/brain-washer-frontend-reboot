@@ -11,10 +11,11 @@
   },
   "dependencies": {
     "aos": "^3.0.0-beta.6",
+    "axios": "^1.7.2",
     "gsap": "^3.12.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.24.0",
+    "react-router-dom": "^6.24.1",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-filters": "^3.0.0"
   },

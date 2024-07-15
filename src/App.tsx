@@ -15,7 +15,7 @@ function App() {
         <Route path="/test2" element={<Test2 />} />
         <Route path="/practice" element={<Practice />} />
         <Route
-          path="/chat"
+          path="/chat/:chat_id"
           element={
             <Chat
               name={"Andrew Park"}

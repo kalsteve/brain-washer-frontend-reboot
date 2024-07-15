@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { createChatRoom } from "../api/chat";
 
 interface CharacterCardProps {
   name: string;
@@ -15,10 +16,14 @@ const CharacterCard = ({
   className = "",
   imageSizeClass = "w-24 h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 2xl:w-48 2xl:h-48",
 }: CharacterCardProps) => {
+  const navigate = useNavigate();
   return (
-    <Link
-      to="#"
+    <div
       className={`rounded-3xl p-6 flex flex-col items-center gap-4 cursor-pointer justify-evenly shadow-lg backdrop-filter backdrop-blur bg-gradient-to-t from-[#475aa12b] to-[#e0e0e00a] bg-opacity-5 ${className}`}
+      onClick={async () => {
+        const response = await createChatRoom(name, name);
+        navigate(`/chat/${response.data.chat_id}`);
+      }}
     >
       <img
         src={image}
@@ -29,7 +34,7 @@ const CharacterCard = ({
         <h3 className="text-2xl font-semibold">{name}</h3>
         <p className="text-muted-foreground">{description}</p>
       </div>
-    </Link>
+    </div>
   );
 };
 

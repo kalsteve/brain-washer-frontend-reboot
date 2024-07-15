@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import AudioPlayer from "../components/AudioPlayer";
+import { useNavigate, useParams } from "react-router-dom";
+import { sendChat } from "../api/chat";
 
 interface ChatProps {
   name?: string;
@@ -8,7 +10,13 @@ interface ChatProps {
   audioStreamUrl?: string;
 }
 
+interface Message {
+  content: string;
+  isUser: boolean;
+}
+
 const ChatHeader = ({ name, image }: ChatProps) => {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col justify-center space-y-8">
       <div className="flex flex-row space-x-8 justify-between px-[3%]">
@@ -21,8 +29,10 @@ const ChatHeader = ({ name, image }: ChatProps) => {
           />
           <p className="text-white my-auto text-3xl font-bold">{name}</p>
         </div>
-        {/* 공간을 차지하게 하는 요소 */}
-        <div className="btn bg-transparent border-none my-auto ml-auto hover:bg-blue-500">
+        <div
+          className="btn bg-transparent border-none my-auto ml-auto hover:bg-blue-500"
+          onClick={() => navigate("/")}
+        >
           <svg
             width="35"
             height="35"
@@ -52,74 +62,156 @@ const ChatMessage = ({
   message,
   image,
   audioStreamUrl,
-}: ChatProps & { message: string }) => {
+  isUser,
+}: ChatProps & { message: string; isUser: boolean }) => {
   const [isShow, setIsShow] = useState(false);
   return (
-    <div className="w-full px-[3%] py-[5%] mb-auto">
-      <div className="chat chat-start">
+    <div
+      className={`w-full px-[3%] py-[5%] mb-auto ${
+        isUser ? "chat chat-end" : "chat chat-start"
+      }`}
+    >
+      {!isUser && (
         <div className="chat-image avatar">
           <div className="w-12 rounded-full shadow-lg">
             <img alt="chat bubble component" src={image} />
           </div>
         </div>
-        <div
-          className="chat-bubble shadow-lg bg-glass max-w-lg px-[2%] py-[1%] text-lg"
-          onClick={() => setIsShow(!isShow)}
-        >
-          {message}
-          {audioStreamUrl && (
-            <AudioPlayer audioStreamUrl={audioStreamUrl} content="content" />
-          )}
-          {isShow && (
-            <div className="flex justify-end w-full my-[1rem]">
-              <div className="flex flex-row gap-4">
-                <svg
-                  width="30"
-                  height="30"
-                  viewBox="0 0 30 30"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="cursor-pointer"
-                >
-                  <path
-                    d="M5 21.25L9.8396 16.8944C10.6303 16.1828 11.8396 16.2146 12.5917 16.9667L14.375 18.75L19.2108 13.9142C19.9918 13.1332 21.2582 13.1332 22.0392 13.9142L25 16.875M13.75 11.25C13.75 11.9404 13.1904 12.5 12.5 12.5C11.8096 12.5 11.25 11.9404 11.25 11.25C11.25 10.5596 11.8096 10 12.5 10C13.1904 10 13.75 10.5596 13.75 11.25ZM7 25H23C24.1046 25 25 24.1046 25 23V7C25 5.89543 24.1046 5 23 5H7C5.89543 5 5 5.89543 5 7V23C5 24.1046 5.89543 25 7 25Z"
-                    stroke="white"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <svg
-                  width="30"
-                  height="30"
-                  viewBox="0 0 30 30"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="cursor-pointer"
-                >
-                  <path
-                    d="M21.25 15L15 21.25M15 21.25L8.75 15M15 21.25V5M21.25 25H8.75"
-                    stroke="white"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </div>
+      )}
+      <div
+        className="chat-bubble shadow-lg bg-glass max-w-lg px-[2%] py-[1%] text-lg"
+        onClick={() => setIsShow(!isShow)}
+      >
+        {message}
+        {audioStreamUrl && (
+          <AudioPlayer audioStreamUrl={audioStreamUrl} content="content" />
+        )}
+        {isShow && !isUser && (
+          <div className="flex justify-end w-full my-[1rem]">
+            <div className="flex flex-row gap-4">
+              <svg
+                width="30"
+                height="30"
+                viewBox="0 0 30 30"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="cursor-pointer"
+              >
+                <path
+                  d="M5 21.25L9.8396 16.8944C10.6303 16.1828 11.8396 16.2146 12.5917 16.9667L14.375 18.75L19.2108 13.9142C19.9918 13.1332 21.2582 13.1332 22.0392 13.9142L25 16.875M13.75 11.25C13.75 11.9404 13.1904 12.5 12.5 12.5C11.8096 12.5 11.25 11.9404 11.25 11.25C11.25 10.5596 11.8096 10 12.5 10C13.1904 10 13.75 10.5596 13.75 11.25ZM7 25H23C24.1046 25 25 24.1046 25 23V7C25 5.89543 24.1046 5 23 5H7C5.89543 5 5 5.89543 5 7V23C5 24.1046 5.89543 25 7 25Z"
+                  stroke="white"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <svg
+                width="30"
+                height="30"
+                viewBox="0 0 30 30"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="cursor-pointer"
+              >
+                <path
+                  d="M21.25 15L15 21.25M15 21.25L8.75 15M15 21.25V5M21.25 25H8.75"
+                  stroke="white"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-const ChatInput = () => {
+const ChatInput = ({
+  chat_id,
+  onNewMessage,
+  onUpdateResponse,
+}: {
+  chat_id: number | null;
+  onNewMessage: (message: Message) => void;
+  onUpdateResponse: (message: string) => void;
+}) => {
+  const [chatContent, setChatContent] = useState("");
+  const contentEditableRef = useRef<HTMLDivElement>(null);
+
+  const handleInput = () => {
+    if (contentEditableRef.current) {
+      setChatContent(contentEditableRef.current.innerText);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendChat();
+    }
+  };
+
+  const handleSendChat = async () => {
+    if (chat_id === null || chatContent.trim() === "") {
+      console.error("Invalid chat ID or empty content");
+      return;
+    }
+
+    onNewMessage({ content: chatContent, isUser: true });
+    setChatContent("");
+
+    if (contentEditableRef.current) {
+      contentEditableRef.current.innerText = "";
+    }
+
+    try {
+      const response = await sendChat(chat_id, chatContent);
+
+      if (!response || !response.body) {
+        console.error("No response body");
+        return;
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
+
+      let done = false;
+      let accumulatedMessage = "";
+
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+
+        const chunk = decoder.decode(value, { stream: true });
+        const cleanChunk = chunk
+          .split("\n")
+          .filter((line) => line.startsWith("data:"))
+          .map((line) => line.replace(/^data:\s*/, ""))
+          .join("\n");
+
+        accumulatedMessage += cleanChunk;
+        onUpdateResponse(accumulatedMessage);
+      }
+
+      // 스트림이 끝난 후 최종 메시지를 추가하고, 현재 응답 초기화
+      onNewMessage({ content: accumulatedMessage, isUser: false });
+      onUpdateResponse("");
+    } catch (error) {
+      console.error("Error sending chat or receiving stream", error);
+    }
+  };
+
   return (
     <div className="chat-input mx-[3%] h-[25%] items-center shadow-lg flex">
       <div className="flex-grow w-full h-full bg-glass rounded-lg text-lg p-6 text-white flex items-center">
         <div
           contentEditable
+          ref={contentEditableRef}
+          onKeyDown={handleKeyDown}
+          onInput={handleInput}
           className="flex-grow bg-transparent outline-none h-full justify-start"
         />
         <svg
@@ -129,6 +221,7 @@ const ChatInput = () => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="cursor-pointer hover:opacity-70 mb-auto transition-opacity duration-300 ease-in-out"
+          onClick={handleSendChat}
         >
           <circle cx="24" cy="24" r="24" fill="url(#paint0_linear_598_542)" />
           <path
@@ -168,13 +261,25 @@ const ChatInput = () => {
     </div>
   );
 };
+
 export default function Chat({ name, description, image }: ChatProps) {
+  const { chat_id } = useParams();
+  const chatIdNumber = chat_id ? parseInt(chat_id) : null;
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [currentResponse, setCurrentResponse] = useState<string>("");
+
+  const handleNewMessage = (message: Message) => {
+    setMessages((prevMessages) => [...prevMessages, message]);
+  };
+
+  const handleUpdateResponse = (message: string) => {
+    setCurrentResponse(message);
+  };
+
   const audioStreamUrl = "http://0.0.0.0:8000/api/v1/voices/tts/stream";
   return (
     <div className="flex flex-row w-screen h-screen px-[3%] py-[3%] gap-10">
-      {/* 배경 */}
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed z-10" />
-      {/* 왼쪽 투명창 */}
       <div className=" justify-evenly flex flex-col basis-1/4 h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl">
         <div className="flex flex-col space-y-12">
           <img
@@ -275,17 +380,30 @@ export default function Chat({ name, description, image }: ChatProps) {
           </svg>
         </div>
       </div>
-      {/* 채팅창 */}
       <div className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]">
         <ChatHeader name={name} image={image} />
-        <ChatMessage
-          image={image}
-          message={
-            "꼭 기억해두기 바랍니다. 왜냐면 주변에 보면 늘 남 욕만 하고, 굉장히 비관적인 사람이 있어요. 반면에 해피 바이러스, 그 사람만 보기만 해도 늘 재미있고, 웃기고, 유머감각이 있고. 남친 여친 결정할 때 그걸 중요하게 생각해야 된다, 알겠나?"
-          }
-          audioStreamUrl={audioStreamUrl}
+        <div className="flex flex-col space-y-4 overflow-auto mb-auto">
+          {messages.map((msg, index) => (
+            <ChatMessage
+              key={index}
+              message={msg.content}
+              image={image}
+              isUser={msg.isUser}
+            />
+          ))}
+          {currentResponse && (
+            <ChatMessage
+              message={currentResponse}
+              image={image}
+              isUser={false}
+            />
+          )}
+        </div>
+        <ChatInput
+          chat_id={chatIdNumber}
+          onNewMessage={handleNewMessage}
+          onUpdateResponse={handleUpdateResponse}
         />
-        <ChatInput />
       </div>
     </div>
   );
