@@ -1,18 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import AudioPlayer from "../components/AudioPlayer";
 import { useNavigate, useParams } from "react-router-dom";
-import { readChatRoom, sendChat } from "../api/chat";
+import { getChatHistory, readChatRoom, sendChat } from "../api/chat";
 
 interface ChatProps {
   name?: string;
   description?: string;
   image?: string;
   audioStreamUrl?: string;
+  createdAt?: string;
 }
 
 interface Message {
   content: string;
   isUser: boolean;
+  createdAt?: string;
 }
 
 const ChatHeader = ({ name, image }: ChatProps) => {
@@ -63,6 +65,7 @@ const ChatMessage = ({
   image,
   audioStreamUrl,
   isUser,
+  createdAt,
 }: ChatProps & { message: string; isUser: boolean }) => {
   const [isShow, setIsShow] = useState(false);
   return (
@@ -124,6 +127,7 @@ const ChatMessage = ({
             </div>
           </div>
         )}
+        <div className="text-right text-sm text-gray-500 mt-1">{createdAt}</div>
       </div>
     </div>
   );
@@ -276,10 +280,21 @@ export default function Chat({ name, description, image }: ChatProps) {
     setCurrentResponse(message);
   };
 
-  useEffect(() => {
+  const fetchChatHistory = async () => {
     if (chatIdNumber) {
       readChatRoom(chatIdNumber);
+      const response = await getChatHistory(chatIdNumber);
+      const chatHistory = response.data.bubbles.map((bubble: any) => ({
+        content: bubble.content,
+        isUser: bubble.writer, // API 응답에 따라 이 값을 설정해야 합니다.
+        createdAt: bubble.created_at,
+      }));
+      setMessages(chatHistory);
     }
+  };
+
+  useEffect(() => {
+    fetchChatHistory();
   }, [chat_id]);
   return (
     <div className="flex flex-row w-screen h-screen px-[3%] py-[3%] gap-10">
@@ -393,6 +408,7 @@ export default function Chat({ name, description, image }: ChatProps) {
               message={msg.content}
               image={image}
               isUser={msg.isUser}
+              createdAt={msg.createdAt}
             />
           ))}
           {currentResponse && (
