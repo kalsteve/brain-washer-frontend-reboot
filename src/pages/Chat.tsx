@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AudioPlayer from "../components/AudioPlayer";
 import { useNavigate, useParams } from "react-router-dom";
-import { sendChat } from "../api/chat";
+import { readChatRoom, sendChat } from "../api/chat";
 
 interface ChatProps {
   name?: string;
@@ -276,7 +276,11 @@ export default function Chat({ name, description, image }: ChatProps) {
     setCurrentResponse(message);
   };
 
-  const audioStreamUrl = "http://0.0.0.0:8000/api/v1/voices/tts/stream";
+  useEffect(() => {
+    if (chatIdNumber) {
+      readChatRoom(chatIdNumber);
+    }
+  }, [chat_id]);
   return (
     <div className="flex flex-row w-screen h-screen px-[3%] py-[3%] gap-10">
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed z-10" />
