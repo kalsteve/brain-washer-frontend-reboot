@@ -5,7 +5,7 @@ const createChatRoom = async (character_name: string, chat_name: string) => {
   try {
     const response = await axiosInstance.post("/chats", {
       character_name: character_name,
-      chat_name: chat_name,
+      chat_room_name: chat_name,
     });
     return response.data;
   } catch (error) {
