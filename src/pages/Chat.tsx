@@ -1,8 +1,7 @@
 import { useRef, useState } from "react";
 import AudioPlayer from "../components/AudioPlayer";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { sendChat } from "../api/chat";
-import axios from "axios";
 
 interface ChatProps {
   name?: string;
@@ -17,6 +16,7 @@ interface Message {
 }
 
 const ChatHeader = ({ name, image }: ChatProps) => {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col justify-center space-y-8">
       <div className="flex flex-row space-x-8 justify-between px-[3%]">
@@ -29,7 +29,10 @@ const ChatHeader = ({ name, image }: ChatProps) => {
           />
           <p className="text-white my-auto text-3xl font-bold">{name}</p>
         </div>
-        <div className="btn bg-transparent border-none my-auto ml-auto hover:bg-blue-500">
+        <div
+          className="btn bg-transparent border-none my-auto ml-auto hover:bg-blue-500"
+          onClick={() => navigate("/")}
+        >
           <svg
             width="35"
             height="35"
@@ -83,7 +86,7 @@ const ChatMessage = ({
         {audioStreamUrl && (
           <AudioPlayer audioStreamUrl={audioStreamUrl} content="content" />
         )}
-        {isShow && (
+        {isShow && !isUser && (
           <div className="flex justify-end w-full my-[1rem]">
             <div className="flex flex-row gap-4">
               <svg
@@ -144,6 +147,13 @@ const ChatInput = ({
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendChat();
+    }
+  };
+
   const handleSendChat = async () => {
     if (chat_id === null || chatContent.trim() === "") {
       console.error("Invalid chat ID or empty content");
@@ -200,6 +210,7 @@ const ChatInput = ({
         <div
           contentEditable
           ref={contentEditableRef}
+          onKeyDown={handleKeyDown}
           onInput={handleInput}
           className="flex-grow bg-transparent outline-none h-full justify-start"
         />
