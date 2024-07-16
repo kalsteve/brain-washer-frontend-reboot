@@ -461,6 +461,93 @@ export default function Chat({ name, description, image }: ChatProps) {
             </defs>
           </svg>
         </div>
+        <div className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]">
+          <p className="text-white text-2xl  font-normal">저장한 TTS</p>
+         <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
+          <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[10%]">
+            <li className="flex flex-row w-full justify-between">
+              <p className="truncate overflow-hidden whitespace-nowrap w-[13vw]">contentdsfdfadfassdfdsafsdfadsfasf</p>
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="13" cy="13" r="13" fill="url(#paint0_linear_779_384)"/>
+                <path
+                    d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
+                    fill="white"/>
+                <defs>
+                  <linearGradient id="paint0_linear_779_384" x1="13" y1="0" x2="13" y2="26"
+                                  gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#631C43"/>
+                    <stop offset="1" stopColor="#C93988"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </li>
+            <li className="flex flex-row w-full justify-between">
+              <p>content</p>
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="13" cy="13" r="13" fill="url(#paint0_linear_779_384)"/>
+                <path
+                    d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
+                    fill="white"/>
+                <defs>
+                  <linearGradient id="paint0_linear_779_384" x1="13" y1="0" x2="13" y2="26"
+                                  gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#631C43"/>
+                    <stop offset="1" stopColor="#C93988"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </li>
+            <li className="flex flex-row w-full justify-between">
+              <p>content</p>
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="13" cy="13" r="13" fill="url(#paint0_linear_779_384)"/>
+                <path
+                    d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
+                    fill="white"/>
+                <defs>
+                  <linearGradient id="paint0_linear_779_384" x1="13" y1="0" x2="13" y2="26"
+                                  gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#631C43"/>
+                    <stop offset="1" stopColor="#C93988"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </li>
+            <li className="flex flex-row w-full justify-between">
+              <p>content</p>
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="13" cy="13" r="13" fill="url(#paint0_linear_779_384)"/>
+                <path
+                    d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
+                    fill="white"/>
+                <defs>
+                  <linearGradient id="paint0_linear_779_384" x1="13" y1="0" x2="13" y2="26"
+                                  gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#631C43"/>
+                    <stop offset="1" stopColor="#C93988"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </li>
+            <li className="flex flex-row w-full justify-between">
+              <p>content</p>
+              <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="13" cy="13" r="13" fill="url(#paint0_linear_779_384)"/>
+                <path
+                    d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
+                    fill="white"/>
+                <defs>
+                  <linearGradient id="paint0_linear_779_384" x1="13" y1="0" x2="13" y2="26"
+                                  gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#631C43"/>
+                    <stop offset="1" stopColor="#C93988"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </li>
+          </ul>
+          </div>
+        </div>
       </div>
       <div className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]">
         <ChatHeader name={name} image={image} />
