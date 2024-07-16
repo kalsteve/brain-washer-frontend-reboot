@@ -57,7 +57,7 @@ const saveSelectedTts = async (bubbleId: number, selectedTtsData: string) => {
   try {
     const response = await axiosInstance.post(
       `/voices/${bubbleId}`,
-      selectedTtsData
+      selectedTtsData,
     );
     return response.data;
   } catch (error) {
@@ -77,7 +77,7 @@ const postTts = async (bubble_id: string | undefined) => {
 };
 
 // 채팅방별 TTS 목록 조회
-const getRoomTts = async (chat_id: number|null) => {
+const getRoomTts = async (chat_id: number | null) => {
   try {
     const response = await axiosInstance.get(`/voices/chat/${chat_id}`);
     console.log(response.data);
@@ -87,8 +87,13 @@ const getRoomTts = async (chat_id: number|null) => {
   }
 };
 
-export { getAllTts, postTts, getRoomTts,getTtsByChatId,
-    getTtsById,
-    softDeleteTts,
-    deleteTts,
-    saveSelectedTts, };
+export {
+  getAllTts,
+  postTts,
+  getRoomTts,
+  getTtsByChatId,
+  getTtsById,
+  softDeleteTts,
+  deleteTts,
+  saveSelectedTts,
+};
