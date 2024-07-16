@@ -69,7 +69,6 @@ const saveSelectedTts = async (bubbleId: number, selectedTtsData: string) => {
 const postTts = async (bubble_id: string | undefined) => {
   try {
     const response = await axiosInstance.post(`/voices/${bubble_id}`, {});
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
