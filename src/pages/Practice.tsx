@@ -358,7 +358,7 @@ const App: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-5 gap-5 ">
+              <div className="grid grid-cols-5 gap-5 gap-y-9">
                 {Images.slice(0, 10).map((image, index) => (
                   <div
                     key={index}
