@@ -53,7 +53,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioData }) => {
     }
   };
 
-  return <audio ref={audioRef} controls />;
+  return <audio ref={audioRef} controls hidden />;
 };
 
 export default AudioPlayer;
