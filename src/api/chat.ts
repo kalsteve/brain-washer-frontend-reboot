@@ -31,13 +31,13 @@ const sendChat = async (chat_id: number | null, content: string) => {
   }
   try {
     const response = await fetch(
-      `http://0.0.0.0:8000/api/v1/chats/${chat_id}`,
+      `${import.meta.env.VITE_API_URL}/chats/${chat_id}`,
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
-        body: new URLSearchParams({ content: content }).toString(),
+        body: JSON.stringify({ content: content }),
       }
     );
     return response;
