@@ -414,6 +414,7 @@ export default function Chat({ name, description, image }: ChatProps) {
             viewBox="0 0 76 76"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className="cursor-pointer duration-400 transform hover:scale-95 transition-transform drop-shadow-2xl"
             onClick={async () => {
               if (menu === menuOptions[1]) {
                 setMenu(menuOptions[0]);
@@ -452,6 +453,7 @@ export default function Chat({ name, description, image }: ChatProps) {
             viewBox="0 0 76 76"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className="cursor-pointer duration-400 transform hover:scale-95 transition-transform drop-shadow-2xl"
             onClick={() => {
               if (menu === menuOptions[2]) {
                 setMenu(menuOptions[0]);
@@ -533,7 +535,7 @@ export default function Chat({ name, description, image }: ChatProps) {
                         viewBox="0 0 26 26"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        className="cursor-pointer hover:opacity-50"
+                        className="cursor-pointer hover:opacity-50 transition-opacity duration-200"
                         onClick={() => playAudio(item.audio_url)}
                       >
                         <circle
@@ -578,7 +580,7 @@ export default function Chat({ name, description, image }: ChatProps) {
           >
             <p className="text-white text-2xl  font-normal">저장한 이미지</p>
             <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
-              <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[10%]">
+              <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[5%] overflow-y-auto no-scrollbar">
                 {ttsList.length > 0 ? (
                   ttsList.map((item, i) => (
                     <li

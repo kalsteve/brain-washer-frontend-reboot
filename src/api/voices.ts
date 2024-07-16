@@ -79,7 +79,6 @@ const postTts = async (bubble_id: string | undefined) => {
 const getRoomTts = async (chat_id: number | null) => {
   try {
     const response = await axiosInstance.get(`/voices/chat/${chat_id}`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
