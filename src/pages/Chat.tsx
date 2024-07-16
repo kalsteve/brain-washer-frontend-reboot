@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import AudioPlayer from "../components/AudioPlayer";
 import { useNavigate, useParams } from "react-router-dom";
 import { getChatHistory, readChatRoom, sendChat } from "../api/chat";
-import { getRoomTts } from "../api/voices.ts";
+import {getRoomTts, postTts} from "../api/voices";
+import AOS from "aos";
 
 interface ChatProps {
   name?: string;
@@ -16,6 +17,7 @@ interface Message {
   content: string;
   isUser: boolean;
   createdAt?: string;
+  bubble_id?: number;
 }
 
 const formatToKoreanTime = (createdAt: string) => {
@@ -78,7 +80,8 @@ const ChatMessage = ({
   image,
   isUser,
   createdAt,
-}: ChatProps & { message: string; isUser: boolean }) => {
+  id,
+}: ChatProps & { message: string; isUser: boolean; id?: number }) => {
   const [isShow, setIsShow] = useState(false);
   return (
     <div
@@ -126,6 +129,9 @@ const ChatMessage = ({
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
+                onClick={() => {
+                  postTts(id?.toString());
+                }}
               >
                 <path
                   d="M21.25 15L15 21.25M15 21.25L8.75 15M15 21.25V5M21.25 25H8.75"
@@ -323,16 +329,21 @@ export default function Chat({ name, description, image }: ChatProps) {
   const [currentResponse, setCurrentResponse] = useState<string>("");
   const [audioData, setAudioData] = useState<Uint8Array[]>([]);
   const [ttsList, setTtsList] = useState([]);
-  const menuOptions = ["default", "ttsList", "imageList"];
-  const [menu, setMenu] = useState(menuOptions[0]);
+  const menuOptions = ["default","ttsList","imageList"];
+  const [menu,setMenu] = useState(menuOptions[0]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    AOS.init();
+  });
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
+
 
   useEffect(() => {
     scrollToBottom();
@@ -348,12 +359,13 @@ export default function Chat({ name, description, image }: ChatProps) {
 
   const fetchChatHistory = async () => {
     if (chatIdNumber) {
-      readChatRoom(chatIdNumber);
+      await readChatRoom(chatIdNumber);
       const response = await getChatHistory(chatIdNumber);
       const chatHistory = response.data.bubbles.map((bubble: any) => ({
         content: bubble.content,
         isUser: bubble.writer, // API 응답에 따라 이 값을 설정해야 합니다.
         createdAt: bubble.created_at,
+        bubble_id: bubble.id,
       }));
       setMessages(chatHistory);
     }
@@ -366,7 +378,7 @@ export default function Chat({ name, description, image }: ChatProps) {
     <div className="flex flex-row w-screen h-screen px-[3%] py-[3%] gap-10">
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed z-10" />
       <div className=" justify-evenly flex flex-col basis-1/4 h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl">
-        <div className="flex flex-col space-y-12">
+        <div data-aos="zoom-in" className="flex flex-col space-y-12">
           <img
             src={image}
             alt={name}
@@ -378,7 +390,7 @@ export default function Chat({ name, description, image }: ChatProps) {
             <p className="text-muted-foreground text-lg">{description}</p>
           </div>
         </div>
-        <div className="px-[10%] space-x-12 mx-auto flex flex-row">
+        <div data-aos="zoom-in" className="px-[10%] space-x-12 mx-auto flex flex-row">
           <svg
             width="76"
             height="76"
@@ -481,145 +493,110 @@ export default function Chat({ name, description, image }: ChatProps) {
             </defs>
           </svg>
         </div>
-        {menu === menuOptions[1] && (
-          <div className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]">
-            <p className="text-white text-2xl  font-normal">저장한 TTS</p>
-            <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
-              <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[10%]">
-                {ttsList.length > 0 ? (
-                  ttsList.map((item, i) => (
-                    <li
-                      key={i}
-                      className="flex flex-row w-full justify-between"
-                    >
-                      <p className="truncate overflow-hidden whitespace-nowrap w-[13vw]">
-                        {item.content}
-                      </p>
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 26 26"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <circle
-                          cx="13"
-                          cy="13"
-                          r="13"
-                          fill="url(#paint0_linear_779_384)"
-                        />
-                        <path
-                          d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
-                          fill="white"
-                        />
-                        <defs>
-                          <linearGradient
-                            id="paint0_linear_779_384"
-                            x1="13"
-                            y1="0"
-                            x2="13"
-                            y2="26"
-                            gradientUnits="userSpaceOnUse"
-                          >
-                            <stop stopColor="#631C43" />
-                            <stop offset="1" stopColor="#C93988" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                    </li>
-                  ))
-                ) : (
-                  <p className="items-center text-center my-auto text-2xl font-light">
-                    해당 채팅방에서 다운받은 TTS 가 없습니다
-                  </p>
-                )}
-              </ul>
-            </div>
-          </div>
-        )}
-        {menu === menuOptions[2] && (
-          <div className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]">
-            <p className="text-white text-2xl  font-normal">저장한 이미지</p>
-            <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
-              <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[10%]">
-                {ttsList.length > 0 ? (
-                  ttsList.map((item, i) => (
-                    <li
-                      key={i}
-                      className="flex flex-row w-full justify-between"
-                    >
-                      <p className="truncate overflow-hidden whitespace-nowrap w-[13vw]">
-                        {item.content}
-                      </p>
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 26 26"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <circle
-                          cx="13"
-                          cy="13"
-                          r="13"
-                          fill="url(#paint0_linear_779_384)"
-                        />
-                        <path
-                          d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
-                          fill="white"
-                        />
-                        <defs>
-                          <linearGradient
-                            id="paint0_linear_779_384"
-                            x1="13"
-                            y1="0"
-                            x2="13"
-                            y2="26"
-                            gradientUnits="userSpaceOnUse"
-                          >
-                            <stop stopColor="#631C43" />
-                            <stop offset="1" stopColor="#C93988" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
-                    </li>
-                  ))
-                ) : (
-                  <p className="items-center text-center my-auto text-2xl font-light">
-                    해당 채팅방에서 다운받은 TTS 가 없습니다
-                  </p>
-                )}
-              </ul>
-            </div>
-          </div>
-        )}
+        { menu === menuOptions[1] &&
+            (
+                <div data-aos="zoom-in" className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]">
+                  <p className="text-white text-2xl  font-normal">저장한 TTS</p>
+                  <div
+                      className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
+                    <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[10%]">
+                      {
+                        ttsList.length > 0 ?
+                            (ttsList.map((item, i) => (
+                                <li
+                                    key={i}
+                                    className="flex flex-row w-full justify-between">
+                                  <p className="truncate overflow-hidden whitespace-nowrap w-[13vw]">{item.content}</p>
+                                  <svg width="26" height="26" viewBox="0 0 26 26" fill="none"
+                                       xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="13" cy="13" r="13" fill="url(#paint0_linear_779_384)"/>
+                                    <path
+                                        d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
+                                        fill="white"/>
+                                    <defs>
+                                      <linearGradient id="paint0_linear_779_384" x1="13" y1="0" x2="13" y2="26"
+                                                      gradientUnits="userSpaceOnUse">
+                                        <stop stopColor="#631C43"/>
+                                        <stop offset="1" stopColor="#C93988"/>
+                                      </linearGradient>
+                                    </defs>
+                                  </svg>
+                                </li>
+                            )))
+                            : (<p className="items-center text-center my-auto text-2xl font-light">해당 채팅방에서 다운받은 TTS 가
+                              없습니다</p>)}
+                    </ul>
+                  </div>
+                </div>
+            )
+        }
+        { menu === menuOptions[2] &&
+            (
+                <div data-aos="zoom-in" className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]">
+                  <p className="text-white text-2xl  font-normal">저장한 이미지</p>
+                  <div
+                      className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
+                    <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[10%]">
+                      {
+                        ttsList.length > 0 ?
+                            (ttsList.map((item, i) => (
+                                <li
+                                    key={i}
+                                    className="flex flex-row w-full justify-between">
+                                  <p className="truncate overflow-hidden whitespace-nowrap w-[13vw]">{item.content}</p>
+                                  <svg width="26" height="26" viewBox="0 0 26 26" fill="none"
+                                       xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="13" cy="13" r="13" fill="url(#paint0_linear_779_384)"/>
+                                    <path
+                                        d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
+                                        fill="white"/>
+                                    <defs>
+                                      <linearGradient id="paint0_linear_779_384" x1="13" y1="0" x2="13" y2="26"
+                                                      gradientUnits="userSpaceOnUse">
+                                        <stop stopColor="#631C43"/>
+                                        <stop offset="1" stopColor="#C93988"/>
+                                      </linearGradient>
+                                    </defs>
+                                  </svg>
+                                </li>
+                            )))
+                            : (<p className="items-center text-center my-auto text-2xl font-light">해당 채팅방에서 다운받은 TTS 가
+                              없습니다</p>)}
+                    </ul>
+                  </div>
+                </div>
+            )
+        }
+
       </div>
-      <div className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]">
-        <ChatHeader name={name} image={image} />
+      <div
+          className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]">
+        <ChatHeader name={name} image={image}/>
         <div className="flex flex-col space-y-4 overflow-auto mb-auto">
           {messages.map((msg, index) => (
-            <ChatMessage
-              key={index}
-              message={msg.content}
-              image={image}
-              isUser={msg.isUser}
-              createdAt={msg.createdAt}
-            />
+              <ChatMessage
+                  key={index}
+                  message={msg.content}
+                  image={image}
+                  isUser={msg.isUser}
+                  createdAt={msg.createdAt}
+                  id={msg.bubble_id}
+              />
           ))}
           {currentResponse && (
-            <ChatMessage
-              message={currentResponse}
-              image={image}
-              isUser={false}
-            />
+              <ChatMessage
+                  message={currentResponse}
+                  image={image}
+                  isUser={false}
+              />
           )}
-          <div ref={messagesEndRef} />
+          <div ref={messagesEndRef}/>
         </div>
         <ChatInput
-          chat_id={chatIdNumber}
-          onNewMessage={handleNewMessage}
-          onUpdateResponse={handleUpdateResponse}
-          setAudioData={setAudioData}
+            chat_id={chatIdNumber}
+            onNewMessage={handleNewMessage}
+            onUpdateResponse={handleUpdateResponse}
+            setAudioData={setAudioData}
         />
       </div>
     </div>

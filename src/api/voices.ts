@@ -1,6 +1,6 @@
 import axiosInstance from "./axios";
 
-// 채팅방 정보 읽어오기
+// 모든 TTS 목록 조회
 const getAllTts = async () => {
   try {
     const response = await axiosInstance.get(`/voices`);
