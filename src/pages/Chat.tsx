@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import AudioPlayer from "../components/AudioPlayer";
 import { useNavigate, useParams } from "react-router-dom";
 import { getChatHistory, readChatRoom, sendChat } from "../api/chat";
-import { getRoomTts } from "../api/voices.ts";
+import { getRoomTts, postTts } from "../api/voices";
+import AOS from "aos";
 
 interface ChatProps {
   name?: string;
@@ -16,6 +17,7 @@ interface Message {
   content: string;
   isUser: boolean;
   createdAt?: string;
+  bubble_id?: number;
 }
 
 const formatToKoreanTime = (createdAt: string) => {
@@ -78,7 +80,8 @@ const ChatMessage = ({
   image,
   isUser,
   createdAt,
-}: ChatProps & { message: string; isUser: boolean }) => {
+  id,
+}: ChatProps & { message: string; isUser: boolean; id?: number }) => {
   const [isShow, setIsShow] = useState(false);
   return (
     <div
@@ -126,6 +129,19 @@ const ChatMessage = ({
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
+                onClick={async () => {
+                  const response = await postTts(id?.toString());
+                  const voiceUrl = await response.audio_url;
+                  // Check if the URL is from S3
+                  if (voiceUrl) {
+                    const a = document.createElement("a");
+                    a.href = voiceUrl;
+                    a.download = "tts.mp3"; // Set the desired file name
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                  }
+                }}
               >
                 <path
                   d="M21.25 15L15 21.25M15 21.25L8.75 15M15 21.25V5M21.25 25H8.75"
@@ -328,6 +344,15 @@ export default function Chat({ name, description, image }: ChatProps) {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const playAudio = (audioUrl: string) => {
+    const audio = new Audio(audioUrl);
+    audio.play();
+  };
+
+  useEffect(() => {
+    AOS.init();
+  });
+
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -348,12 +373,13 @@ export default function Chat({ name, description, image }: ChatProps) {
 
   const fetchChatHistory = async () => {
     if (chatIdNumber) {
-      readChatRoom(chatIdNumber);
+      await readChatRoom(chatIdNumber);
       const response = await getChatHistory(chatIdNumber);
       const chatHistory = response.data.bubbles.map((bubble: any) => ({
         content: bubble.content,
         isUser: bubble.writer, // API 응답에 따라 이 값을 설정해야 합니다.
         createdAt: bubble.created_at,
+        bubble_id: bubble.id,
       }));
       setMessages(chatHistory);
     }
@@ -366,7 +392,7 @@ export default function Chat({ name, description, image }: ChatProps) {
     <div className="flex flex-row w-screen h-screen px-[3%] py-[3%] gap-10">
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed z-10" />
       <div className=" justify-evenly flex flex-col basis-1/4 h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl">
-        <div className="flex flex-col space-y-12">
+        <div data-aos="zoom-in" className="flex flex-col space-y-12">
           <img
             src={image}
             alt={name}
@@ -378,13 +404,17 @@ export default function Chat({ name, description, image }: ChatProps) {
             <p className="text-muted-foreground text-lg">{description}</p>
           </div>
         </div>
-        <div className="px-[10%] space-x-12 mx-auto flex flex-row">
+        <div
+          data-aos="zoom-in"
+          className="px-[10%] space-x-12 mx-auto flex flex-row"
+        >
           <svg
             width="76"
             height="76"
             viewBox="0 0 76 76"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className="cursor-pointer duration-400 transform hover:scale-95 transition-transform drop-shadow-2xl"
             onClick={async () => {
               if (menu === menuOptions[1]) {
                 setMenu(menuOptions[0]);
@@ -423,6 +453,7 @@ export default function Chat({ name, description, image }: ChatProps) {
             viewBox="0 0 76 76"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
+            className="cursor-pointer duration-400 transform hover:scale-95 transition-transform drop-shadow-2xl"
             onClick={() => {
               if (menu === menuOptions[2]) {
                 setMenu(menuOptions[0]);
@@ -482,10 +513,13 @@ export default function Chat({ name, description, image }: ChatProps) {
           </svg>
         </div>
         {menu === menuOptions[1] && (
-          <div className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]">
+          <div
+            data-aos="zoom-in"
+            className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]"
+          >
             <p className="text-white text-2xl  font-normal">저장한 TTS</p>
             <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
-              <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[10%]">
+              <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[5%] overflow-y-auto no-scrollbar">
                 {ttsList.length > 0 ? (
                   ttsList.map((item, i) => (
                     <li
@@ -501,6 +535,8 @@ export default function Chat({ name, description, image }: ChatProps) {
                         viewBox="0 0 26 26"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
+                        className="cursor-pointer hover:opacity-50 transition-opacity duration-200"
+                        onClick={() => playAudio(item.audio_url)}
                       >
                         <circle
                           cx="13"
@@ -538,10 +574,13 @@ export default function Chat({ name, description, image }: ChatProps) {
           </div>
         )}
         {menu === menuOptions[2] && (
-          <div className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]">
+          <div
+            data-aos="zoom-in"
+            className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]"
+          >
             <p className="text-white text-2xl  font-normal">저장한 이미지</p>
             <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
-              <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[10%]">
+              <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[5%] overflow-y-auto no-scrollbar">
                 {ttsList.length > 0 ? (
                   ttsList.map((item, i) => (
                     <li
@@ -604,6 +643,7 @@ export default function Chat({ name, description, image }: ChatProps) {
               image={image}
               isUser={msg.isUser}
               createdAt={msg.createdAt}
+              id={msg.bubble_id}
             />
           ))}
           {currentResponse && (
