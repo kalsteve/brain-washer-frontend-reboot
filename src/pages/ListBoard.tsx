@@ -100,7 +100,7 @@ const App: React.FC = () => {
           <div className="bg-white bg-opacity-25 p-6 rounded-b-lg pb-[3%] mb-[10%] shadow-md w-full h-full ">
             <div className="flex justify-center space-x-8 mb-8 "></div>
             {showTts ? (
-              <div className="grid grid-cols-2 gap-6 mx-[2%]">
+              <div className="grid grid-cols-2 gap-6 mx-[2%] max-h-[590px] overflow-y-auto">
                 {voices.map((item, index) => (
                   <div
                     key={index}
