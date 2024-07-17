@@ -115,7 +115,7 @@ const App: React.FC = () => {
                       <span className="text-sm text-gray-300">
                         {item.created_at}
                       </span>
-                      <p className="text-left mt-2">{item.content}</p>
+                      <p className="text-left mt-2 truncate">{item.content}</p>
                     </div>
                     <div className="flex space-x-2">
                       <button
