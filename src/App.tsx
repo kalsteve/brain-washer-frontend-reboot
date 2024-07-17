@@ -16,7 +16,6 @@ function App() {
             <Chat
               name={"Andrew Park"}
               description={"직설적인 피드백을 통한 냉철한 조언"}
-              image={"https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png"}
             />
           }
         />

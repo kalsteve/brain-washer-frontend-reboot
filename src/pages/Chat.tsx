@@ -332,7 +332,7 @@ const ChatInput = ({
   );
 };
 
-export default function Chat({ name, description, image }: ChatProps) {
+export default function Chat({ description }: ChatProps) {
   const { chat_id } = useParams();
   const chatIdNumber = chat_id ? parseInt(chat_id) : null;
   const [messages, setMessages] = useState<Message[]>([]);
@@ -341,6 +341,14 @@ export default function Chat({ name, description, image }: ChatProps) {
   const [ttsList, setTtsList] = useState([]);
   const menuOptions = ["default", "ttsList", "imageList"];
   const [menu, setMenu] = useState(menuOptions[0]);
+  const [name, setName] = useState("");
+  const [chatName, setChatName] = useState("");
+  const images = [
+    "https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png",
+    "https://i.ibb.co/yBFH4tY/2024-07-02-2-53-32.png",
+    "https://i.ibb.co/mhx194f/2024-07-02-2-51-19-1.png",
+  ];
+  const [image, setImage] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -386,8 +394,28 @@ export default function Chat({ name, description, image }: ChatProps) {
   };
 
   useEffect(() => {
+    const fetchChatRoomData = async () => {
+      try {
+        const response = await readChatRoom(chatIdNumber);
+        setName(response.data.character_name);
+        setChatName(response.data.name);
+      } catch (error) {
+        console.error("Error reading chat room:", error);
+      }
+    };
+    fetchChatRoomData();
     fetchChatHistory();
   }, [chat_id]);
+
+  useEffect(() => {
+    if (name === "Andrew") {
+      setImage(images[0]);
+    } else if (name === "Hyunwoojin") {
+      setImage(images[1]);
+    } else if (name === "Jeonhangil") {
+      setImage(images[2]);
+    }
+  }, [name, images]);
   return (
     <div className="flex flex-row w-screen h-screen px-[3%] py-[3%] gap-10">
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed z-10" />
@@ -634,7 +662,7 @@ export default function Chat({ name, description, image }: ChatProps) {
         )}
       </div>
       <div className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]">
-        <ChatHeader name={name} image={image} />
+        <ChatHeader name={chatName} image={image} />
         <div className="flex flex-col space-y-4 overflow-auto mb-auto">
           {messages.map((msg, index) => (
             <ChatMessage

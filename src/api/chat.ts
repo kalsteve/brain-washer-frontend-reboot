@@ -14,7 +14,7 @@ const createChatRoom = async (character_name: string, chat_name: string) => {
 };
 
 // 채팅방 정보 읽어오기
-const readChatRoom = async (chat_id: number) => {
+const readChatRoom = async (chat_id: number | null) => {
   try {
     const response = await axiosInstance.get(`/chats/${chat_id}`);
     return response.data;
@@ -38,7 +38,7 @@ const sendChat = async (chat_id: number | null, content: string) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ content: content }),
-      }
+      },
     );
     return response;
   } catch (error) {
