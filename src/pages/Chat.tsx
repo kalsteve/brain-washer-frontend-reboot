@@ -136,7 +136,7 @@ const ChatMessage = ({
                 />
               </svg>
               <dialog id="my_modal_3" className="modal">
-                <ImageGenerateModal />
+                <ImageGenerateModal content={message} />
               </dialog>
               <svg
                 width="30"

@@ -1,13 +1,14 @@
 import ImageGenerator from "./ImageGenerator.tsx";
 
-const ImageGenerateModal = () => {
+const ImageGenerateModal = ({ content }: { content: string }) => {
   return (
     <div
-      className="modal-box"
+      className="modal-box flex flex-col justify-between space-y-2 backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-20"
       onClick={(e) => {
         e.stopPropagation();
       }}
     >
+      <h3 className="font-bold text-lg text-white">이미지 생성</h3>
       <form method="dialog">
         {/* if there is a button in form, it will close the modal */}
         <button
@@ -19,8 +20,7 @@ const ImageGenerateModal = () => {
           ✕
         </button>
       </form>
-      <h3 className="font-bold text-lg text-black">이미지 생성</h3>
-      <ImageGenerator />
+      <ImageGenerator content={content} />
     </div>
   );
 };
