@@ -29,12 +29,12 @@ const CharacterSelect = () => {
               image={"https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png"}
             />
             <CharacterCard
-              name={"현우진"}
+              name={"Hyunwoojin"}
               description={"특징설명"}
               image={"https://i.ibb.co/yBFH4tY/2024-07-02-2-53-32.png"}
             />
             <CharacterCard
-              name={"전한길"}
+              name={"Jeonhangil"}
               description={"특징설명"}
               image={"https://i.ibb.co/mhx194f/2024-07-02-2-51-19-1.png"}
             />

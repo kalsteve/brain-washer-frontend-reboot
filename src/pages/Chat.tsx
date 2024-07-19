@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getChatHistory, readChatRoom, sendChat } from "../api/chat";
 import { getRoomTts, postTts } from "../api/voices";
 import AOS from "aos";
+import ImageGenerateModal from "../components/ImageGenerateModal.tsx";
 
 interface ChatProps {
   name?: string;
@@ -81,8 +82,22 @@ const ChatMessage = ({
   isUser,
   createdAt,
   id,
-}: ChatProps & { message: string; isUser: boolean; id?: number }) => {
+  character,
+}: ChatProps & {
+  message: string;
+  isUser: boolean;
+  id?: number;
+  character: string;
+}) => {
   const [isShow, setIsShow] = useState(false);
+
+  const showModal = () => {
+    const modal = document.getElementById("my_modal_3") as HTMLDialogElement;
+    if (modal) {
+      modal.showModal();
+    }
+  };
+
   return (
     <div
       className={`w-full px-[3%] py-[5%] mb-auto ${
@@ -113,6 +128,10 @@ const ChatMessage = ({
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showModal();
+                }}
               >
                 <path
                   d="M5 21.25L9.8396 16.8944C10.6303 16.1828 11.8396 16.2146 12.5917 16.9667L14.375 18.75L19.2108 13.9142C19.9918 13.1332 21.2582 13.1332 22.0392 13.9142L25 16.875M13.75 11.25C13.75 11.9404 13.1904 12.5 12.5 12.5C11.8096 12.5 11.25 11.9404 11.25 11.25C11.25 10.5596 11.8096 10 12.5 10C13.1904 10 13.75 10.5596 13.75 11.25ZM7 25H23C24.1046 25 25 24.1046 25 23V7C25 5.89543 24.1046 5 23 5H7C5.89543 5 5 5.89543 5 7V23C5 24.1046 5.89543 25 7 25Z"
@@ -122,6 +141,15 @@ const ChatMessage = ({
                   strokeLinejoin="round"
                 />
               </svg>
+              <dialog
+                id="my_modal_3"
+                className="modal"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <ImageGenerateModal content={message} character={character} />
+              </dialog>
               <svg
                 width="30"
                 height="30"
@@ -129,7 +157,8 @@ const ChatMessage = ({
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
-                onClick={async () => {
+                onClick={async (e) => {
+                  e.stopPropagation();
                   const response = await postTts(id?.toString());
                   const voiceUrl = await response.audio_url;
                   // Check if the URL is from S3
@@ -332,7 +361,7 @@ const ChatInput = ({
   );
 };
 
-export default function Chat({ name, description, image }: ChatProps) {
+export default function Chat({ description }: ChatProps) {
   const { chat_id } = useParams();
   const chatIdNumber = chat_id ? parseInt(chat_id) : null;
   const [messages, setMessages] = useState<Message[]>([]);
@@ -341,6 +370,14 @@ export default function Chat({ name, description, image }: ChatProps) {
   const [ttsList, setTtsList] = useState([]);
   const menuOptions = ["default", "ttsList", "imageList"];
   const [menu, setMenu] = useState(menuOptions[0]);
+  const [name, setName] = useState("");
+  const [chatName, setChatName] = useState("");
+  const images = [
+    "https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png",
+    "https://i.ibb.co/yBFH4tY/2024-07-02-2-53-32.png",
+    "https://i.ibb.co/mhx194f/2024-07-02-2-51-19-1.png",
+  ];
+  const [image, setImage] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -386,8 +423,28 @@ export default function Chat({ name, description, image }: ChatProps) {
   };
 
   useEffect(() => {
+    const fetchChatRoomData = async () => {
+      try {
+        const response = await readChatRoom(chatIdNumber);
+        setName(response.data.character_name);
+        setChatName(response.data.name);
+      } catch (error) {
+        console.error("Error reading chat room:", error);
+      }
+    };
+    fetchChatRoomData();
     fetchChatHistory();
   }, [chat_id]);
+
+  useEffect(() => {
+    if (name === "Andrew") {
+      setImage(images[0]);
+    } else if (name === "Hyunwoojin") {
+      setImage(images[1]);
+    } else if (name === "Jeonhangil") {
+      setImage(images[2]);
+    }
+  }, [name, images]);
   return (
     <div className="flex flex-row w-screen h-screen px-[3%] py-[3%] gap-10">
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed z-10" />
@@ -634,7 +691,7 @@ export default function Chat({ name, description, image }: ChatProps) {
         )}
       </div>
       <div className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]">
-        <ChatHeader name={name} image={image} />
+        <ChatHeader name={chatName} image={image} />
         <div className="flex flex-col space-y-4 overflow-auto mb-auto">
           {messages.map((msg, index) => (
             <ChatMessage
@@ -644,6 +701,7 @@ export default function Chat({ name, description, image }: ChatProps) {
               isUser={msg.isUser}
               createdAt={msg.createdAt}
               id={msg.bubble_id}
+              character={name}
             />
           ))}
           {currentResponse && (
@@ -651,6 +709,7 @@ export default function Chat({ name, description, image }: ChatProps) {
               message={currentResponse}
               image={image}
               isUser={false}
+              character={name}
             />
           )}
           <div ref={messagesEndRef} />
