@@ -17,6 +17,10 @@ const ImageGenerator = ({
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [shouldDrawText, setShouldDrawText] = useState(false);
   const [sampleImages, setSampleImages] = useState([]);
+  const [fontSize, setFontSize] = useState(30);
+  const [fontColor, setFontColor] = useState("#000000");
+  const [fontStyle, setFontStyle] = useState("normal");
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -27,6 +31,7 @@ const ImageGenerator = ({
         img.src = event.target?.result as string;
         img.onload = () => {
           setBackgroundImage(img);
+          drawCanvas(img);
         };
       };
       reader.readAsDataURL(file);
@@ -37,7 +42,19 @@ const ImageGenerator = ({
     setText(e.target.value);
   };
 
-  const drawCanvas = () => {
+  const handleFontSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFontSize(parseInt(e.target.value));
+  };
+
+  const handleFontColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFontColor(e.target.value);
+  };
+
+  const handleFontStyleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setFontStyle(e.target.value);
+  };
+
+  const drawCanvas = (img?: HTMLImageElement) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -47,8 +64,9 @@ const ImageGenerator = ({
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw background image if available
-    if (backgroundImage) {
-      ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    const imageToDraw = img || backgroundImage;
+    if (imageToDraw) {
+      ctx.drawImage(imageToDraw, 0, 0, canvas.width, canvas.height);
     } else {
       drawInitialText(ctx);
     }
@@ -65,8 +83,8 @@ const ImageGenerator = ({
   };
 
   const drawText = (ctx: CanvasRenderingContext2D) => {
-    ctx.fillStyle = "#000000";
-    ctx.font = "30px Arial";
+    ctx.fillStyle = fontColor;
+    ctx.font = `${fontStyle} ${fontSize}px Arial`;
     const textWidth = ctx.measureText(text).width;
     ctx.fillText(text, textPosition.x - textWidth / 2, textPosition.y);
   };
@@ -121,6 +139,14 @@ const ImageGenerator = ({
     }
   };
 
+  const handleSampleImageClick = (imageSrc: string) => {
+    const img = new Image();
+    img.src = imageSrc;
+    img.onload = () => {
+      setBackgroundImage(img);
+    };
+  };
+
   useEffect(() => {
     initializeCanvas();
   }, [backgroundImage]);
@@ -144,6 +170,10 @@ const ImageGenerator = ({
     };
   }, []);
 
+  useEffect(() => {
+    drawCanvas();
+  }, [text, shouldDrawText, fontSize, fontColor, fontStyle]);
+
   return (
     <div className="flex flex-col w-full space-y-6">
       <canvas
@@ -162,34 +192,99 @@ const ImageGenerator = ({
             이미지에 넣을 텍스트를 입력하세요
           </span>
         </div>
-        <input
-          type="text"
-          className="input input-bordered w-full text-black"
-          value={text}
-          onChange={handleText}
-        />
+        <div className="flex flex-row justify-between space-x-2">
+          <input
+            type="text"
+            className="input input-bordered w-full text-black"
+            value={text}
+            onChange={handleText}
+          />
+          <button
+            onClick={() => {
+              setShouldDrawText(true);
+              drawCanvas();
+            }}
+            className="p-2 text-white rounded glass w-[20%]"
+          >
+            입력
+          </button>
+        </div>
       </label>
+      <div className="flex flex-row justify-between space-x-2">
+        <label className="form-control w-full">
+          <div className="label">
+            <span className="label-text text-white">텍스트 크기 (px)</span>
+          </div>
+          <input
+            type="number"
+            className="input input-bordered w-full text-black"
+            value={fontSize}
+            onChange={handleFontSizeChange}
+          />
+        </label>
 
-      <input
-        type="file"
-        className="file-input w-full max-w-xs mx-auto"
-        accept="image/*"
-        onChange={handleImageUpload}
-      />
+        <label className="form-control w-full">
+          <div className="label">
+            <span className="label-text text-white">텍스트 스타일</span>
+          </div>
+          <select
+            className="input input-bordered w-full text-black"
+            value={fontStyle}
+            onChange={handleFontStyleChange}
+          >
+            <option value="normal">Normal</option>
+            <option value="italic">Italic</option>
+            <option value="bold">Bold</option>
+            <option value="bold italic">Bold Italic</option>
+          </select>
+        </label>
+
+        <label className="form-control w-full">
+          <div className="label">
+            <span className="label-text text-white">텍스트 색상</span>
+          </div>
+          <input
+            type="color"
+            className="input input-bordered w-full text-black"
+            value={fontColor}
+            onChange={handleFontColorChange}
+          />
+        </label>
+      </div>
+      <div className="flex flex-col space-y-2">
+        <div className="flex flex-row justify-between items-center">
+          <p className="m-0 p-0">이미지 선택</p>
+          <input
+            type="file"
+            ref={fileInputRef}
+            className="hidden"
+            accept="image/*"
+            onChange={handleImageUpload}
+          />
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            className="text-white rounded glass p-2 text-sm"
+          >
+            파일 선택
+          </button>
+        </div>
+        <div className="flex flex-row w-full justify-between overflow-x-auto">
+          {sampleImages.map((image, i) => (
+            <img
+              src={image}
+              alt={image}
+              key={i}
+              className="size-36 rounded shadow-lg"
+              onClick={() => handleSampleImageClick(image)}
+            />
+          ))}
+        </div>
+      </div>
 
       <div className="flex space-x-4 justify-center">
         <button
-          onClick={() => {
-            setShouldDrawText(true);
-            drawCanvas();
-          }}
-          className="p-2 bg-blue-500 text-white rounded glass"
-        >
-          이미지 생성
-        </button>
-        <button
           onClick={downloadImage}
-          className="p-2 bg-green-500 text-white rounded glass"
+          className="p-2 text-white rounded glass bg-blue-400 bg-opacity-70"
         >
           이미지 저장
         </button>
