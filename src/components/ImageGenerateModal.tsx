@@ -1,6 +1,12 @@
 import ImageGenerator from "./ImageGenerator.tsx";
 
-const ImageGenerateModal = ({ content }: { content: string }) => {
+const ImageGenerateModal = ({
+  content,
+  character,
+}: {
+  content: string;
+  character: string;
+}) => {
   return (
     <div
       className="modal-box flex flex-col justify-between space-y-2 backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-20"
@@ -20,7 +26,7 @@ const ImageGenerateModal = ({ content }: { content: string }) => {
           ✕
         </button>
       </form>
-      <ImageGenerator content={content} />
+      <ImageGenerator content={content} character={character} />
     </div>
   );
 };

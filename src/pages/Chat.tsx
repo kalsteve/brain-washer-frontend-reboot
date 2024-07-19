@@ -82,7 +82,13 @@ const ChatMessage = ({
   isUser,
   createdAt,
   id,
-}: ChatProps & { message: string; isUser: boolean; id?: number }) => {
+  character,
+}: ChatProps & {
+  message: string;
+  isUser: boolean;
+  id?: number;
+  character: string;
+}) => {
   const [isShow, setIsShow] = useState(false);
 
   const showModal = () => {
@@ -135,8 +141,14 @@ const ChatMessage = ({
                   strokeLinejoin="round"
                 />
               </svg>
-              <dialog id="my_modal_3" className="modal">
-                <ImageGenerateModal content={message} />
+              <dialog
+                id="my_modal_3"
+                className="modal"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <ImageGenerateModal content={message} character={character} />
               </dialog>
               <svg
                 width="30"
@@ -689,6 +701,7 @@ export default function Chat({ description }: ChatProps) {
               isUser={msg.isUser}
               createdAt={msg.createdAt}
               id={msg.bubble_id}
+              character={name}
             />
           ))}
           {currentResponse && (
@@ -696,6 +709,7 @@ export default function Chat({ description }: ChatProps) {
               message={currentResponse}
               image={image}
               isUser={false}
+              character={name}
             />
           )}
           <div ref={messagesEndRef} />
