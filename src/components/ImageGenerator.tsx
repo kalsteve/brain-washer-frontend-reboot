@@ -141,7 +141,8 @@ const ImageGenerator = ({
 
   const handleSampleImageClick = (imageSrc: string) => {
     const img = new Image();
-    img.src = imageSrc;
+    img.crossOrigin = "anonymous";
+    img.src = imageSrc + "?v=" + new Date().getTime();
     img.onload = () => {
       setBackgroundImage(img);
     };
@@ -188,7 +189,7 @@ const ImageGenerator = ({
 
       <label className="form-control w-full">
         <div className="label">
-          <span className="label-text text-white">
+          <span className="label-text text-white text-base">
             이미지에 넣을 텍스트를 입력하세요
           </span>
         </div>
@@ -204,7 +205,7 @@ const ImageGenerator = ({
               setShouldDrawText(true);
               drawCanvas();
             }}
-            className="p-2 text-white rounded glass w-[20%]"
+            className="btn text-white rounded glass bg-glass bg-[#2196F3] bg-opacity-80 hover:bg-opacity-100 hover:bg-[#2196F3]"
           >
             입력
           </button>
@@ -253,7 +254,7 @@ const ImageGenerator = ({
       </div>
       <div className="flex flex-col space-y-2">
         <div className="flex flex-row justify-between items-center">
-          <p className="m-0 p-0">이미지 선택</p>
+          <p className="text-base text-white">이미지 선택</p>
           <input
             type="file"
             ref={fileInputRef}
@@ -263,7 +264,7 @@ const ImageGenerator = ({
           />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="text-white rounded glass p-2 text-sm"
+            className="btn text-white rounded glass bg-glass text-sm bg-[#2196F3] bg-opacity-80 hover:bg-opacity-100 hover:bg-[#2196F3]"
           >
             파일 선택
           </button>
@@ -284,7 +285,7 @@ const ImageGenerator = ({
       <div className="flex space-x-4 justify-center">
         <button
           onClick={downloadImage}
-          className="p-2 text-white rounded glass bg-blue-400 bg-opacity-70"
+          className="w-full btn p-2 text-white rounded glass bg-[#2196F3] bg-opacity-80 hover:bg-opacity-100 hover:bg-[#2196F3]"
         >
           이미지 저장
         </button>
