@@ -26,7 +26,7 @@ const getChatroomImages = async (chatroomId: number) => {
   } catch (error) {
     console.error(
       `Error fetching extracted images for chatroom ${chatroomId}:`,
-      error
+      error,
     );
     throw error;
   }
@@ -36,13 +36,13 @@ const getChatroomImages = async (chatroomId: number) => {
 const getChatroomImageById = async (chatroomId: number, imageId: number) => {
   try {
     const response = await axiosInstance.get(
-      `/chatrooms/${chatroomId}/images/${imageId}`
+      `/chatrooms/${chatroomId}/images/${imageId}`,
     );
     return response.data;
   } catch (error) {
     console.error(
       `Error fetching extracted image ${imageId} for chatroom ${chatroomId}:`,
-      error
+      error,
     );
     throw error;
   }
@@ -53,13 +53,13 @@ const saveChatroomImage = async (chatroomId: number, imageData: number) => {
   try {
     const response = await axiosInstance.post(
       `/chatrooms/${chatroomId}/images`,
-      imageData
+      imageData,
     );
     return response.data;
   } catch (error) {
     console.error(
       `Error saving extracted image for chatroom ${chatroomId}:`,
-      error
+      error,
     );
     throw error;
   }
@@ -89,6 +89,20 @@ const hardDeleteImage = async (imageId: number) => {
   }
 };
 
+// 발췌이미지 배경 목록 조회
+const getBackgroundList = async (character_name: string) => {
+  try {
+    const response = await axiosInstance.get(
+      `/images/samples/${character_name}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    console.log(character_name);
+    throw error;
+  }
+};
+
 export {
   getAllImages,
   getChatroomImages,
@@ -96,4 +110,5 @@ export {
   saveChatroomImage,
   softDeleteImage,
   hardDeleteImage,
+  getBackgroundList,
 };

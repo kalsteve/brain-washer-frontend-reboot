@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getChatHistory, readChatRoom, sendChat } from "../api/chat";
 import { getRoomTts, postTts } from "../api/voices";
 import AOS from "aos";
+import ImageGenerateModal from "../components/ImageGenerateModal.tsx";
 
 interface ChatProps {
   name?: string;
@@ -81,8 +82,22 @@ const ChatMessage = ({
   isUser,
   createdAt,
   id,
-}: ChatProps & { message: string; isUser: boolean; id?: number }) => {
+  character,
+}: ChatProps & {
+  message: string;
+  isUser: boolean;
+  id?: number;
+  character: string;
+}) => {
   const [isShow, setIsShow] = useState(false);
+
+  const showModal = () => {
+    const modal = document.getElementById("my_modal_3") as HTMLDialogElement;
+    if (modal) {
+      modal.showModal();
+    }
+  };
+
   return (
     <div
       className={`w-full px-[3%] py-[5%] mb-auto ${
@@ -113,6 +128,10 @@ const ChatMessage = ({
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showModal();
+                }}
               >
                 <path
                   d="M5 21.25L9.8396 16.8944C10.6303 16.1828 11.8396 16.2146 12.5917 16.9667L14.375 18.75L19.2108 13.9142C19.9918 13.1332 21.2582 13.1332 22.0392 13.9142L25 16.875M13.75 11.25C13.75 11.9404 13.1904 12.5 12.5 12.5C11.8096 12.5 11.25 11.9404 11.25 11.25C11.25 10.5596 11.8096 10 12.5 10C13.1904 10 13.75 10.5596 13.75 11.25ZM7 25H23C24.1046 25 25 24.1046 25 23V7C25 5.89543 24.1046 5 23 5H7C5.89543 5 5 5.89543 5 7V23C5 24.1046 5.89543 25 7 25Z"
@@ -122,6 +141,15 @@ const ChatMessage = ({
                   strokeLinejoin="round"
                 />
               </svg>
+              <dialog
+                id="my_modal_3"
+                className="modal"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                <ImageGenerateModal content={message} character={character} />
+              </dialog>
               <svg
                 width="30"
                 height="30"
@@ -129,7 +157,8 @@ const ChatMessage = ({
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
-                onClick={async () => {
+                onClick={async (e) => {
+                  e.stopPropagation();
                   const response = await postTts(id?.toString());
                   const voiceUrl = await response.audio_url;
                   // Check if the URL is from S3
@@ -672,6 +701,7 @@ export default function Chat({ description }: ChatProps) {
               isUser={msg.isUser}
               createdAt={msg.createdAt}
               id={msg.bubble_id}
+              character={name}
             />
           ))}
           {currentResponse && (
@@ -679,6 +709,7 @@ export default function Chat({ description }: ChatProps) {
               message={currentResponse}
               image={image}
               isUser={false}
+              character={name}
             />
           )}
           <div ref={messagesEndRef} />
