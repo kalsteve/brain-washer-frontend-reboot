@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { getAllTts } from "../api/voices";
 import { getAllImages } from "../api/images";
+import { Link } from "react-router-dom";
 
 const App: React.FC = () => {
   // 기존 content 배열 삭제
@@ -113,14 +114,15 @@ const App: React.FC = () => {
     >
       <div className="absolute inset-0 bg-black bg-opacity-30 text-white overflow-y-auto">
         <div className="flex flex-col items-start p-6 px-[5%] ">
-          <div className="flex flex-row">
-            <img
-              src="https://i.postimg.cc/rsr08G5r/Group-59.png"
-              alt="Icon"
-              className="w-16 h-16 my-auto"
-            />
-
-            <h1 className="text-4xl font-bold m-10 ">저장한 음성 및 이미지</h1>
+        <div className="flex flex-row items-center mt-10 mb-5">
+            <Link to="/">
+              <img
+                src="https://i.postimg.cc/rsr08G5r/Group-59.png"
+                alt="Icon"
+                className="w-16 h-16"
+              />
+            </Link>
+            <h1 className="text-4xl font-bold ml-4">저장한 음성 및 이미지</h1>
           </div>
           <div
             role="tablist"
