@@ -4,7 +4,7 @@ import "./App.css";
 import Main from "./pages/Main";
 import Chat from "./pages/Chat";
 import ListBoard from "./pages/ListBoard";
-import PlayAudioPage from "./components/PlayAudioPage"; // Import your PlayAudioPage component here
+import Play from "./components/Play"; // Import your PlayAudioPage component here
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
             />
           }
         />
-        <Route path="/play" element={<PlayAudioPage />} />
+        <Route path="/play" element={<Play />} />
 
       </Routes>
     </BrowserRouter>

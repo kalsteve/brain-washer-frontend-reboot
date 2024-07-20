@@ -59,7 +59,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const kakaoShare = async () => {
+  const kakaoShare = async (voiceId: number) => {
     try {
       // Kakao SDK 초기화 상태 체크
       if (!Kakao.isInitialized()) {
@@ -67,10 +67,11 @@ const App: React.FC = () => {
       }
   
       // 공유할 내용과 URL 설정
-      const url = '	http://localhost:5173';
+      const url = '	http://localhost:5173/play?v=${voiceId}';
       const content = {
         title: "Brain Washer | 브레인 워셔",
-        description: '실패하는 사람들의 공통점은 오지랖이 넓었다는 거야 제발 남한테 관심 두지 말고 앞만 보고 가자',
+        description:
+         "실패하는 사람들의 공통점은 오지랖이 넓었다는 거야 제발 남한테 관심 두지 말고 앞만 보고 가자",
         imageUrl: 'https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png',
         link: {
           mobileWebUrl: url,
@@ -168,7 +169,9 @@ const App: React.FC = () => {
                       <span className="text-sm text-gray-300">
                         {item.created_at}
                       </span>
-                      <p className="text-left mt-2 truncate">{item.content}</p>
+                      <p className="text-left mt-2" style={{ maxWidth: '550px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+    {item.content}
+  </p>
                     </div>
                     <div className="flex space-x-2">
                       <button
@@ -289,7 +292,8 @@ const App: React.FC = () => {
                       </button>
                       <button
                         className="w-auto h-auto text-white rounded"
-                        onClick={kakaoShare}
+                        onClick={() => kakaoShare(item.id)}
+                        
                       >
                         <svg
                           width="45"
