@@ -4,11 +4,11 @@ import { getAllTts } from "../api/voices";
 import { getAllImages } from "../api/images";
 
 const App: React.FC = () => {
-  // 기존 content 배열 삭제
-
   const [showTts, setShowTts] = useState(true);
   const [voices, setVoices] = useState([]);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const [currentAudioUrl, setCurrentAudioUrl] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [Images, setImages] = useState([]);
 
   useEffect(() => {
@@ -25,20 +25,42 @@ const App: React.FC = () => {
     fetchVoices();
   }, []);
 
-  const handlePlayAudio = async (audio_url) => {
+  const handlePlayAudio = async (audio_url: string) => {
     try {
-      if (audio) {
-        audio.pause();
+      // 현재 오디오와 같은 URL이거나 오디오가 없는 경우
+      if (audio && currentAudioUrl === audio_url) {
+        if (isPlaying) {
+          // 현재 오디오가 재생 중이면 일시 정지
+          audio.pause();
+          setIsPlaying(false);
+        } else {
+          // 현재 오디오가 일시 정지 상태이면 재생
+          audio.play();
+          setIsPlaying(true);
+        }
+      } else {
+        // 다른 오디오가 재생 중이거나 새로운 오디오 URL인 경우
+        if (audio) {
+          // 기존 오디오가 있을 경우 정리
+          audio.pause();
+          setAudio(null);
+        }
+  
+        // 새로운 오디오 객체 생성 및 재생
+        const newAudio = new Audio(audio_url);
+        setAudio(newAudio);
+        setCurrentAudioUrl(audio_url);
+        newAudio.play().then(() => {
+          setIsPlaying(true);
+        }).catch((error) => {
+          console.error("Error playing audio:", error);
+        });
       }
-      const newAudio = new Audio(audio_url);
-      setAudio(newAudio);
-      newAudio.play();
-      console.log(audio);
     } catch (error) {
       console.error("Error playing audio:", error);
     }
   };
-
+  
   useEffect(() => {
     async function fetchImages() {
       try {
