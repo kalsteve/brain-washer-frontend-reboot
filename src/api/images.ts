@@ -19,13 +19,13 @@ const getAllImages = async () => {
 };
 
 // 채팅방 별 발췌이미지 목록 조회
-const getChatroomImages = async (chatroomId: number) => {
+const getChatroomImages = async (chatId: number) => {
   try {
-    const response = await axiosInstance.get(`/chatrooms/${chatroomId}/images`);
+    const response = await axiosInstance.get(`/images/chat/${chatId}`);
     return response.data;
   } catch (error) {
     console.error(
-      `Error fetching extracted images for chatroom ${chatroomId}:`,
+      `Error fetching extracted images for chatroom ${chatId}:`,
       error,
     );
     throw error;
@@ -33,32 +33,29 @@ const getChatroomImages = async (chatroomId: number) => {
 };
 
 // 발췌이미지 상세 조회
-const getChatroomImageById = async (chatroomId: number, imageId: number) => {
+const getChatroomImageById = async (imageId: number) => {
   try {
-    const response = await axiosInstance.get(
-      `/chatrooms/${chatroomId}/images/${imageId}`,
-    );
+    const response = await axiosInstance.get(`/images/${imageId}`);
     return response.data;
   } catch (error) {
-    console.error(
-      `Error fetching extracted image ${imageId} for chatroom ${chatroomId}:`,
-      error,
-    );
+    console.error(`Error fetching extracted image ${imageId}`, error);
     throw error;
   }
 };
 
 // 발췌이미지 저장
-const saveChatroomImage = async (chatroomId: number, imageData: number) => {
+const postImage = async (bubbleId: number, formData: FormData) => {
   try {
-    const response = await axiosInstance.post(
-      `/chatrooms/${chatroomId}/images`,
-      imageData,
-    );
+    const response = await axiosInstance.post(`/images/${bubbleId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log(response);
     return response.data;
   } catch (error) {
     console.error(
-      `Error saving extracted image for chatroom ${chatroomId}:`,
+      `Error saving extracted image for chatroom ${bubbleId}:`,
       error,
     );
     throw error;
@@ -107,7 +104,7 @@ export {
   getAllImages,
   getChatroomImages,
   getChatroomImageById,
-  saveChatroomImage,
+  postImage,
   softDeleteImage,
   hardDeleteImage,
   getBackgroundList,

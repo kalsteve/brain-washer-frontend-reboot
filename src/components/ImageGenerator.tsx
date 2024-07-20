@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { getBackgroundList } from "../api/images.ts";
+import { getBackgroundList, postImage } from "../api/images.ts";
 
 const ImageGenerator = ({
   content,
   character,
+  bubbleId,
 }: {
   content: string;
   character: string;
+  bubbleId: number;
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [backgroundImage, setBackgroundImage] =
@@ -92,11 +94,31 @@ const ImageGenerator = ({
   const downloadImage = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const image = canvas.toDataURL("image/png");
-    const link = document.createElement("a");
-    link.href = image;
-    link.download = "generated-image.png";
-    link.click();
+
+    // 캔버스를 Blob으로 변환
+    canvas.toBlob(async (blob) => {
+      if (!blob) return;
+
+      // FormData 객체 생성 및 데이터 추가
+      const formData = new FormData();
+      formData.append("content", text);
+      formData.append("file", blob);
+
+      // 이미지 다운로드
+      const image = canvas.toDataURL("image/png");
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = "generated-image.png";
+      link.click();
+
+      // 이미지 업로드
+      try {
+        await postImage(bubbleId, formData);
+        console.log("Image uploaded successfully");
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }, "image/png");
   };
 
   const initializeCanvas = () => {

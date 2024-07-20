@@ -118,6 +118,8 @@ const ChatMessage = ({
     }
   };
 
+  const bubbleId = id ?? lastBubbleId;
+
   return (
     <div
       className={`w-full px-[3%] py-[5%] mb-auto ${
@@ -161,15 +163,21 @@ const ChatMessage = ({
                   strokeLinejoin="round"
                 />
               </svg>
-              <dialog
-                id="my_modal_3"
-                className="modal"
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                <ImageGenerateModal content={message} character={character} />
-              </dialog>
+              {bubbleId && (
+                <dialog
+                  id="my_modal_3"
+                  className="modal"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  <ImageGenerateModal
+                    content={message}
+                    character={character}
+                    bubbleId={bubbleId}
+                  />
+                </dialog>
+              )}
               <svg
                 width="30"
                 height="30"
