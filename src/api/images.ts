@@ -19,9 +19,10 @@ const getAllImages = async () => {
 };
 
 // 채팅방 별 발췌이미지 목록 조회
-const getChatroomImages = async (chatId: number) => {
+const getRoomImages = async (chatId: number) => {
   try {
     const response = await axiosInstance.get(`/images/chat/${chatId}`);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(
@@ -102,7 +103,7 @@ const getBackgroundList = async (character_name: string) => {
 
 export {
   getAllImages,
-  getChatroomImages,
+  getRoomImages,
   getChatroomImageById,
   postImage,
   softDeleteImage,

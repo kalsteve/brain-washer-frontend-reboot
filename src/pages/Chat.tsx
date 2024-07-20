@@ -5,6 +5,7 @@ import { getChatHistory, readChatRoom, sendChat } from "../api/chat";
 import { getRoomTts, postTts } from "../api/voices";
 import AOS from "aos";
 import ImageGenerateModal from "../components/ImageGenerateModal.tsx";
+import { getRoomImages } from "../api/images.ts";
 
 interface ChatProps {
   name?: string;
@@ -388,6 +389,7 @@ export default function Chat({ description }: ChatProps) {
   const [currentResponse, setCurrentResponse] = useState<string>("");
   const [audioData, setAudioData] = useState<Uint8Array[]>([]);
   const [ttsList, setTtsList] = useState([]);
+  const [imageList, setImageList] = useState([]);
   const menuOptions = ["default", "ttsList", "imageList"];
   const [menu, setMenu] = useState(menuOptions[0]);
   const [name, setName] = useState("");
@@ -495,13 +497,15 @@ export default function Chat({ description }: ChatProps) {
             xmlns="http://www.w3.org/2000/svg"
             className="cursor-pointer duration-400 transform hover:scale-95 transition-transform drop-shadow-2xl"
             onClick={async () => {
+              if (chatIdNumber) {
+                const response = await getRoomTts(chatIdNumber);
+                setTtsList(response.data.voices);
+              }
               if (menu === menuOptions[1]) {
                 setMenu(menuOptions[0]);
               } else {
                 setMenu(menuOptions[1]);
               }
-              const response = await getRoomTts(chatIdNumber);
-              setTtsList(response.data.voices);
             }}
           >
             <circle cx="38" cy="38" r="38" fill="url(#paint0_linear_602_544)" />
@@ -533,7 +537,11 @@ export default function Chat({ description }: ChatProps) {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             className="cursor-pointer duration-400 transform hover:scale-95 transition-transform drop-shadow-2xl"
-            onClick={() => {
+            onClick={async () => {
+              if (chatIdNumber) {
+                const response = await getRoomImages(chatIdNumber);
+                setImageList(response.data.images);
+              }
               if (menu === menuOptions[2]) {
                 setMenu(menuOptions[0]);
               } else {
@@ -596,51 +604,20 @@ export default function Chat({ description }: ChatProps) {
             data-aos="zoom-in"
             className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]"
           >
-            <p className="text-white text-2xl  font-normal">저장한 TTS</p>
+            <p className="text-white text-2xl  font-normal">저장한 이미지</p>
             <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
               <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[5%] overflow-y-auto no-scrollbar">
-                {ttsList.length > 0 ? (
-                  ttsList.map((item, i) => (
+                {imageList.length > 0 ? (
+                  imageList.map((item, i) => (
                     <li
                       key={i}
                       className="flex flex-row w-full justify-between"
                     >
-                      <p className="truncate overflow-hidden whitespace-nowrap w-[13vw]">
-                        {item.content}
-                      </p>
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 26 26"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="cursor-pointer hover:opacity-50 transition-opacity duration-200"
-                        onClick={() => playAudio(item.audio_url)}
-                      >
-                        <circle
-                          cx="13"
-                          cy="13"
-                          r="13"
-                          fill="url(#paint0_linear_779_384)"
-                        />
-                        <path
-                          d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
-                          fill="white"
-                        />
-                        <defs>
-                          <linearGradient
-                            id="paint0_linear_779_384"
-                            x1="13"
-                            y1="0"
-                            x2="13"
-                            y2="26"
-                            gradientUnits="userSpaceOnUse"
-                          >
-                            <stop stopColor="#631C43" />
-                            <stop offset="1" stopColor="#C93988" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
+                      <img
+                        src={item.image_url}
+                        alt={item.content}
+                        className="size-16"
+                      />
                     </li>
                   ))
                 ) : (
@@ -657,7 +634,7 @@ export default function Chat({ description }: ChatProps) {
             data-aos="zoom-in"
             className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]"
           >
-            <p className="text-white text-2xl  font-normal">저장한 이미지</p>
+            <p className="text-white text-2xl  font-normal">저장한 TTS</p>
             <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
               <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[5%] overflow-y-auto no-scrollbar">
                 {ttsList.length > 0 ? (
