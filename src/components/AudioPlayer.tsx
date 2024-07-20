@@ -9,6 +9,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioData }) => {
   const mediaSourceRef = useRef<MediaSource | null>(null);
   const sourceBufferRef = useRef<SourceBuffer | null>(null);
   const queueRef = useRef<Uint8Array[]>([]);
+  const mediaSourceOpened = useRef(false);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -16,9 +17,11 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioData }) => {
       audioRef.current.src = URL.createObjectURL(mediaSourceRef.current);
 
       mediaSourceRef.current.addEventListener("sourceopen", () => {
+        mediaSourceOpened.current = true;
         sourceBufferRef.current =
           mediaSourceRef.current!.addSourceBuffer("audio/mpeg");
         sourceBufferRef.current!.addEventListener("updateend", appendToBuffer);
+        appendToBuffer(); // Try to append the buffer when the source is opened
       });
     }
 
@@ -26,15 +29,17 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioData }) => {
       if (mediaSourceRef.current) {
         mediaSourceRef.current.removeEventListener(
           "sourceopen",
-          appendToBuffer
+          appendToBuffer,
         );
       }
     };
   }, []);
 
   useEffect(() => {
-    queueRef.current.push(...audioData);
-    appendToBuffer();
+    if (mediaSourceOpened.current) {
+      queueRef.current.push(...audioData);
+      appendToBuffer();
+    }
   }, [audioData]);
 
   const appendToBuffer = () => {
@@ -44,7 +49,12 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioData }) => {
       queueRef.current.length > 0
     ) {
       const chunk = queueRef.current.shift()!;
-      sourceBufferRef.current.appendBuffer(chunk);
+      try {
+        sourceBufferRef.current.appendBuffer(chunk);
+      } catch (error) {
+        console.error("Failed to append buffer:", error);
+      }
+
       if (audioRef.current && audioRef.current.paused) {
         audioRef.current.play().catch((error) => {
           console.error("Failed to start audio playback:", error.message);
