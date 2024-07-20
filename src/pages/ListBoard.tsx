@@ -52,7 +52,60 @@ const App: React.FC = () => {
 
     fetchImages();
   }, []);
+  
+  useEffect(() => {
+    if (!Kakao.isInitialized()) {
+      Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
+    }
+  }, []);
 
+  const kakaoShare = async () => {
+    try {
+      // Kakao SDK 초기화 상태 체크
+      if (!Kakao.isInitialized()) {
+        Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
+      }
+  
+      // 공유할 내용과 URL 설정
+      const url = '	http://localhost:5173';
+      const content = {
+        title: "Brain Washer | 브레인 워셔",
+        description: '실패하는 사람들의 공통점은 오지랖이 넓었다는 거야 제발 남한테 관심 두지 말고 앞만 보고 가자',
+        imageUrl: 'https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png',
+        link: {
+          mobileWebUrl: url,
+          webUrl: url,
+        },
+      };
+  
+      
+      // 카카오톡 공유하기
+      Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: content,
+        buttons: [
+          {
+            title: "음성 듣기",
+            link: {
+              mobileWebUrl: url,
+              webUrl: url,
+            },
+          },
+          {
+            title: "Brain Washer",
+            link: {
+              mobileWebUrl: "	http://localhost:5173",
+              webUrl: "	http://localhost:5173",
+            },
+          },
+        ],
+      });
+    } catch (error) {
+      console.error("Error sharing to KakaoTalk:", error);
+    }
+  };
+  
+  
   return (
     <div
       className="relative w-full h-screen bg-cover bg-center bg-fixed"
@@ -100,7 +153,7 @@ const App: React.FC = () => {
           <div className="bg-white bg-opacity-25 p-6 rounded-b-lg pb-[3%] mb-[10%] shadow-md w-full h-full ">
             <div className="flex justify-center space-x-8 mb-8 "></div>
             {showTts ? (
-              <div className="grid grid-cols-2 gap-6 mx-[2%]">
+              <div className="grid grid-cols-2 gap-6 mx-[2%] max-h-[590px] overflow-y-auto overflow-x-hidden">
                 {voices.map((item, index) => (
                   <div
                     key={index}
@@ -115,7 +168,7 @@ const App: React.FC = () => {
                       <span className="text-sm text-gray-300">
                         {item.created_at}
                       </span>
-                      <p className="text-left mt-2">{item.content}</p>
+                      <p className="text-left mt-2 truncate">{item.content}</p>
                     </div>
                     <div className="flex space-x-2">
                       <button
@@ -236,7 +289,7 @@ const App: React.FC = () => {
                       </button>
                       <button
                         className="w-auto h-auto text-white rounded"
-                        onClick={() => handlePlayAudio(voice.id)}
+                        onClick={kakaoShare}
                       >
                         <svg
                           width="45"
@@ -372,9 +425,10 @@ const App: React.FC = () => {
                       />
                     </div>
                     <div className="px-4 flex">
-                      <div className="w-full h-20 p-2 text-white">
-                        {image.content} {/* 발췌이미지에 대한 설명 표시 */}
-                      </div>
+                    <div className="w-full h-20 p-2 text-white overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                  {image.content} {/* 발췌이미지에 대한 설명 표시 */}
+</div>
+
                       <button className="w-auto h-auto text-white rounded">
                         <img
                           src="https://i.postimg.cc/J7gRw6MT/Group-60.png"
