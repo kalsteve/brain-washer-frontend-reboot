@@ -244,7 +244,7 @@ const ChatInput = ({
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");
       let accumulatedMessage = "";
-      const audioDataChunks = [];
+      // const audioDataChunks = [];
       let done = false;
       let partialChunk = "";
 
@@ -276,7 +276,8 @@ const ChatInput = ({
 
                 if (data.audio) {
                   const binaryData = hexToBinary(data.audio);
-                  audioDataChunks.push(binaryData);
+                  // audioDataChunks.push(binaryData);
+                  setAudioData([binaryData]);
                 }
               } catch (error) {
                 console.error("Error parsing JSON:", error, jsonPart);
@@ -288,7 +289,6 @@ const ChatInput = ({
 
       // 스트림이 끝난 후 최종 메시지를 추가하고, 현재 응답 초기화
       onNewMessage({ content: accumulatedMessage, isUser: false });
-      setAudioData(audioDataChunks);
       onUpdateResponse("");
     } catch (error) {
       console.error("Error sending chat or receiving stream", error);
