@@ -82,7 +82,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const kakaoShare = async (voiceId: number, content: string) => {
+  const kakaoShare = async (voiceId: number, content: string, imageUrl:number) => {
     try {
       // Kakao SDK 초기화 상태 체크
       if (!Kakao.isInitialized()) {
@@ -121,6 +121,44 @@ const App: React.FC = () => {
     }
   };
 
+  const kakaoImageShare = async (content: string, imageUrl: string) => {
+    try {
+      // Kakao SDK 초기화 상태 체크
+      if (!Kakao.isInitialized()) {
+        Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
+      }
+  
+      // 공유할 내용과 URL 설정
+      const url = `http://localhost:5173`; 
+      const shareContent = {
+        title: "Brain Washer | 브레인 워셔",
+        description: content,
+        imageUrl: imageUrl,
+        link: {
+          mobileWebUrl: url,
+          webUrl: url,
+        },
+      };
+  
+      // 카카오톡 공유하기
+      Kakao.Share.sendDefault({
+        objectType: "feed",
+        content: shareContent,
+        buttons: [
+          {
+            title: "자세히 보기",
+            link: {
+              mobileWebUrl: url,
+              webUrl: url,
+            },
+          },
+        ],
+      });
+    } catch (error) {
+      console.error("Error sharing to KakaoTalk:", error);
+    }
+  };
+  
     
   return (
     <div
@@ -458,11 +496,127 @@ const App: React.FC = () => {
                         {image.content} {/* 발췌이미지에 대한 설명 표시 */}
                       </div>
 
-                      <button className="w-auto h-auto text-white rounded">
-                        <img
-                          src="https://i.postimg.cc/J7gRw6MT/Group-60.png"
-                          alt="Button Icon"
-                        />
+                      <button
+                        className="w-auto h-auto text-white rounded"
+                        onClick={() => kakaoImageShare(image.content, image.image_url)}
+                      >
+                        <div className="group rounded-full transition duration-300 ease-in-out">
+                          <svg
+                            className="w-12 h-12 group-hover:scale-110 transition-transform duration-300 ease-in-out"
+                            width="45"
+                            height="45"
+                            viewBox="0 0 45 45"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g filter="url(#filter0_d_599_396)">
+                              <circle
+                                cx="22.5"
+                                cy="18.5"
+                                r="18.5"
+                                fill="url(#paint0_linear_599_396)"
+                              />
+                            </g>
+                            <g filter="url(#filter1_d_599_396)">
+                              <path
+                                d="M24.8752 13.75L22.5002 11.375M22.5002 11.375L20.1252 13.75M22.5002 11.375V20.875M25.6668 16.9167H26.0418C27.1464 16.9167 28.0418 17.8121 28.0418 18.9167V22.8333C28.0418 23.9379 27.1464 24.8333 26.0418 24.8333H18.9585C17.8539 24.8333 16.9585 23.9379 16.9585 22.8333V18.9167C16.9585 17.8121 17.8539 16.9167 18.9585 16.9167H19.3335"
+                                stroke="white"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </g>
+                            <defs>
+                              <filter
+                                id="filter0_d_599_396"
+                                x="0"
+                                y="0"
+                                width="45"
+                                height="45"
+                                filterUnits="userSpaceOnUse"
+                                color-interpolation-filters="sRGB"
+                              >
+                                <feFlood
+                                  flood-opacity="0"
+                                  result="BackgroundImageFix"
+                                />
+                                <feColorMatrix
+                                  in="SourceAlpha"
+                                  type="matrix"
+                                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                  result="hardAlpha"
+                                />
+                                <feOffset dy="4" />
+                                <feGaussianBlur stdDeviation="2" />
+                                <feComposite in2="hardAlpha" operator="out" />
+                                <feColorMatrix
+                                  type="matrix"
+                                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                                />
+                                <feBlend
+                                  mode="normal"
+                                  in2="BackgroundImageFix"
+                                  result="effect1_dropShadow_599_396"
+                                />
+                                <feBlend
+                                  mode="normal"
+                                  in="SourceGraphic"
+                                  in2="effect1_dropShadow_599_396"
+                                  result="shape"
+                                />
+                              </filter>
+                              <filter
+                                id="filter1_d_599_396"
+                                x="9"
+                                y="9"
+                                width="27"
+                                height="27"
+                                filterUnits="userSpaceOnUse"
+                                color-interpolation-filters="sRGB"
+                              >
+                                <feFlood
+                                  flood-opacity="0"
+                                  result="BackgroundImageFix"
+                                />
+                                <feColorMatrix
+                                  in="SourceAlpha"
+                                  type="matrix"
+                                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                  result="hardAlpha"
+                                />
+                                <feOffset dy="4" />
+                                <feGaussianBlur stdDeviation="2" />
+                                <feComposite in2="hardAlpha" operator="out" />
+                                <feColorMatrix
+                                  type="matrix"
+                                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                                />
+                                <feBlend
+                                  mode="normal"
+                                  in2="BackgroundImageFix"
+                                  result="effect1_dropShadow_599_396"
+                                />
+                                <feBlend
+                                  mode="normal"
+                                  in="SourceGraphic"
+                                  in2="effect1_dropShadow_599_396"
+                                  result="shape"
+                                />
+                              </filter>
+                              <linearGradient
+                                id="paint0_linear_599_396"
+                                x1="22.5"
+                                y1="0"
+                                x2="22.5"
+                                y2="37"
+                                gradientUnits="userSpaceOnUse"
+                              >
+                                <stop stop-color="#631C43" />
+                                <stop offset="1" stop-color="#C93988" />
+                              </linearGradient>
+                            </defs>
+                          </svg>
+                        </div>
                       </button>
                     </div>
                   </div>
