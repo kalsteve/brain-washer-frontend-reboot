@@ -83,11 +83,13 @@ const ChatMessage = ({
   createdAt,
   id,
   character,
+  lastBubbleId,
 }: ChatProps & {
   message: string;
   isUser: boolean;
   id?: number;
   character: string;
+  lastBubbleId?: number;
 }) => {
   const [isShow, setIsShow] = useState(false);
 
@@ -95,6 +97,24 @@ const ChatMessage = ({
     const modal = document.getElementById("my_modal_3") as HTMLDialogElement;
     if (modal) {
       modal.showModal();
+    }
+  };
+
+  const DownloadTts = async (e: React.MouseEvent<SVGSVGElement>) => {
+    e.stopPropagation();
+    if (!id) {
+      id = lastBubbleId;
+    }
+    const response = await postTts(id?.toString());
+    const voiceUrl = await response.audio_url;
+    // Check if the URL is from S3
+    if (voiceUrl) {
+      const a = document.createElement("a");
+      a.href = voiceUrl;
+      a.download = "tts.mp3"; // Set the desired file name
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
   };
 
@@ -157,20 +177,7 @@ const ChatMessage = ({
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
-                onClick={async (e) => {
-                  e.stopPropagation();
-                  const response = await postTts(id?.toString());
-                  const voiceUrl = await response.audio_url;
-                  // Check if the URL is from S3
-                  if (voiceUrl) {
-                    const a = document.createElement("a");
-                    a.href = voiceUrl;
-                    a.download = "tts.mp3"; // Set the desired file name
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                  }
-                }}
+                onClick={(e) => DownloadTts(e)}
               >
                 <path
                   d="M21.25 15L15 21.25M15 21.25L8.75 15M15 21.25V5M21.25 25H8.75"
@@ -198,11 +205,13 @@ const ChatInput = ({
   onNewMessage,
   onUpdateResponse,
   setAudioData,
+  setLastBubbleId,
 }: {
   chat_id: number | null;
   onNewMessage: (message: Message) => void;
   onUpdateResponse: (message: string) => void;
   setAudioData: (audioData: Uint8Array[]) => void;
+  setLastBubbleId: (bubbleId: number) => void;
 }) => {
   const [chatContent, setChatContent] = useState("");
   const contentEditableRef = useRef<HTMLDivElement>(null);
@@ -278,6 +287,9 @@ const ChatInput = ({
                   const binaryData = hexToBinary(data.audio);
                   // audioDataChunks.push(binaryData);
                   setAudioData([binaryData]);
+                }
+                if (data.bubble_id) {
+                  setLastBubbleId(data.bubble_id);
                 }
               } catch (error) {
                 console.error("Error parsing JSON:", error, jsonPart);
@@ -372,6 +384,8 @@ export default function Chat({ description }: ChatProps) {
   const [menu, setMenu] = useState(menuOptions[0]);
   const [name, setName] = useState("");
   const [chatName, setChatName] = useState("");
+  const [lastBubbleId, setLastBubbleId] = useState<number>();
+
   const images = [
     "https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png",
     "https://i.ibb.co/yBFH4tY/2024-07-02-2-53-32.png",
@@ -702,6 +716,7 @@ export default function Chat({ description }: ChatProps) {
               createdAt={msg.createdAt}
               id={msg.bubble_id}
               character={name}
+              lastBubbleId={lastBubbleId}
             />
           ))}
           {currentResponse && (
@@ -719,6 +734,7 @@ export default function Chat({ description }: ChatProps) {
           onNewMessage={handleNewMessage}
           onUpdateResponse={handleUpdateResponse}
           setAudioData={setAudioData}
+          setLastBubbleId={setLastBubbleId}
         />
       </div>
     </div>
