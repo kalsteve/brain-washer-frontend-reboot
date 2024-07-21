@@ -231,7 +231,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const kakaoShare = async (voiceId: number, content: string, imageUrl:number) => {
+  const kakaoShare = async (voiceId: number, content: string, character_image:number) => {
     try {
       // Kakao SDK 초기화 상태 체크
       if (!Kakao.isInitialized()) {
@@ -243,7 +243,7 @@ const App: React.FC = () => {
       const shareContent = {
         title: "Brain Washer | 브레인 워셔",
         description: content,
-        imageUrl: "https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png",
+        imageUrl: character_image,
         link: {
           mobileWebUrl: url,
           webUrl: url,
@@ -388,7 +388,7 @@ const App: React.FC = () => {
 
                       <button
                         className="w-auto h-auto text-white rounded"
-                        onClick={() => kakaoShare(item.id, item.content)}
+                        onClick={() => kakaoShare(item.id, item.content, item.character_image)}
                       >
                         <div className="group rounded-full transition duration-300 ease-in-out">
                           <svg
