@@ -404,7 +404,7 @@ const App: React.FC = () => {
               />
             </Link>
 
-            <h1 className="text-3xl font-bold mt-6 mb-8 ml-7 ">
+            <h1 className="text-3xl font-bold mt-7 mb-6 ml-7 ">
               저장한 음성 및 이미지
             </h1>
           </div>
@@ -607,11 +607,11 @@ const App: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-5 gap-5 gap-y-9">
+              <div className="grid grid-cols-5 gap-x-0.5 gap-y-8">
                 {Images.slice(0, 10).map((image, index) => (
                   <div
                     key={index}
-                    className=" w-[260px] bg-white bg-opacity-10  rounded-[20px] shadow-mdrounded-10g shadow-black/25 overflow-hidden mx-[10%] shadow-xl"
+                    className=" w-[250px] bg-white bg-opacity-10  rounded-[20px] shadow-mdrounded-10g shadow-black/25 overflow-hidden shadow-md mx-[15%] "
                   >
                     <div className="relative h-0 pb-[100%] mb-15 ">
                       <img
@@ -620,9 +620,9 @@ const App: React.FC = () => {
                         className="absolute top-0 left-0 w-full h-full  object-cover"
                       />
                     </div>
-                    <div className="px-4 flex">
+                    <div className="px-3 py-0 flex">
                       <div
-                        className="w-full h-20 p-2 text-white overflow-hidden"
+                        className="w-full h-20 p-1 pt-4 text-white overflow-hidden"
                         style={{
                           display: "-webkit-box",
                           WebkitLineClamp: 2,
