@@ -3,9 +3,11 @@ import ImageGenerator from "./ImageGenerator.tsx";
 const ImageGenerateModal = ({
   content,
   character,
+  bubbleId,
 }: {
   content: string;
   character: string;
+  bubbleId: number;
 }) => {
   return (
     <div
@@ -26,7 +28,11 @@ const ImageGenerateModal = ({
           ✕
         </button>
       </form>
-      <ImageGenerator content={content} character={character} />
+      <ImageGenerator
+        content={content}
+        character={character}
+        bubbleId={bubbleId}
+      />
     </div>
   );
 };

@@ -76,7 +76,7 @@ const postTts = async (bubble_id: string | undefined) => {
 };
 
 // 채팅방별 TTS 목록 조회
-const getRoomTts = async (chat_id: number | null) => {
+const getRoomTts = async (chat_id: number) => {
   try {
     const response = await axiosInstance.get(`/voices/chat/${chat_id}`);
     return response.data;
