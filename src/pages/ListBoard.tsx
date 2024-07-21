@@ -365,8 +365,8 @@ const App: React.FC = () => {
                     key={index}
                     className="bg-gradient-to-b from-[rgba(224,224,224,0.2)] to-[rgba(71,91,161,0.2)] shadow-lg shadow-black/25 backdrop-blur-[3px] rounded-[25px] bg-opacity-20  p-6 flex items-center justify-between text-white"
                   >
-                    <img
-                      // src={item.leftImage}
+                    <img 
+                      src={item.character_image}
                       alt="Profile"
                       className="w-16 h-18 rounded-full"
                     />
