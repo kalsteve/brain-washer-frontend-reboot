@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { getAllTts } from "../api/voices";
 import { getAllImages } from "../api/images";
+import { Link } from "react-router-dom";
 
 const App: React.FC = () => {
   // 기존 content 배열 삭제
@@ -113,14 +114,15 @@ const App: React.FC = () => {
     >
       <div className="absolute inset-0 bg-black bg-opacity-30 text-white overflow-y-auto">
         <div className="flex flex-col items-start p-6 px-[5%] ">
-          <div className="flex flex-row">
-            <img
-              src="https://i.postimg.cc/rsr08G5r/Group-59.png"
-              alt="Icon"
-              className="w-16 h-16 my-auto"
-            />
-
-            <h1 className="text-4xl font-bold m-10 ">저장한 음성 및 이미지</h1>
+        <div className="flex flex-row items-center mt-10 mb-5">
+            <Link to="/">
+              <img
+                src="https://i.postimg.cc/rsr08G5r/Group-59.png"
+                alt="Icon"
+                className="w-16 h-16"
+              />
+            </Link>
+            <h1 className="text-4xl font-bold ml-4">저장한 음성 및 이미지</h1>
           </div>
           <div
             role="tablist"
@@ -168,125 +170,122 @@ const App: React.FC = () => {
                       <span className="text-sm text-gray-300">
                         {item.created_at}
                       </span>
-                      <p className="text-left mt-2 truncate">{item.content}</p>
+                      <p className="text-left mt-2" style={{ maxWidth: '550px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+    {item.content}
+  </p>
                     </div>
                     <div className="flex space-x-2">
-                      <button
-                        className="w-auto h-auto text-white rounded"
-                        onClick={() => handlePlayAudio(item.audio_url)}
-                      >
-                        <svg
-                          width="45"
-                          height="45"
-                          viewBox="0 0 45 45"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <g filter="url(#filter0_d_599_393)">
-                            <circle
-                              cx="21.5"
-                              cy="18.6"
-                              r="18.5"
-                              fill="url(#paint0_linear_599_393)"
-                            />
-                          </g>
-                          <g filter="url(#filter1_d_599_393)">
-                            <path
-                              d="M18.3441 10.9871C17.2886 10.3662 15.958 11.1273 15.958 12.3519V22.6485C15.958 23.8731 17.2886 24.6341 18.3441 24.0133L27.0963 18.8649C28.137 18.2527 28.137 16.7477 27.0963 16.1355L18.3441 10.9871Z"
-                              fill="white"
-                            />
-                          </g>
-                          <defs>
-                            <filter
-                              id="filter0_d_599_393"
-                              x="0"
-                              y="0"
-                              width="43"
-                              height="43"
-                              filterUnits="userSpaceOnUse"
-                              color-interpolation-filters="sRGB"
-                            >
-                              <feFlood
-                                flood-opacity="0"
-                                result="BackgroundImageFix"
-                              />
-                              <feColorMatrix
-                                in="SourceAlpha"
-                                type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                                result="hardAlpha"
-                              />
-                              <feOffset dy="4" />
-                              <feGaussianBlur stdDeviation="2" />
-                              <feComposite in2="hardAlpha" operator="out" />
-                              <feColorMatrix
-                                type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
-                              />
-                              <feBlend
-                                mode="normal"
-                                in2="BackgroundImageFix"
-                                result="effect1_dropShadow_599_393"
-                              />
-                              <feBlend
-                                mode="normal"
-                                in="SourceGraphic"
-                                in2="effect1_dropShadow_599_393"
-                                result="shape"
-                              />
-                            </filter>
-                            <filter
-                              id="filter1_d_599_393"
-                              x="8"
-                              y="8"
-                              width="27"
-                              height="27"
-                              filterUnits="userSpaceOnUse"
-                              color-interpolation-filters="sRGB"
-                            >
-                              <feFlood
-                                flood-opacity="0"
-                                result="BackgroundImageFix"
-                              />
-                              <feColorMatrix
-                                in="SourceAlpha"
-                                type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                                result="hardAlpha"
-                              />
-                              <feOffset dy="4" />
-                              <feGaussianBlur stdDeviation="2" />
-                              <feComposite in2="hardAlpha" operator="out" />
-                              <feColorMatrix
-                                type="matrix"
-                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
-                              />
-                              <feBlend
-                                mode="normal"
-                                in2="BackgroundImageFix"
-                                result="effect1_dropShadow_599_393"
-                              />
-                              <feBlend
-                                mode="normal"
-                                in="SourceGraphic"
-                                in2="effect1_dropShadow_599_393"
-                                result="shape"
-                              />
-                            </filter>
-                            <linearGradient
-                              id="paint0_linear_599_393"
-                              x1="21.5"
-                              y1="0"
-                              x2="21.5"
-                              y2="35"
-                              gradientUnits="userSpaceOnUse"
-                            >
-                              <stop stop-color="#631C43" />
-                              <stop offset="1" stop-color="#C93988" />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                      </button>
+                    <button className="w-auto h-auto text-white rounded"
+                      onClick={() => handlePlayAudio(item.audio_url)}>
+                      <div className="group rounded-full transition duration-300 ease-in-out">
+                                    <svg
+                                      className="w-12 h-12 group-hover:scale-110 rounded-full transition-transform duration-300 ease-in-out"
+                                      width="45"
+                                      height="45"
+                                      viewBox="0 0 45 45"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <g filter="url(#filter0_d_599_393)">
+                                        <circle
+                                          cx="21.5"
+                                          cy="18.6"
+                                          r="18.5"
+                                          fill="url(#paint0_linear_599_393)"
+                                        />
+                                      </g>
+                                      <g filter="url(#filter1_d_599_393)">
+                                        <path
+                                          d="M18.3441 10.9871C17.2886 10.3662 15.958 11.1273 15.958 12.3519V22.6485C15.958 23.8731 17.2886 24.6341 18.3441 24.0133L27.0963 18.8649C28.137 18.2527 28.137 16.7477 27.0963 16.1355L18.3441 10.9871Z"
+                                          fill="white"
+                                        />
+                                      </g>
+                                      <defs>
+                                        <filter
+                                          id="filter0_d_599_393"
+                                          x="0"
+                                          y="0"
+                                          width="43"
+                                          height="43"
+                                          filterUnits="userSpaceOnUse"
+                                          color-interpolation-filters="sRGB"
+                                        >
+                                          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                          <feColorMatrix
+                                            in="SourceAlpha"
+                                            type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                            result="hardAlpha"
+                                          />
+                                          <feOffset dy="4" />
+                                          <feGaussianBlur stdDeviation="2" />
+                                          <feComposite in2="hardAlpha" operator="out" />
+                                          <feColorMatrix
+                                            type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                                          />
+                                          <feBlend
+                                            mode="normal"
+                                            in2="BackgroundImageFix"
+                                            result="effect1_dropShadow_599_393"
+                                          />
+                                          <feBlend
+                                            mode="normal"
+                                            in="SourceGraphic"
+                                            in2="effect1_dropShadow_599_393"
+                                            result="shape"
+                                          />
+                                        </filter>
+                                        <filter
+                                          id="filter1_d_599_393"
+                                          x="8"
+                                          y="8"
+                                          width="27"
+                                          height="27"
+                                          filterUnits="userSpaceOnUse"
+                                          color-interpolation-filters="sRGB"
+                                        >
+                                          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                          <feColorMatrix
+                                            in="SourceAlpha"
+                                            type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                            result="hardAlpha"
+                                          />
+                                          <feOffset dy="4" />
+                                          <feGaussianBlur stdDeviation="2" />
+                                          <feComposite in2="hardAlpha" operator="out" />
+                                          <feColorMatrix
+                                            type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                                          />
+                                          <feBlend
+                                            mode="normal"
+                                            in2="BackgroundImageFix"
+                                            result="effect1_dropShadow_599_393"
+                                          />
+                                          <feBlend
+                                            mode="normal"
+                                            in="SourceGraphic"
+                                            in2="effect1_dropShadow_599_393"
+                                            result="shape"
+                                          />
+                                        </filter>
+                                        <linearGradient
+                                          id="paint0_linear_599_393"
+                                          x1="21.5"
+                                          y1="0"
+                                          x2="21.5"
+                                          y2="35"
+                                          gradientUnits="userSpaceOnUse"
+                                        >
+                                          <stop stop-color="#631C43" />
+                                          <stop offset="1" stop-color="#C93988" />
+                                        </linearGradient>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                                </button>
                       <button
                         className="w-auto h-auto text-white rounded"
                         onClick={kakaoShare}
