@@ -393,7 +393,7 @@ const App: React.FC = () => {
       className="relative w-full h-screen bg-cover bg-center bg-fixed"
       style={{ backgroundImage: "url('https://i.ibb.co/s3QC5vr/3.jpg')" }}
     >
-      <div className="absolute inset-0 bg-black bg-opacity-30 text-white overflow-y-auto">
+      <div className="fixed inset-0 bg-black bg-opacity-30 text-white overflow-hidden">
         <div className="flex flex-col items-start p-6 px-[5%] ">
           <div className="flex flex-row">
             <Link to="/" className="inline-block mt-3">
@@ -436,10 +436,10 @@ const App: React.FC = () => {
             </a>
           </div>
 
-          <div className="bg-white bg-opacity-25 p-6 rounded-b-lg pb-[3%] mb-[10%] shadow-md w-full h-full ">
+          <div className="bg-white bg-opacity-25 px-6 pt-[0.5%] rounded-b-lg pb-[2%] mb-[10%] shadow-md w-full h-full ">
             <div className="flex justify-center space-x-8 mb-8 "></div>
             {showTts ? (
-              <div className="grid grid-cols-2 gap-6 mx-[2%] max-h-[590px] overflow-y-auto overflow-x-hidden">
+              <div className="grid grid-cols-2 gap-6 mx-[2%] max-h-[660px] overflow-y-auto overflow-x-hidden">
                 {voices.map((item, index) => (
                   <div
                     key={index}
