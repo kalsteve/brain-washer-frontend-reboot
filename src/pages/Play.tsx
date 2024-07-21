@@ -31,11 +31,15 @@ const Play: React.FC = () => {
     };
 
     return (
-        <div>
+        
+        <div
+      className="relative w-full h-screen bg-cover bg-center bg-fixed flex items-center justify-center"
+      style={{ backgroundImage: "url('https://i.ibb.co/s3QC5vr/3.jpg')" }}
+    >
             {voice ? (
-                <div>
+                <div>     
                     {!isPlaying ? (
-                        <button onClick={handlePlayClick}>재생</button>
+                        <button onClick={handlePlayClick} className="bg-gradient-to-r from-violet-900 to-pink-950 hover:bg-blue-700 text-white font-bold py-3 px-5 rounded-full shadow-lg transform hover:scale-110 transition-transform duration-200 ease-in-out">재생</button>
                     ) : (
                         <audio controls autoPlay>
                             <source src={voice} type="audio/mpeg" />
