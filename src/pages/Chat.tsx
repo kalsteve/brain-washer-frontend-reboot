@@ -330,7 +330,7 @@ const ChatInput = ({
         <div
           contentEditable
           ref={contentEditableRef}
-          onKeyDown={handleKeyDown}
+          onKeyPress={handleKeyDown}
           onInput={handleInput}
           className="flex-grow bg-transparent outline-none h-full justify-start"
         />
