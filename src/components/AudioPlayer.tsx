@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface AudioPlayerProps {
-  audioData: Uint8Array[];
+  audioData: Uint8Array[]; // Modified to be an array of Uint8Array
 }
 
 const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioData }) => {
@@ -10,6 +10,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioData }) => {
   const sourceBufferRef = useRef<SourceBuffer | null>(null);
   const queueRef = useRef<Uint8Array[]>([]);
   const mediaSourceOpened = useRef(false);
+  const [audioSet, setAudioSet] = useState(new Set<string>());
 
   useEffect(() => {
     if (audioRef.current) {
@@ -18,10 +19,18 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioData }) => {
 
       mediaSourceRef.current.addEventListener("sourceopen", () => {
         mediaSourceOpened.current = true;
-        sourceBufferRef.current =
-          mediaSourceRef.current!.addSourceBuffer("audio/mpeg");
-        sourceBufferRef.current!.addEventListener("updateend", appendToBuffer);
-        appendToBuffer(); // Try to append the buffer when the source is opened
+        try {
+          sourceBufferRef.current =
+            mediaSourceRef.current!.addSourceBuffer("audio/mpeg");
+          sourceBufferRef.current!.mode = "sequence"; // Sequence mode to append in order
+          sourceBufferRef.current!.addEventListener(
+            "updateend",
+            appendToBuffer,
+          );
+          appendToBuffer(); // Try to append the buffer when the source is opened
+        } catch (error) {
+          console.error("Error setting up MediaSource:", error);
+        }
       });
     }
 
@@ -36,8 +45,17 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioData }) => {
   }, []);
 
   useEffect(() => {
-    if (mediaSourceOpened.current) {
-      queueRef.current.push(...audioData);
+    if (mediaSourceOpened.current && audioData.length > 0) {
+      const newAudioData = audioData.filter((data) => {
+        const dataString = Array.from(data).join(",");
+        if (!audioSet.has(dataString)) {
+          audioSet.add(dataString);
+          return true;
+        }
+        return false;
+      });
+
+      queueRef.current.push(...newAudioData);
       appendToBuffer();
     }
   }, [audioData]);
