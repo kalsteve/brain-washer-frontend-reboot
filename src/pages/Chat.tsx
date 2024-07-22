@@ -650,6 +650,8 @@ export default function Chat({ description }: ChatProps) {
                         viewBox="0 0 26 26"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
+                        className="cursor-pointer hover:opacity-50"
+                        onClick={() => playAudio(item.audio_url)}
                       >
                         <circle
                           cx="13"
