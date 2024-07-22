@@ -620,7 +620,7 @@ export default function Chat({ description }: ChatProps) {
                   ))
                 ) : (
                   <p className="items-center text-center my-auto text-2xl font-light">
-                    해당 채팅방에서 다운받은 TTS 가 없습니다
+                    해당 채팅방에서 생성한 이미지가 없습니다
                   </p>
                 )}
               </ul>
