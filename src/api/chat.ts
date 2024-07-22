@@ -35,6 +35,7 @@ const sendChat = async (chat_id: number | null, content: string) => {
       {
         method: "POST",
         headers: {
+          Accept: "text/event-stream",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ content: content }),
