@@ -293,7 +293,7 @@ const ChatInput = ({
 
                 if (data.audio) {
                   const binaryData = hexToBinary(data.audio);
-                  console.log("binaryData: ", binaryData);
+                  // console.log("binaryData: ", binaryData);
                   setAudioData((prevData) => [...(prevData || []), binaryData]);
                 }
                 if (data.bubble_id) {
