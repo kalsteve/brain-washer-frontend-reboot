@@ -26,7 +26,7 @@ const ImageSlide = () => {
           ease: "none",
           scrollTrigger: {
             trigger: wrapper,
-            start: "center center",
+            start: "top center",
             end: "bottom top",
             scrub: true,
           },
@@ -40,7 +40,7 @@ const ImageSlide = () => {
       skewY: 0,
       scrollTrigger: {
         trigger: wrapper,
-        start: "center center",
+        start: "top center",
         end: "bottom top",
         scrub: true,
         onUpdate: (self) => {
