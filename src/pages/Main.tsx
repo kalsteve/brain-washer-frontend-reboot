@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "../styles/Trainsition.css";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+import { useRef } from "react";
+import ImageSlide from "../components/ImageSlide.tsx";
 
 const CharacterSelect = () => {
   return (
@@ -18,17 +19,15 @@ const CharacterSelect = () => {
       <div className="w-[80%] h-[60%] px-6 py-12 sm:px-10 sm:py-16 rounded-3xl shadow-xl backdrop-filter backdrop-blur bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10">
         <div className="grid gap-8 h-full">
           <div className="text-center my-auto">
-            <h1 className="text-3xl font-bold">
-              따끔한 말로 정신 좀 차리세요!
-            </h1>
-            <p className="text-muted-foreground text-lg mt-2">
+            <h1 className="text-4xl">따끔한 말로 정신 좀 차리세요!</h1>
+            <p className="text-muted-foreground text-2xl mt-2">
               캐릭터를 선택하세요
             </p>
           </div>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
             <CharacterCard
               name={"Andrew"}
-              description={"특징설명"}
+              description={"MZ 저격수"}
               image={"https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png"}
             />
             <CharacterCard
@@ -50,18 +49,19 @@ const CharacterSelect = () => {
 
 const Onboarding = () => {
   return (
-    <div className="w-screen h-[90%] flex flex-col text-white items-start px-[10%] justify-around">
+    <div className="w-screen h-[90%] flex flex-col text-white items-start px-[10%] justify-evenly">
       <div
-        className="flex flex-col w-[30%] space-y-4"
+        className="flex flex-col w-[40%] space-y-4"
         data-aos="fade-down-right"
         data-aos-duration="1000"
         data-aos-delay="500"
         data-aos-easing="ease-in-out"
       >
-        <h2 className="text-[4rem] m-0 font-bold">BrainWasher</h2>
-        <h2 className="text-[2rem] m-0">
-          여행가서 낭비할 시간에 밤새서 개발하고 자소서 준비하고 대충 서비스
-          소개하는 내용
+        <h2 className="text-[4rem] m-0 font-bold">Brain Washer</h2>
+        <h2 className="text-[1.75rem] m-0">
+          당신의 목표 달성을 돕기 위해 설계된 동기부여 플랫폼입니다. <br />
+          엄선된 멘토들의 날카로운 조언과 피드백을 통해
+          <br /> 나태함을 깨뜨리고, 성장의 길로 나아가세요.
         </h2>
       </div>
       <div
@@ -72,15 +72,16 @@ const Onboarding = () => {
         data-aos-easing="ease-in-out"
       >
         <div className="flex flex-col space-y-4 justify-center w-[30%] ml-auto">
-          <h2 className="text-[3rem] m-0 font-bold">독한말 솔루션</h2>
-          <h2 className="text-[2rem] m-0">
-            대충 특정인의 목소리로 독한말을 들을 수 있고 다운로드 하여 사용 할
-            수 있다는 내용
+          <h2 className="text-[3rem] m-0 font-bold">독한 피드백</h2>
+          <h2 className="text-[1.75rem] m-0">
+            멘토의 생생한 목소리로 전달되는 강렬한 피드백을 통해, 진정한
+            동기부여와 변화를 경험해보세요.
+            <br /> 독한 말로 새로운 도전에 맞설 준비가 되셨나요?
           </h2>
         </div>
         <CharacterCard
           name="Andrew"
-          description="특징설명"
+          description="MZ 저격수"
           image="https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png"
           className="w-fit-content h-fit-content px-[5%] py-[2%]"
           imageSizeClass="w-24 h-24 lg:w-32 lg:h-32 xl:w-48 xl:h-48 2xl:w-48 2xl:h-48"
@@ -106,8 +107,6 @@ const Onboarding = () => {
 
 const TransitionPage = () => {
   const [opacity, setOpacity] = useState(0);
-
-  gsap.registerPlugin(ScrollTrigger);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -197,15 +196,24 @@ const TransitionPage = () => {
 };
 
 export default function Main() {
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
     AOS.init();
   });
   return (
-    <div className="flex flex-col w-screen min-h-[300vh]">
+    <div className="flex flex-col w-screen min-h-[400vh]">
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed z-10" />
       <div className="h-screen relative z-10">
-        <Navbar />
+        <Navbar scrollToBottom={scrollToBottom} />
         <Onboarding />
+      </div>
+      <div className="relative z-10">
+        <ImageSlide />
       </div>
       <div className="relative z-10">
         <TransitionPage />
@@ -213,6 +221,7 @@ export default function Main() {
       <div className="h-screen relative overflow-auto z-10">
         <CharacterSelect />
       </div>
+      <div ref={bottomRef}></div>
     </div>
   );
 }

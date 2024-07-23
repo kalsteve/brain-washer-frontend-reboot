@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar({
+  scrollToBottom,
+}: {
+  scrollToBottom: () => void;
+}) {
   return (
     <div className="flex w-full px-[10%] items-center h-[10%]">
       <ul className="flex-1 flex flex-row">
@@ -9,9 +13,11 @@ export default function Navbar() {
           src="https://i.ibb.co/Mk5gYZq/brainwasher-logo-text.png"
         />
       </ul>
-      <ul className="flex-1 flex justify-center text-2xl gap-20">
-        <li className=" text-gray-200">캐릭터 선택</li>
-        <li className=" text-gray-200">
+      <ul className="flex-1 flex justify-center text-2xl gap-20 cursor-pointer">
+        <li className=" text-gray-200" onClick={scrollToBottom}>
+          시작하기
+        </li>
+        <li className="cursor-pointer text-gray-200">
           <Link to="/list_board">저장한 음성 및 이미지</Link>
         </li>
       </ul>

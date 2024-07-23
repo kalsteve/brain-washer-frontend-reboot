@@ -32,7 +32,7 @@ const CharacterCard = ({
       />
       <div className="text-center space-y-2 mt-4">
         <h3 className="text-2xl font-semibold">{name}</h3>
-        <p className="text-muted-foreground">{description}</p>
+        <p className="text-gray-400">{description}</p>
       </div>
     </div>
   );
