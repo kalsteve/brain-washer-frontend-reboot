@@ -262,7 +262,6 @@ const ChatInput = ({
       const reader = response.body.getReader();
       const decoder = new TextDecoder("utf-8");
       let accumulatedMessage = "";
-      // const audioDataChunks = [];
       let done = false;
       let partialChunk = "";
 
@@ -294,8 +293,8 @@ const ChatInput = ({
 
                 if (data.audio) {
                   const binaryData = hexToBinary(data.audio);
-                  // audioDataChunks.push(binaryData);
-                  setAudioData([binaryData]);
+                  // console.log("binaryData: ", binaryData);
+                  setAudioData((prevData) => [...(prevData || []), binaryData]);
                 }
                 if (data.bubble_id) {
                   setLastBubbleId(data.bubble_id);
@@ -308,7 +307,6 @@ const ChatInput = ({
         }
       }
 
-      // 스트림이 끝난 후 최종 메시지를 추가하고, 현재 응답 초기화
       onNewMessage({ content: accumulatedMessage, isUser: false });
       onUpdateResponse("");
     } catch (error) {
@@ -316,7 +314,7 @@ const ChatInput = ({
     }
   };
 
-  const hexToBinary = (hex: any) => {
+  const hexToBinary = (hex) => {
     const bytes = new Uint8Array(hex.length / 2);
     for (let i = 0; i < hex.length; i += 2) {
       bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
@@ -622,7 +620,7 @@ export default function Chat({ description }: ChatProps) {
                   ))
                 ) : (
                   <p className="items-center text-center my-auto text-2xl font-light">
-                    해당 채팅방에서 다운받은 TTS 가 없습니다
+                    해당 채팅방에서 생성한 이미지가 없습니다
                   </p>
                 )}
               </ul>
@@ -652,6 +650,8 @@ export default function Chat({ description }: ChatProps) {
                         viewBox="0 0 26 26"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
+                        className="cursor-pointer hover:opacity-50"
+                        onClick={() => playAudio(item.audio_url)}
                       >
                         <circle
                           cx="13"
