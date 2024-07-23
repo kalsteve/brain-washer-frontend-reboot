@@ -145,11 +145,12 @@ const TransitionPage = () => {
 
   return (
     <div
-      className="w-screen h-[200vh] relative flex justify-center items-center"
+      className="w-screen h-[200vh] relative flex flex-col justify-around items-center"
       style={{
         background: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, ${opacity}) 20%, rgba(0, 0, 0, ${opacity}) 80%, rgba(0, 0, 0, 0) 100%)`,
       }}
     >
+      <div></div>
       <h1
         data-aos="fade-up"
         data-aos-duration="1000"
@@ -177,6 +178,20 @@ const TransitionPage = () => {
         </span>
         &nbsp; 마음의 준비 되셨나요?
       </h1>
+      <div
+        className="flex flex-row self-center space-x-4 animate-bounce"
+        data-aos="zoom-in"
+        data-aos-duration="1000"
+        data-aos-delay="1000"
+        data-aos-easing="linear"
+      >
+        <p className="my-auto text-2xl text-white">Scroll Down</p>
+        <img
+          src="https://i.ibb.co/cN37MBb/chevron-down.png"
+          alt="Scroll Down"
+          className="self-center size-10"
+        />
+      </div>
     </div>
   );
 };

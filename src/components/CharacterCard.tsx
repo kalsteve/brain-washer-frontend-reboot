@@ -19,7 +19,7 @@ const CharacterCard = ({
   const navigate = useNavigate();
   return (
     <div
-      className={`rounded-3xl p-6 flex flex-col items-center gap-4 cursor-pointer justify-evenly shadow-lg backdrop-filter backdrop-blur bg-gradient-to-t from-[#475aa12b] to-[#e0e0e00a] bg-opacity-5 ${className}`}
+      className={`transition-transform hover:scale-105 duration-200 ease-linear rounded-3xl p-6 flex flex-col items-center gap-4 cursor-pointer justify-evenly shadow-lg backdrop-filter backdrop-blur bg-gradient-to-t from-[#475aa12b] to-[#e0e0e00a] bg-opacity-5 ${className}`}
       onClick={async () => {
         const response = await createChatRoom(name, name);
         navigate(`/chat/${response.data.chat_id}`);
