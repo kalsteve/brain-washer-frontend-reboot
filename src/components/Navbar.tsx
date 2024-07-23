@@ -6,7 +6,12 @@ export default function Navbar({
   scrollToBottom: () => void;
 }) {
   return (
-    <div className="flex w-full px-[10%] items-center h-[10%]">
+    <div
+      className="flex w-full px-[10%] items-center h-[10%]"
+      data-aos="fade-down"
+      data-aos-duration="1000"
+      data-aos-easing="ease-in-out"
+    >
       <ul className="flex-1 flex flex-row">
         <img
           alt="Brain Washer logo"

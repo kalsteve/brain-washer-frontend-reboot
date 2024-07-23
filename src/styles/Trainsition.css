@@ -137,3 +137,11 @@ h1 > .magic > .magic-text {
     font-family: "Rubik", sans-serif;
     transition: color 600ms;
 }
+.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+
+.hidden {
+    display: none;
+}

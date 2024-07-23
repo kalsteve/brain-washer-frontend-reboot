@@ -1,11 +1,9 @@
 import Navbar from "../components/Navbar";
 import CharacterCard from "../components/CharacterCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "../styles/Trainsition.css";
-
-import { useRef } from "react";
 import ImageSlide from "../components/ImageSlide.tsx";
 
 const CharacterSelect = () => {
@@ -54,7 +52,6 @@ const Onboarding = () => {
         className="flex flex-col w-[40%] space-y-4"
         data-aos="fade-down-right"
         data-aos-duration="1000"
-        data-aos-delay="500"
         data-aos-easing="ease-in-out"
       >
         <h2 className="text-[4rem] m-0 font-bold">Brain Washer</h2>
@@ -68,7 +65,6 @@ const Onboarding = () => {
         className="flex flex-row w-full self-end text-end space-x-10"
         data-aos="fade-up-left"
         data-aos-duration="1000"
-        data-aos-delay="1000"
         data-aos-easing="ease-in-out"
       >
         <div className="flex flex-col space-y-4 justify-center w-[30%] ml-auto">
@@ -105,21 +101,8 @@ const Onboarding = () => {
   );
 };
 
-const TransitionPage = () => {
-  const [opacity, setOpacity] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const transitionHeight = windowHeight * 1.5; // Transition effect over 1.5 times the window height
-      const newOpacity = Math.min(scrollY / transitionHeight, 1);
-      setOpacity(newOpacity);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+const TransitionPage = ({ onTransitionEnd }) => {
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
     const animate = (star) => {
@@ -140,16 +123,25 @@ const TransitionPage = () => {
         setInterval(() => animate(star), 1000);
       }, index * 333); // interval/3 = 1000ms / 3
     });
-  }, []);
+
+    // 2.5초 후에 페이드 아웃 시작
+    const fadeOutTimer = setTimeout(() => setFadeOut(true), 2500);
+
+    // 3초 후에 onTransitionEnd를 호출하여 다른 컴포넌트를 렌더링하도록 함
+    const endTimer = setTimeout(onTransitionEnd, 3000);
+
+    return () => {
+      clearTimeout(fadeOutTimer);
+      clearTimeout(endTimer);
+    };
+  }, [onTransitionEnd]);
 
   return (
     <div
-      className="w-screen h-[200vh] relative flex flex-col justify-around items-center"
-      style={{
-        background: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, ${opacity}) 20%, rgba(0, 0, 0, ${opacity}) 80%, rgba(0, 0, 0, 0) 100%)`,
-      }}
+      className={`w-screen h-screen relative flex flex-col justify-around items-center bg-black ${
+        fadeOut ? "fade-out" : ""
+      }`}
     >
-      <div></div>
       <h1
         data-aos="fade-up"
         data-aos-duration="1000"
@@ -177,25 +169,12 @@ const TransitionPage = () => {
         </span>
         &nbsp; 마음의 준비 되셨나요?
       </h1>
-      <div
-        className="flex flex-row self-center space-x-4 animate-bounce"
-        data-aos="zoom-in"
-        data-aos-duration="1000"
-        data-aos-delay="1000"
-        data-aos-easing="linear"
-      >
-        <p className="my-auto text-2xl text-white">Scroll Down</p>
-        <img
-          src="https://i.ibb.co/cN37MBb/chevron-down.png"
-          alt="Scroll Down"
-          className="self-center size-10"
-        />
-      </div>
     </div>
   );
 };
 
 export default function Main() {
+  const [isTransitionComplete, setIsTransitionComplete] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -205,23 +184,32 @@ export default function Main() {
   useEffect(() => {
     AOS.init();
   });
+
   return (
-    <div className="flex flex-col w-screen min-h-[400vh]">
+    <div className="flex flex-col w-screen min-h-screen">
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed z-10" />
-      <div className="h-screen relative z-10">
-        <Navbar scrollToBottom={scrollToBottom} />
-        <Onboarding />
-      </div>
-      <div className="relative z-10">
-        <ImageSlide />
-      </div>
-      <div className="relative z-10">
-        <TransitionPage />
-      </div>
-      <div className="h-screen relative overflow-auto z-10">
-        <CharacterSelect />
-      </div>
-      <div ref={bottomRef}></div>
+      {!isTransitionComplete && (
+        <div className="relative z-10">
+          <TransitionPage
+            onTransitionEnd={() => setIsTransitionComplete(true)}
+          />
+        </div>
+      )}
+      {isTransitionComplete && (
+        <>
+          <div className="h-screen relative z-10">
+            <Navbar scrollToBottom={scrollToBottom} />
+            <Onboarding />
+          </div>
+          <div className="relative z-10">
+            <ImageSlide />
+          </div>
+          <div className="h-screen relative overflow-auto z-10">
+            <CharacterSelect />
+          </div>
+          <div ref={bottomRef}></div>
+        </>
+      )}
     </div>
   );
 }
