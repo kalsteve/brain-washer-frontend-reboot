@@ -3,6 +3,9 @@ import CharacterCard from "../components/CharacterCard";
 import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import "../styles/Trainsition.css";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const CharacterSelect = () => {
   return (
@@ -104,6 +107,8 @@ const Onboarding = () => {
 const TransitionPage = () => {
   const [opacity, setOpacity] = useState(0);
 
+  gsap.registerPlugin(ScrollTrigger);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -117,13 +122,62 @@ const TransitionPage = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const animate = (star) => {
+      star.style.setProperty("--star-left", `${rand(-10, 100)}%`);
+      star.style.setProperty("--star-top", `${rand(-40, 80)}%`);
+
+      star.style.animation = "none";
+      star.offsetHeight;
+      star.style.animation = "";
+    };
+
+    const rand = (min, max) => Math.random() * (max - min) + min;
+
+    const stars = document.getElementsByClassName("magic-star");
+    Array.from(stars).forEach((star, index) => {
+      setTimeout(() => {
+        animate(star);
+        setInterval(() => animate(star), 1000);
+      }, index * 333); // interval/3 = 1000ms / 3
+    });
+  }, []);
+
   return (
     <div
-      className="w-screen h-[200vh]"
+      className="w-screen h-[200vh] relative flex justify-center items-center"
       style={{
-        background: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, ${opacity}) 10%, rgba(0, 0, 0, ${opacity}) 90%, rgba(0, 0, 0, 0) 100%)`,
+        background: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, ${opacity}) 20%, rgba(0, 0, 0, ${opacity}) 80%, rgba(0, 0, 0, 0) 100%)`,
       }}
-    ></div>
+    >
+      <h1
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="500"
+        className=" text-[3rem]"
+      >
+        새로운 시작을 도와드립니다 &nbsp;
+        <span className="magic">
+          <span className="magic-star">
+            <svg viewBox="0 0 512 512">
+              <path d="M512 255.1c0 11.34-7.406 20.86-18.44 23.64l-171.3 42.78l-42.78 171.1C276.7 504.6 267.2 512 255.9 512s-20.84-7.406-23.62-18.44l-42.66-171.2L18.47 279.6C7.406 276.8 0 267.3 0 255.1c0-11.34 7.406-20.83 18.44-23.61l171.2-42.78l42.78-171.1C235.2 7.406 244.7 0 256 0s20.84 7.406 23.62 18.44l42.78 171.2l171.2 42.78C504.6 235.2 512 244.6 512 255.1z" />
+            </svg>
+          </span>
+          <span className="magic-star">
+            <svg viewBox="0 0 512 512">
+              <path d="M512 255.1c0 11.34-7.406 20.86-18.44 23.64l-171.3 42.78l-42.78 171.1C276.7 504.6 267.2 512 255.9 512s-20.84-7.406-23.62-18.44l-42.66-171.2L18.47 279.6C7.406 276.8 0 267.3 0 255.1c0-11.34 7.406-20.83 18.44-23.61l171.2-42.78l42.78-171.1C235.2 7.406 244.7 0 256 0s20.84 7.406 23.62 18.44l42.78 171.2l171.2 42.78C504.6 235.2 512 244.6 512 255.1z" />
+            </svg>
+          </span>
+          <span className="magic-star">
+            <svg viewBox="0 0 512 512">
+              <path d="M512 255.1c0 11.34-7.406 20.86-18.44 23.64l-171.3 42.78l-42.78 171.1C276.7 504.6 267.2 512 255.9 512s-20.84-7.406-23.62-18.44l-42.66-171.2L18.47 279.6C7.406 276.8 0 267.3 0 255.1c0-11.34 7.406-20.83 18.44-23.61l171.2-42.78l42.78-171.1C235.2 7.406 244.7 0 256 0s20.84 7.406 23.62 18.44l42.78 171.2l171.2 42.78C504.6 235.2 512 244.6 512 255.1z" />
+            </svg>
+          </span>
+          <span className="magic-text">Brain Washer</span>
+        </span>
+        &nbsp; 마음의 준비 되셨나요?
+      </h1>
+    </div>
   );
 };
 
@@ -138,7 +192,7 @@ export default function Main() {
         <Navbar />
         <Onboarding />
       </div>
-      <div className="relative z-10 h-[200vh]">
+      <div className="relative z-10">
         <TransitionPage />
       </div>
       <div className="h-screen relative overflow-auto z-10">
