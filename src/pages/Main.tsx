@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import CharacterCard from "../components/CharacterCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -101,16 +101,45 @@ const Onboarding = () => {
   );
 };
 
+const TransitionPage = () => {
+  const [opacity, setOpacity] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const transitionHeight = windowHeight * 1.5; // Transition effect over 1.5 times the window height
+      const newOpacity = Math.min(scrollY / transitionHeight, 1);
+      setOpacity(newOpacity);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div
+      className="w-screen h-[200vh]"
+      style={{
+        background: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, ${opacity}) 10%, rgba(0, 0, 0, ${opacity}) 90%, rgba(0, 0, 0, 0) 100%)`,
+      }}
+    ></div>
+  );
+};
+
 export default function Main() {
   useEffect(() => {
     AOS.init();
   });
   return (
-    <div className="flex flex-col w-screen min-h-[200vh]">
+    <div className="flex flex-col w-screen min-h-[300vh]">
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed z-10" />
       <div className="h-screen relative z-10">
         <Navbar />
         <Onboarding />
+      </div>
+      <div className="relative z-10 h-[200vh]">
+        <TransitionPage />
       </div>
       <div className="h-screen relative overflow-auto z-10">
         <CharacterSelect />
