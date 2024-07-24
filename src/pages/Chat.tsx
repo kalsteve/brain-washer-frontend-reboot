@@ -602,7 +602,7 @@ export default function Chat({ description }: ChatProps) {
             data-aos="zoom-in"
             className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]"
           >
-            <p className="text-white text-2xl  font-normal">저장한 이미지</p>
+            {/*<p className="text-white text-2xl  font-normal">저장한 이미지</p>*/}
             <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
               <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[5%] overflow-y-auto no-scrollbar">
                 {imageList.length > 0 ? (
@@ -632,14 +632,14 @@ export default function Chat({ description }: ChatProps) {
             data-aos="zoom-in"
             className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]"
           >
-            <p className="text-white text-2xl  font-normal">저장한 TTS</p>
+            {/*<p className="text-white text-2xl  font-normal">저장한 TTS</p>*/}
             <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
               <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[5%] overflow-y-auto no-scrollbar">
                 {ttsList.length > 0 ? (
                   ttsList.map((item, i) => (
                     <li
                       key={i}
-                      className="flex flex-row w-full justify-between"
+                      className="flex flex-row w-full justify-between  bg-white bg-opacity-10 px-5 py-3 rounded-xl text-lg"
                     >
                       <p className="truncate overflow-hidden whitespace-nowrap w-[13vw]">
                         {item.content}
