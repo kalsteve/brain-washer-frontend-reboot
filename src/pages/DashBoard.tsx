@@ -1,6 +1,12 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-const SideMenu = () => {
+interface MenuProps {
+  selectedMenu: string;
+  setSelectedMenu: (selectedMenu: string) => void;
+}
+
+const SideMenu = ({ selectedMenu, setSelectedMenu }: MenuProps) => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/6 py-[1%] px-[1%] gap-4 text-gray-50">
@@ -11,7 +17,13 @@ const SideMenu = () => {
       />
       <p className="text-xl mt-[10%] font-bold">DashBoard</p>
 
-      <div className="collapse hover:glass hover:bg-glass hover:backdrop-filter hover:backdrop-blur transition-all duration-300 ease-linear rounded-lg border-none">
+      <div
+        className={`collapse hover:glass hover:bg-glass hover:backdrop-filter hover:backdrop-blur transition-all duration-300 ease-linear rounded-lg border-none
+        ${selectedMenu === "Overview" ? "glass" : ""}`}
+        onClick={() => {
+          setSelectedMenu("Overview");
+        }}
+      >
         <input type="radio" name="my-accordion-2" defaultChecked />
         <div className="collapse-title text-xl font-medium">
           <div className="flex flex-row gap-4">
@@ -71,7 +83,11 @@ const SideMenu = () => {
           </div>
         </div>
       </div>
-      <div className="collapse collapse-arrow hover:glass hover:bg-glass hover:backdrop-filter hover:backdrop-blur transition-all duration-300  ease-linear rounded-lg border-none">
+      <div
+        className={`collapse collapse-arrow hover:glass hover:bg-glass hover:backdrop-filter hover:backdrop-blur transition-all duration-300 ease-linear rounded-lg border-none
+        ${selectedMenu === "Character" ? "glass" : ""}`}
+        onClick={() => setSelectedMenu("Character")}
+      >
         <input type="radio" name="my-accordion-2" />
         <div className="collapse-title text-xl font-medium">
           <div className="flex flex-row gap-4">
@@ -127,6 +143,8 @@ const SideMenu = () => {
 };
 
 const DashBoard = () => {
+  const menu = ["Overview", "Character"];
+  const [selectedMenu, setSelectedMenu] = useState<string>(menu[0]);
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center px-[3%] py-[2%]">
       {/* 배경이미지 */}
@@ -134,7 +152,10 @@ const DashBoard = () => {
       {/* 대시보드 */}
       <div className="h-full w-full flex flex-row z-10 rounded-lg gap-8">
         {/* 메뉴 */}
-        <SideMenu />
+        <SideMenu
+          selectedMenu={selectedMenu}
+          setSelectedMenu={setSelectedMenu}
+        />
         {/* 오른쪽 구간 */}
         <div className="flex flex-col  basis-5/6 gap-8">
           <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
