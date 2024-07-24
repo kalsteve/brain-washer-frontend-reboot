@@ -9,13 +9,13 @@ interface MenuProps {
 const SideMenu = ({ selectedMenu, setSelectedMenu }: MenuProps) => {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/6 py-[1%] px-[1%] gap-4 text-gray-50">
+    <div className="flex flex-col bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/6 p-[1%] gap-4 text-gray-50">
       <img
         alt="Brain Washer logo"
         src="https://i.ibb.co/Mk5gYZq/brainwasher-logo-text.png"
         className="w-[80%]"
       />
-      <p className="text-xl mt-[10%] font-bold">DashBoard</p>
+      <p className="text-2xl ml-[3%] mt-[10%] font-bold">DashBoard</p>
 
       <div
         className={`collapse hover:glass hover:bg-glass hover:backdrop-filter hover:backdrop-blur transition-all duration-300 ease-linear rounded-lg border-none
@@ -111,10 +111,16 @@ const SideMenu = ({ selectedMenu, setSelectedMenu }: MenuProps) => {
           </div>
         </div>
 
-        <div className="collapse-content">
-          <p>Andrew</p>
-          <p>현우진</p>
-          <p>전한길</p>
+        <div className="collapse-content ml-[5%] space-y-2 text-lg">
+          <p className="w-full cursor-pointer p-2 rounded-lg   hover:backdrop-blur">
+            Andrew
+          </p>
+          <p className="w-full cursor-pointer p-2 rounded-lg   hover:backdrop-blur">
+            현우진
+          </p>
+          <p className="w-full cursor-pointer p-2 rounded-lg  hover:backdrop-blur">
+            전한길
+          </p>
         </div>
       </div>
       <div
@@ -142,6 +148,42 @@ const SideMenu = ({ selectedMenu, setSelectedMenu }: MenuProps) => {
   );
 };
 
+const OverView = () => {
+  return (
+    <div className="flex flex-col  basis-5/6 gap-8">
+      <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
+        카테고리통계
+      </div>
+      <div className="flex flex-row basis-1/2 gap-8">
+        <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
+          캐릭터 순위
+        </div>
+        <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
+          매운맛 점수
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CharacterChart = () => {
+  return (
+    <div className="flex flex-col  basis-5/6 gap-8">
+      <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
+        카테고리통계
+      </div>
+      <div className="flex flex-row basis-1/2 gap-8">
+        <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
+          캐릭터 순위
+        </div>
+        <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
+          매운맛 점수
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const DashBoard = () => {
   const menu = ["Overview", "Character"];
   const [selectedMenu, setSelectedMenu] = useState<string>(menu[0]);
@@ -157,19 +199,8 @@ const DashBoard = () => {
           setSelectedMenu={setSelectedMenu}
         />
         {/* 오른쪽 구간 */}
-        <div className="flex flex-col  basis-5/6 gap-8">
-          <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-            카테고리통계
-          </div>
-          <div className="flex flex-row basis-1/2 gap-8">
-            <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-              캐릭터 순위
-            </div>
-            <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-              매운맛 점수
-            </div>
-          </div>
-        </div>
+        {selectedMenu === menu[0] && <OverView />}
+        {selectedMenu === menu[1] && <CharacterChart />}
       </div>
     </div>
   );
