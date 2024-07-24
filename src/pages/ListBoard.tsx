@@ -388,6 +388,15 @@ const App: React.FC = () => {
     }
   };
 
+  const downloadAudio = (audioUrl: string, voiceId: number) => {
+    const link = document.createElement('a');
+    link.href = audioUrl;
+    link.download = `voice_${voiceId}.mp3`; // 다운로드할 파일명 지정
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div
       className="relative w-full h-screen bg-cover bg-center bg-fixed"
@@ -396,7 +405,7 @@ const App: React.FC = () => {
       <div className="fixed inset-0 bg-black bg-opacity-30 text-white overflow-hidden">
         <div className="flex flex-col items-start p-6 px-[5%] ">
           <div className="flex flex-row">
-            <Link to="/" className="inline-block mt-3">
+            <Link to="/" className="inline-block mt-[8%]">
               <img
                 src="https://i.postimg.cc/rsr08G5r/Group-59.png"
                 alt="Icon"
@@ -473,6 +482,87 @@ const App: React.FC = () => {
                       >
                         {getSvgIcon(index)}
                       </button>
+
+                      <button
+                      className="w-auto h-auto text-white rounded"
+                      onClick={() => downloadAudio(item.audio_url, index, item.id)} // item.id를 사용하여 파일명 지정
+                    >
+                      <div className="group rounded-full transition duration-300 ease-in-out">
+                        <svg
+                          className="w-12 h-12 group-hover:scale-110 transition-transform duration-300 ease-in-out"
+                          width="45"
+                          height="45"
+                          viewBox="0 0 45 45"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g filter="url(#filter0_d_924_519)">
+                            <circle
+                              cx="22.5"
+                              cy="18.5"
+                              r="18.5"
+                              fill="url(#paint0_linear_924_519)"
+                            />
+                          </g>
+                          <path
+                            d="M28.4168 17.9999L23.0002 23.4166M23.0002 23.4166L17.5835 17.9999M23.0002 23.4166V9.33325M28.4168 26.6666H17.5835"
+                            stroke="white"
+                            stroke-width="2.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <defs>
+                            <filter
+                              id="filter0_d_924_519"
+                              x="0"
+                              y="0"
+                              width="45"
+                              height="45"
+                              filterUnits="userSpaceOnUse"
+                              color-interpolation-filters="sRGB"
+                            >
+                              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                              <feColorMatrix
+                                in="SourceAlpha"
+                                type="matrix"
+                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                                result="hardAlpha"
+                              />
+                              <feOffset dy="4" />
+                              <feGaussianBlur stdDeviation="2" />
+                              <feComposite in2="hardAlpha" operator="out" />
+                              <feColorMatrix
+                                type="matrix"
+                                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                              />
+                              <feBlend
+                                mode="normal"
+                                in2="BackgroundImageFix"
+                                result="effect1_dropShadow_924_519"
+                              />
+                              <feBlend
+                                mode="normal"
+                                in="SourceGraphic"
+                                in2="effect1_dropShadow_924_519"
+                                result="shape"
+                              />
+                            </filter>
+                            <linearGradient
+                              id="paint0_linear_924_519"
+                              x1="22.5"
+                              y1="0"
+                              x2="22.5"
+                              y2="37"
+                              gradientUnits="userSpaceOnUse"
+                            >
+                              <stop stop-color="#631C43" />
+                              <stop offset="1" stop-color="#C93988" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                      </div>
+                    </button>
+
 
                       <button
                         className="w-auto h-auto text-white rounded"
@@ -602,6 +692,8 @@ const App: React.FC = () => {
                           </svg>
                         </div>
                       </button>
+
+                      
                     </div>
                   </div>
                 ))}
@@ -609,29 +701,25 @@ const App: React.FC = () => {
             ) : (
               <div className="overflow-y-auto h-[695px]">
   <div className="grid grid-cols-5 gap-x-0.5 gap-y-8">
-    {Images.slice(0, 10).map((image, index) => (
+    {Images.map((image, index) => (
       <div
         key={index}
-        className="w-[250px] bg-white bg-opacity-10 rounded-[20px] shadow-md shadow-black/25 overflow-hidden mx-[15%]"
+        className="w-[250px] bg-white bg-opacity-10 rounded-[20px] shadow-md shadow-black/25 mx-[15%]"
       >
-        <div className="relative h-0 pb-[100%] mb-15">
+        <div className="relative h-0 pb-[100%] mb-15 ">
           <img
             src={image.image_url} // 발췌이미지의 URL 사용
             alt={`Image ${index + 1}`}
-            className="absolute top-0 left-0 w-full h-full object-cover"
+            className="absolute top-0 left-0 w-full h-full object-cover rounded-t-[20px]"
           />
         </div>
         <div className="px-3 py-0 flex">
-          <div
-            className="w-full h-20 p-1 pt-4 text-white overflow-hidden"
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical",
-            }}
-          >
-            {image.content} {/* 발췌이미지에 대한 설명 표시 */}
-          </div>
+        <div className="relative w-full h-20 p-1 pt-4 text-white overflow-hidden">
+        <div className="line-clamp-2">
+          {image.content}
+        </div>
+        <div className="absolute inset-0 opacity-100 pointer-events-none"></div> {/* 덮어쓰기 용 */}
+      </div>
 
           <button
             className="w-auto h-auto text-white rounded"
