@@ -710,7 +710,7 @@ const App: React.FC = () => {
           <img
             src={image.image_url} // 발췌이미지의 URL 사용
             alt={`Image ${index + 1}`}
-            className="absolute top-0 left-0 w-full h-full object-cover"
+            className="absolute top-0 left-0 w-full h-full object-cover rounded-t-[20px]"
           />
         </div>
         <div className="px-3 py-0 flex">
