@@ -22,7 +22,6 @@ const getAllImages = async () => {
 const getRoomImages = async (chatId: number) => {
   try {
     const response = await axiosInstance.get(`/images/chat/${chatId}`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(
@@ -52,7 +51,6 @@ const postImage = async (bubbleId: number, formData: FormData) => {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error(
@@ -96,7 +94,6 @@ const getBackgroundList = async (character_name: string) => {
     return response.data;
   } catch (error) {
     console.error(error);
-    console.log(character_name);
     throw error;
   }
 };
