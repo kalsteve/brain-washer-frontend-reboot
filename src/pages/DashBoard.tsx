@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -17,6 +17,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { fetchDashBoard } from "../api/characters.ts";
 
 interface MenuProps {
   selectedMenu: string;
@@ -166,52 +167,33 @@ const SideMenu = ({ selectedMenu, setSelectedMenu }: MenuProps) => {
 };
 
 const OverView = () => {
-  const data = [
-    {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ];
+  const [categoryData, setCategoryData] = useState([]);
 
-  const CategoryChart = () => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetchDashBoard(); // 비동기 함수가 완료될 때까지
+
+      setCategoryData(response.data.characters);
+    };
+
+    fetchData();
+  }, []);
+
+  // 서버에서 응답받은 데이터를 원하는 객체 형식으로 가공
+  const processData = (data) => {
+    if (!data) return [];
+    const categories = ["취업", "학업", "인간관계", "연애"];
+    const result = categories.map((category) => {
+      const entry = { name: category };
+      data.forEach((character) => {
+        entry[character.name] = character.topic_frequency[category];
+      });
+      return entry;
+    });
+    return result;
+  };
+
+  const CategoryChart = ({ data }) => {
     return (
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
@@ -221,31 +203,57 @@ const OverView = () => {
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
           <defs>
-            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="color취업" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
               <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
             </linearGradient>
-            <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="color학업" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
               <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
             </linearGradient>
+            <linearGradient id="color인간관계" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#ffc658" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#ffc658" stopOpacity={0} />
+            </linearGradient>
+            <linearGradient id="color연애" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#ff7300" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#ff7300" stopOpacity={0} />
+            </linearGradient>
           </defs>
-          <XAxis dataKey="name" />
-          <YAxis />
+          <XAxis
+            dataKey="name"
+            tick={{ fill: "white" }}
+            axisLine={{ stroke: "white" }}
+          />
+          <YAxis tick={{ fill: "white" }} axisLine={{ stroke: "white" }} />
           <Tooltip />
           <Area
             type="monotone"
-            dataKey="uv"
+            dataKey="Andrew"
             stroke="#8884d8"
             fillOpacity={1}
-            fill="url(#colorUv)"
+            fill="url(#color취업)"
           />
           <Area
             type="monotone"
-            dataKey="pv"
+            dataKey="Hyunwoojin"
             stroke="#82ca9d"
             fillOpacity={1}
-            fill="url(#colorPv)"
+            fill="url(#color학업)"
+          />
+          <Area
+            type="monotone"
+            dataKey="Jeonhangil"
+            stroke="#ffc658"
+            fillOpacity={1}
+            fill="url(#color인간관계)"
+          />
+          <Area
+            type="monotone"
+            dataKey="연애"
+            stroke="#ff7300"
+            fillOpacity={1}
+            fill="url(#color연애)"
           />
         </AreaChart>
       </ResponsiveContainer>
@@ -313,16 +321,19 @@ const OverView = () => {
   };
 
   return (
-    <div className="flex flex-col  basis-5/6 gap-8">
-      <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-        <CategoryChart />
+    <div className="flex flex-col basis-5/6 gap-8">
+      <div className="flex flex-col w-full h-full gap-4 basis-1/2">
+        <p className="text-2xl text-gray-50">캐릭터별 카테고리</p>
+        <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[1%]">
+          <CategoryChart data={processData(categoryData)} />
+        </div>
       </div>
       <div className="flex flex-row basis-1/2 gap-8">
         <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-          <PopularChart />
+          {/*<PopularChart />*/}
         </div>
         <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-          <SpicyChart />
+          {/*<SpicyChart />*/}
         </div>
       </div>
     </div>
