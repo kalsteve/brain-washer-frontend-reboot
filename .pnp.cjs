@@ -27,6 +27,7 @@ const RAW_RUNTIME_STATE =
       [null, {\
         "packageLocation": "./",\
         "packageDependencies": [\
+          ["@tailwindcss/line-clamp", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:0.4.4"],\
           ["@types/aos", "npm:3.0.7"],\
           ["@types/jest", "npm:29.5.12"],\
           ["@types/node", "npm:20.14.10"],\
@@ -62,6 +63,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["2024-summer-bootcamp", "workspace:."],\
+          ["@tailwindcss/line-clamp", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:0.4.4"],\
           ["@types/aos", "npm:3.0.7"],\
           ["@types/jest", "npm:29.5.12"],\
           ["@types/node", "npm:20.14.10"],\
@@ -904,6 +906,28 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@swc/types", "npm:0.1.9"],\
           ["@swc/counter", "npm:0.1.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@tailwindcss/line-clamp", [\
+      ["npm:0.4.4", {\
+        "packageLocation": "../../../AppData/Local/Yarn/Berry/cache/@tailwindcss-line-clamp-npm-0.4.4-23cb911440-10c0.zip/node_modules/@tailwindcss/line-clamp/",\
+        "packageDependencies": [\
+          ["@tailwindcss/line-clamp", "npm:0.4.4"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:0.4.4", {\
+        "packageLocation": "./.yarn/__virtual__/@tailwindcss-line-clamp-virtual-43eaa62be8/4/AppData/Local/Yarn/Berry/cache/@tailwindcss-line-clamp-npm-0.4.4-23cb911440-10c0.zip/node_modules/@tailwindcss/line-clamp/",\
+        "packageDependencies": [\
+          ["@tailwindcss/line-clamp", "virtual:36164c63ddae4ab5201899ebaa8e1e21c682a553da41d9a2c200ff616c48b2b71c6898d45b27658a39957dbfdf67b5f8a8abfea10a20d95450e30d5a0cf159dd#npm:0.4.4"],\
+          ["@types/tailwindcss", null],\
+          ["tailwindcss", "npm:3.4.4"]\
+        ],\
+        "packagePeers": [\
+          "@types/tailwindcss",\
+          "tailwindcss"\
         ],\
         "linkType": "HARD"\
       }]\
