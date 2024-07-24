@@ -25,6 +25,9 @@ export default function Navbar({
         <li className="cursor-pointer text-gray-200">
           <Link to="/list_board">저장한 음성 및 이미지</Link>
         </li>
+        <li className="cursor-pointer text-gray-200">
+          <Link to="/dashboard">대시보드</Link>
+        </li>
       </ul>
       <div className="flex-1"></div>
       {/* 이 부분은 오른쪽 공간을 확보하기 위해 추가합니다. */}
