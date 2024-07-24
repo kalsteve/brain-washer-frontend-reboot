@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getTtsById } from "../api/voices.ts";
+import { Link } from "react-router-dom";
 
 const Play: React.FC = () => {
     const location = useLocation();
@@ -32,10 +33,23 @@ const Play: React.FC = () => {
     };
 
     return (
+        
         <div
             className="relative w-full h-screen bg-cover bg-center bg-fixed flex flex-col items-center justify-center p-6"
             style={{ backgroundImage: "url('https://i.ibb.co/s3QC5vr/3.jpg')" }}
+            
         >
+<div className="absolute top-0 left-0 flex flex-col items-start p-6 px-[5%]">
+<div className="flex flex-row">
+<Link to="/" className="inline-block mt-3">
+              <img
+                src="https://i.postimg.cc/rsr08G5r/Group-59.png"
+                alt="Icon"
+                className="w-16 h-16 my-auto"
+              />
+            </Link>
+            </div>
+            </div>
             <div className="text-center mb-6">
                 {characterImage ? (
                     <img
