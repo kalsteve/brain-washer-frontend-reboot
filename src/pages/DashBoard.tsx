@@ -210,100 +210,119 @@ const OverView = () => {
       amt: 2100,
     },
   ];
+
+  const CategoryChart = () => {
+    return (
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart
+          width={750}
+          height={250}
+          data={data}
+          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+        >
+          <defs>
+            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+            </linearGradient>
+            <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Area
+            type="monotone"
+            dataKey="uv"
+            stroke="#8884d8"
+            fillOpacity={1}
+            fill="url(#colorUv)"
+          />
+          <Area
+            type="monotone"
+            dataKey="pv"
+            stroke="#82ca9d"
+            fillOpacity={1}
+            fill="url(#colorPv)"
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    );
+  };
+
+  const PopularChart = () => {
+    return (
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          width={500}
+          height={300}
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar
+            dataKey="pv"
+            fill="#8884d8"
+            activeBar={<Rectangle fill="pink" stroke="blue" />}
+          />
+          <Bar
+            dataKey="uv"
+            fill="#82ca9d"
+            activeBar={<Rectangle fill="gold" stroke="purple" />}
+          />
+        </BarChart>
+      </ResponsiveContainer>
+    );
+  };
+
+  const SpicyChart = () => {
+    return (
+      <ResponsiveContainer width="100%" height="100%">
+        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+          <PolarGrid />
+          <PolarAngleAxis dataKey="subject" />
+          <PolarRadiusAxis angle={30} domain={[0, 150]} />
+          <Radar
+            name="Mike"
+            dataKey="A"
+            stroke="#8884d8"
+            fill="#8884d8"
+            fillOpacity={0.6}
+          />
+          <Radar
+            name="Lily"
+            dataKey="B"
+            stroke="#82ca9d"
+            fill="#82ca9d"
+            fillOpacity={0.6}
+          />
+          <Legend />
+        </RadarChart>
+      </ResponsiveContainer>
+    );
+  };
+
   return (
     <div className="flex flex-col  basis-5/6 gap-8">
       <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart
-            width={750}
-            height={250}
-            data={data}
-            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-          >
-            <defs>
-              <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-              </linearGradient>
-              <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Area
-              type="monotone"
-              dataKey="uv"
-              stroke="#8884d8"
-              fillOpacity={1}
-              fill="url(#colorUv)"
-            />
-            <Area
-              type="monotone"
-              dataKey="pv"
-              stroke="#82ca9d"
-              fillOpacity={1}
-              fill="url(#colorPv)"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        <CategoryChart />
       </div>
       <div className="flex flex-row basis-1/2 gap-8">
         <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              width={500}
-              height={300}
-              data={data}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar
-                dataKey="pv"
-                fill="#8884d8"
-                activeBar={<Rectangle fill="pink" stroke="blue" />}
-              />
-              <Bar
-                dataKey="uv"
-                fill="#82ca9d"
-                activeBar={<Rectangle fill="gold" stroke="purple" />}
-              />
-            </BarChart>
-          </ResponsiveContainer>
+          <PopularChart />
         </div>
         <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-          <ResponsiveContainer width="100%" height="100%">
-            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
-              <PolarGrid />
-              <PolarAngleAxis dataKey="subject" />
-              <PolarRadiusAxis angle={30} domain={[0, 150]} />
-              <Radar
-                name="Mike"
-                dataKey="A"
-                stroke="#8884d8"
-                fill="#8884d8"
-                fillOpacity={0.6}
-              />
-              <Radar
-                name="Lily"
-                dataKey="B"
-                stroke="#82ca9d"
-                fill="#82ca9d"
-                fillOpacity={0.6}
-              />
-              <Legend />
-            </RadarChart>
-          </ResponsiveContainer>
+          <SpicyChart />
         </div>
       </div>
     </div>
