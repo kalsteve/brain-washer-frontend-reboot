@@ -4,6 +4,7 @@ import Main from "./pages/Main";
 import Chat from "./pages/Chat";
 import ListBoard from "./pages/ListBoard"; // Import your PlayAudioPage component here
 import Play from "./pages/Play.tsx";
+import DashBoard from "./pages/DashBoard.tsx";
 
 function App() {
   return (
@@ -14,14 +15,9 @@ function App() {
         <Route path="/play" element={<Play />} />
         <Route
           path="/chat/:chat_id"
-          element={
-            <Chat
-              name={"Andrew Park"}
-              description={"직설적인 피드백을 통한 냉철한 조언"}
-            />
-          }
+          element={<Chat description={"직설적인 피드백을 통한 냉철한 조언"} />}
         />
-        <Route path="/play" element={<Play/>} />
+        <Route path="/dashboard" element={<DashBoard />} />
       </Routes>
     </BrowserRouter>
   );
