@@ -23,6 +23,23 @@ interface Message {
   bubble_id?: number;
 }
 
+interface Bubble {
+  content: string;
+  writer: boolean;
+  created_at: string;
+  id: number;
+}
+
+interface TtsData {
+  content: string;
+  audio_url: string;
+}
+
+interface ImageData {
+  content: string;
+  image_url: string;
+}
+
 const formatToKoreanTime = (createdAt: string) => {
   const date = new Date(createdAt);
   const year = date.getFullYear().toString().slice(2);
@@ -220,7 +237,7 @@ const ChatInput = ({
   chat_id: number | null;
   onNewMessage: (message: Message) => void;
   onUpdateResponse: (message: string) => void;
-  setAudioData: (audioData: Uint8Array[]) => void;
+  setAudioData: (audioData: (prevData: Uint8Array[]) => Uint8Array[]) => void;
   setLastBubbleId: (bubbleId: number) => void;
 }) => {
   const [chatContent, setChatContent] = useState("");
@@ -294,8 +311,10 @@ const ChatInput = ({
 
                 if (data.audio) {
                   const binaryData = hexToBinary(data.audio);
-                  // console.log("binaryData: ", binaryData);
-                  setAudioData((prevData) => [...(prevData || []), binaryData]);
+                  setAudioData((prevData: Uint8Array[]) => [
+                    ...(prevData || []),
+                    binaryData,
+                  ]);
                 }
                 if (data.bubble_id) {
                   setLastBubbleId(data.bubble_id);
@@ -315,7 +334,7 @@ const ChatInput = ({
     }
   };
 
-  const hexToBinary = (hex) => {
+  const hexToBinary = (hex: string): Uint8Array => {
     const bytes = new Uint8Array(hex.length / 2);
     for (let i = 0; i < hex.length; i += 2) {
       bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
@@ -650,7 +669,7 @@ export default function Chat({ description }: ChatProps) {
     if (chatIdNumber) {
       await readChatRoom(chatIdNumber);
       const response = await getChatHistory(chatIdNumber);
-      const chatHistory = response.data.bubbles.map((bubble: any) => ({
+      const chatHistory = response.data.bubbles.map((bubble: Bubble) => ({
         content: bubble.content,
         isUser: bubble.writer, // API 응답에 따라 이 값을 설정해야 합니다.
         createdAt: bubble.created_at,
@@ -822,7 +841,7 @@ export default function Chat({ description }: ChatProps) {
             <div className="flex flex-col h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
               <ul className="grid grid-cols-4 gap-4 m-[5%] overflow-y-auto w-full text-2xl font-light text-white pr-10">
                 {imageList.length > 0 ? (
-                  imageList.map((item, i) => (
+                  imageList.map((item: ImageData, i) => (
                     <li key={i} className="w-full h-full">
                       <img
                         src={item.image_url}
@@ -870,7 +889,7 @@ export default function Chat({ description }: ChatProps) {
             <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
               <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[5%] overflow-y-auto no-scrollbar">
                 {ttsList.length > 0 ? (
-                  ttsList.map((item, i) => (
+                  ttsList.map((item: TtsData, i) => (
                     <li
                       key={i}
                       className="flex flex-row w-full justify-between  bg-white bg-opacity-10 px-5 py-2 rounded-xl text-lg"
