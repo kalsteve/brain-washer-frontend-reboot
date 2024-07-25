@@ -53,6 +53,7 @@ interface TopicFrequency {
 interface Info {
   id: number;
   name: string;
+  image: string;
   description: string;
 }
 
@@ -512,6 +513,25 @@ const CharacterChart = ({ character }: { character: string }) => {
     fetchData();
   }, [character]);
 
+  const CharacterCard = ({ data }: { data: Info }) => {
+    return (
+      <div className="flex flex-row justify-start w-full h-full items-center gap-8 lg:gap-12 xl:gap-16 2xl:gap-20 p-[10%]">
+        <img
+          className="rounded-full size-24 lg:size-36 xl:size-48 2xl:size-60"
+          src={data.image}
+        />
+        <div className="flex flex-col gap-1 lg:gap-2 xl:gap-3 2xl:gap-4">
+          <p className="text-lg lg:text-2xl xl:text-3xl 2xl:text-4xl text-[#eeeeee] font-bold">
+            {data.name}
+          </p>
+          <p className="text-base lg:text-lg xl:text-2xl 2xl:text-3xl text-[#c1c1c1]">
+            {data.description}
+          </p>
+        </div>
+      </div>
+    );
+  };
+
   const PieCategoryChart = ({ data }: { data: TopicFrequency }) => {
     const COLORS = ["#17B069", "#475BA1", "#4F378B", "#C93988"];
     const chartData: CategoryData[] = data
@@ -792,7 +812,9 @@ const CharacterChart = ({ character }: { character: string }) => {
   return (
     <div className="flex flex-col h-full basis-5/6 gap-8">
       <div className="basis-[40%]  flex flex-row gap-8 h-1/2 overflow-hidden">
-        <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl"></div>
+        <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl">
+          <CharacterCard data={data.info} />
+        </div>
         <div className="basis-2/5 bg-glass backdrop-blur rounded-xl shadow-2xl">
           <ImageList data={data.top_images} />
         </div>
