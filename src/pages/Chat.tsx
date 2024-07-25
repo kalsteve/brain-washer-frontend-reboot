@@ -394,6 +394,7 @@ export default function Chat({ description }: ChatProps) {
   const [name, setName] = useState("");
   const [chatName, setChatName] = useState("");
   const [lastBubbleId, setLastBubbleId] = useState<number>();
+  const [playingId, setPlayingId] = useState<number | null>(null);
 
   const images = [
     "https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png",
@@ -401,12 +402,226 @@ export default function Chat({ description }: ChatProps) {
     "https://i.ibb.co/mhx194f/2024-07-02-2-51-19-1.png",
   ];
   const [image, setImage] = useState("");
+  const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const playAudio = (audioUrl: string) => {
+  const handleImageClick = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const handleImageClose = () => {
+    setSelectedImage(null);
+  };
+
+  const playAudio = (audioUrl: string, index: number) => {
     const audio = new Audio(audioUrl);
     audio.play();
+    setPlayingId(index);
+    audio.onended = () => setPlayingId(null); // 오디오가 끝나면 playingId를 null로 설정
+  };
+
+  const getSvgIcon = (index: number) => {
+    if (playingId === index) {
+      // 음성 재생 중일 때 SVG
+      return (
+        <div className="group rounded-full transition duration-300 ease-in-out">
+          <svg
+            className="w-10 h-10 group-hover:scale-110 transition-transform duration-300 ease-in-out"
+            width="45"
+            height="45"
+            viewBox="0 0 45 45"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g filter="url(#filter0_d_847_393)">
+              <circle
+                cx="21.5"
+                cy="18.5"
+                r="18.5"
+                fill="url(#paint0_linear_847_393)"
+              />
+            </g>
+            <rect
+              x="16"
+              y="11"
+              width="4.36364"
+              height="13.5"
+              rx="2.18182"
+              fill="white"
+            />
+            <rect
+              x="23.6362"
+              y="11"
+              width="4.36364"
+              height="13.5"
+              rx="2.18182"
+              fill="white"
+            />
+            <defs>
+              <filter
+                id="filter0_d_847_393"
+                x="0"
+                y="0"
+                width="43"
+                height="43"
+                filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB"
+              >
+                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feColorMatrix
+                  in="SourceAlpha"
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                  result="hardAlpha"
+                />
+                <feOffset dy="4" />
+                <feGaussianBlur stdDeviation="2" />
+                <feComposite in2="hardAlpha" operator="out" />
+                <feColorMatrix
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                />
+                <feBlend
+                  mode="normal"
+                  in2="BackgroundImageFix"
+                  result="effect1_dropShadow_847_393"
+                />
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="effect1_dropShadow_847_393"
+                  result="shape"
+                />
+              </filter>
+              <linearGradient
+                id="paint0_linear_847_393"
+                x1="21.5"
+                y1="0"
+                x2="21.5"
+                y2="35"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#631C43" />
+                <stop offset="1" stop-color="#C93988" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      );
+    } else {
+      // 음성 일시 정지 중일 때 SVG
+      return (
+        <div className="group rounded-full transition duration-300 ease-in-out">
+          <svg
+            className="w-10 h-10 group-hover:scale-110 transition-transform duration-300 ease-in-out"
+            width="45"
+            height="45"
+            viewBox="0 0 45 45"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g filter="url(#filter0_d_599_393)">
+              <circle
+                cx="21.5"
+                cy="18.6"
+                r="18.5"
+                fill="url(#paint0_linear_599_393)"
+              />
+            </g>
+            <g filter="url(#filter1_d_599_393)">
+              <path
+                d="M18.3441 10.9871C17.2886 10.3662 15.958 11.1273 15.958 12.3519V22.6485C15.958 23.8731 17.2886 24.6341 18.3441 24.0133L27.0963 18.8649C28.137 18.2527 28.137 16.7477 27.0963 16.1355L18.3441 10.9871Z"
+                fill="white"
+              />
+            </g>
+            <defs>
+              <filter
+                id="filter0_d_599_393"
+                x="0"
+                y="0"
+                width="43"
+                height="43"
+                filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB"
+              >
+                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feColorMatrix
+                  in="SourceAlpha"
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                  result="hardAlpha"
+                />
+                <feOffset dy="4" />
+                <feGaussianBlur stdDeviation="2" />
+                <feComposite in2="hardAlpha" operator="out" />
+                <feColorMatrix
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                />
+                <feBlend
+                  mode="normal"
+                  in2="BackgroundImageFix"
+                  result="effect1_dropShadow_599_393"
+                />
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="effect1_dropShadow_599_393"
+                  result="shape"
+                />
+              </filter>
+              <filter
+                id="filter1_d_599_393"
+                x="8"
+                y="8"
+                width="27"
+                height="27"
+                filterUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB"
+              >
+                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feColorMatrix
+                  in="SourceAlpha"
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                  result="hardAlpha"
+                />
+                <feOffset dy="4" />
+                <feGaussianBlur stdDeviation="2" />
+                <feComposite in2="hardAlpha" operator="out" />
+                <feColorMatrix
+                  type="matrix"
+                  values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                />
+                <feBlend
+                  mode="normal"
+                  in2="BackgroundImageFix"
+                  result="effect1_dropShadow_599_393"
+                />
+                <feBlend
+                  mode="normal"
+                  in="SourceGraphic"
+                  in2="effect1_dropShadow_599_393"
+                  result="shape"
+                />
+              </filter>
+              <linearGradient
+                id="paint0_linear_599_393"
+                x1="21.5"
+                y1="0"
+                x2="21.5"
+                y2="35"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#631C43" />
+                <stop offset="1" stop-color="#C93988" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+      );
+    }
   };
 
   useEffect(() => {
@@ -601,30 +816,48 @@ export default function Chat({ description }: ChatProps) {
         {menu === menuOptions[1] && (
           <div
             data-aos="zoom-in"
-            className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]"
+            className="flex flex-col gap-5 mx-[10%] justify-start h-[40%]"
           >
-            <p className="text-white text-2xl  font-normal">저장한 이미지</p>
-            <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
-              <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[5%] overflow-y-auto no-scrollbar">
+            {/*<p className="text-white text-2xl  font-normal">저장한 이미지</p>*/}
+            <div className="flex flex-col h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
+              <ul className="grid grid-cols-4 gap-4 m-[5%] overflow-y-auto w-full text-2xl font-light text-white pr-10">
                 {imageList.length > 0 ? (
                   imageList.map((item, i) => (
-                    <li
-                      key={i}
-                      className="flex flex-row w-full justify-between"
-                    >
+                    <li key={i} className="w-full h-full">
                       <img
                         src={item.image_url}
                         alt={item.content}
-                        className="size-16"
+                        className="w-24 h-24 object-cover cursor-pointer rounded-lg"
+                        onClick={() => handleImageClick(item.image_url)}
                       />
                     </li>
                   ))
                 ) : (
-                  <p className="items-center text-center my-auto text-2xl font-light">
-                    해당 채팅방에서 생성한 이미지가 없습니다
-                  </p>
+                  <li className="col-span-4 flex items-center justify-center">
+                    <p className="text-center text-2xl font-light">
+                      해당 채팅방에서 생성한 이미지가 없습니다
+                    </p>
+                  </li>
                 )}
               </ul>
+
+              {selectedImage && (
+                <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
+                  <div className="relative">
+                    <button
+                      className="absolute top-2 right-2 text-white text-2xl"
+                      onClick={handleImageClose}
+                    >
+                      &times;
+                    </button>
+                    <img
+                      src={selectedImage}
+                      alt="Enlarged"
+                      className="max-w-full max-h-full"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -633,51 +866,25 @@ export default function Chat({ description }: ChatProps) {
             data-aos="zoom-in"
             className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]"
           >
-            <p className="text-white text-2xl  font-normal">저장한 TTS</p>
+            {/*<p className="text-white text-2xl  font-normal">저장한 TTS</p>*/}
             <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
               <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[5%] overflow-y-auto no-scrollbar">
                 {ttsList.length > 0 ? (
                   ttsList.map((item, i) => (
                     <li
                       key={i}
-                      className="flex flex-row w-full justify-between"
+                      className="flex flex-row w-full justify-between  bg-white bg-opacity-10 px-5 py-2 rounded-xl text-lg"
                     >
-                      <p className="truncate overflow-hidden whitespace-nowrap w-[13vw]">
+                      <p className="truncate overflow-hidden whitespace-nowrap w-[13vw] p-1.5">
                         {item.content}
                       </p>
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 26 26"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="cursor-pointer hover:opacity-50"
-                        onClick={() => playAudio(item.audio_url)}
+
+                      <div
+                        className="cursor-pointer hover:opacity-50 pt-0.5"
+                        onClick={() => playAudio(item.audio_url, i)}
                       >
-                        <circle
-                          cx="13"
-                          cy="13"
-                          r="13"
-                          fill="url(#paint0_linear_779_384)"
-                        />
-                        <path
-                          d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
-                          fill="white"
-                        />
-                        <defs>
-                          <linearGradient
-                            id="paint0_linear_779_384"
-                            x1="13"
-                            y1="0"
-                            x2="13"
-                            y2="26"
-                            gradientUnits="userSpaceOnUse"
-                          >
-                            <stop stopColor="#631C43" />
-                            <stop offset="1" stopColor="#C93988" />
-                          </linearGradient>
-                        </defs>
-                      </svg>
+                        {getSvgIcon(i)}
+                      </div>
                     </li>
                   ))
                 ) : (
