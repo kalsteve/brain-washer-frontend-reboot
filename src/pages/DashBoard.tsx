@@ -22,6 +22,7 @@ import {
   YAxis,
 } from "recharts";
 import { fetchCharacterDashBoard, fetchDashBoard } from "../api/characters.ts";
+import SpicyDial from "../components/Dial.tsx";
 
 interface MenuProps {
   selectedMenu: string;
@@ -491,7 +492,7 @@ const OverView = () => {
           </div>
         </div>
         <div className="flex flex-col w-full h-full gap-4 basis-1/2">
-          <p className="text-2xl text-gray-50">매운맛 지수</p>
+          <p className="text-2xl text-gray-50">매운맛 빈도</p>
           <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
             <SpicyChart data={processSpicyData(categoryData)} />
           </div>
@@ -828,7 +829,9 @@ const CharacterChart = ({ character }: { character: string }) => {
           <div className="bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/2 w-full">
             <TtsList data={data.top_voices} />
           </div>
-          <div className="bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/2"></div>
+          <div className="bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/2">
+            <SpicyDial data={data.average_spice_level} />
+          </div>
         </div>
       </div>
     </div>
