@@ -23,7 +23,7 @@ interface MenuProps {
   selectedMenu: string;
   setSelectedMenu: (selectedMenu: string) => void;
   selectedCharacter?: string;
-  setSelecetdCharacter: (selectedCharacter: string) => void;
+  setSelectedCharacter: (selectedCharacter: string) => void;
 }
 
 interface Character {
@@ -55,7 +55,7 @@ interface PopularData {
 const SideMenu = ({
   selectedMenu,
   setSelectedMenu,
-  setSelecetdCharacter,
+  setSelectedCharacter,
 }: MenuProps) => {
   const navigate = useNavigate();
   return (
@@ -164,7 +164,7 @@ const SideMenu = ({
           <p
             className="w-full cursor-pointer p-2 rounded-lg   hover:backdrop-blur"
             onClick={() => {
-              setSelecetdCharacter("Andrew");
+              setSelectedCharacter("Andrew");
               setSelectedMenu("Character");
             }}
           >
@@ -173,7 +173,7 @@ const SideMenu = ({
           <p
             className="w-full cursor-pointer p-2 rounded-lg   hover:backdrop-blur"
             onClick={() => {
-              setSelecetdCharacter("Hyunwoojin");
+              setSelectedCharacter("Hyunwoojin");
               setSelectedMenu("Character");
             }}
           >
@@ -182,7 +182,7 @@ const SideMenu = ({
           <p
             className="w-full cursor-pointer p-2 rounded-lg  hover:backdrop-blur"
             onClick={() => {
-              setSelecetdCharacter("Jeonhangil");
+              setSelectedCharacter("Jeonhangil");
               setSelectedMenu("Character");
             }}
           >
@@ -497,7 +497,7 @@ const DashBoard = () => {
         <SideMenu
           selectedMenu={selectedMenu}
           setSelectedMenu={setSelectedMenu}
-          setSelecetdCharacter={setSelectedCharacter}
+          setSelectedCharacter={setSelectedCharacter}
         />
         {/* 오른쪽 구간 */}
         {selectedMenu === menu[0] && <OverView />}
