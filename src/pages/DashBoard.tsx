@@ -17,11 +17,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { fetchDashBoard } from "../api/characters.ts";
+import { fetchCharacterDashBoard, fetchDashBoard } from "../api/characters.ts";
 
 interface MenuProps {
   selectedMenu: string;
   setSelectedMenu: (selectedMenu: string) => void;
+  selectedCharacter?: string;
+  setSelecetdCharacter: (selectedCharacter: string) => void;
 }
 
 interface Character {
@@ -50,7 +52,11 @@ interface PopularData {
   total: number;
 }
 
-const SideMenu = ({ selectedMenu, setSelectedMenu }: MenuProps) => {
+const SideMenu = ({
+  selectedMenu,
+  setSelectedMenu,
+  setSelecetdCharacter,
+}: MenuProps) => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/6 p-[1%] gap-4 text-gray-50">
@@ -130,7 +136,6 @@ const SideMenu = ({ selectedMenu, setSelectedMenu }: MenuProps) => {
       <div
         className={`collapse collapse-arrow hover:glass hover:bg-glass hover:backdrop-filter hover:backdrop-blur transition-all duration-300 ease-linear rounded-lg border-none
         ${selectedMenu === "Character" ? "glass" : ""}`}
-        onClick={() => setSelectedMenu("Character")}
       >
         <input type="radio" name="my-accordion-2" />
         <div className="collapse-title text-xl font-medium">
@@ -156,13 +161,31 @@ const SideMenu = ({ selectedMenu, setSelectedMenu }: MenuProps) => {
         </div>
 
         <div className="collapse-content ml-[5%] space-y-2 text-lg">
-          <p className="w-full cursor-pointer p-2 rounded-lg   hover:backdrop-blur">
+          <p
+            className="w-full cursor-pointer p-2 rounded-lg   hover:backdrop-blur"
+            onClick={() => {
+              setSelecetdCharacter("Andrew");
+              setSelectedMenu("Character");
+            }}
+          >
             Andrew
           </p>
-          <p className="w-full cursor-pointer p-2 rounded-lg   hover:backdrop-blur">
+          <p
+            className="w-full cursor-pointer p-2 rounded-lg   hover:backdrop-blur"
+            onClick={() => {
+              setSelecetdCharacter("Hyunwoojin");
+              setSelectedMenu("Character");
+            }}
+          >
             현우진
           </p>
-          <p className="w-full cursor-pointer p-2 rounded-lg  hover:backdrop-blur">
+          <p
+            className="w-full cursor-pointer p-2 rounded-lg  hover:backdrop-blur"
+            onClick={() => {
+              setSelecetdCharacter("Jeonhangil");
+              setSelectedMenu("Character");
+            }}
+          >
             전한길
           </p>
         </div>
@@ -428,18 +451,32 @@ const OverView = () => {
   );
 };
 
-const CharacterChart = () => {
+const CharacterChart = ({ character }: { character: string }) => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetchCharacterDashBoard(character);
+      setData(response.data);
+    };
+
+    fetchData();
+  }, [character]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   return (
     <div className="flex flex-col  basis-5/6 gap-8">
-      <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-        카테고리 통계
+      <div className="basis-[40%]  flex flex-row gap-8">
+        <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl"></div>
+        <div className="basis-2/5 bg-glass backdrop-blur rounded-xl shadow-2xl"></div>
       </div>
-      <div className="flex flex-row basis-1/2 gap-8">
-        <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-          캐릭터 순위
-        </div>
-        <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-          매운맛 점수
+      <div className="flex flex-row basis-[60%] gap-8">
+        <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl"></div>
+        <div className="basis-2/5  flex flex-col gap-8">
+          <div className="bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/2"></div>
+          <div className="bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/2"></div>
         </div>
       </div>
     </div>
@@ -449,6 +486,7 @@ const CharacterChart = () => {
 const DashBoard = () => {
   const menu = ["Overview", "Character"];
   const [selectedMenu, setSelectedMenu] = useState<string>(menu[0]);
+  const [selectedCharacter, setSelectedCharacter] = useState<string>("");
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center px-[3%] py-[2%]">
       {/* 배경이미지 */}
@@ -459,10 +497,13 @@ const DashBoard = () => {
         <SideMenu
           selectedMenu={selectedMenu}
           setSelectedMenu={setSelectedMenu}
+          setSelecetdCharacter={setSelectedCharacter}
         />
         {/* 오른쪽 구간 */}
         {selectedMenu === menu[0] && <OverView />}
-        {selectedMenu === menu[1] && <CharacterChart />}
+        {selectedMenu === menu[1] && (
+          <CharacterChart character={selectedCharacter} />
+        )}
       </div>
     </div>
   );
