@@ -7,6 +7,9 @@ import {
   BarChart,
   Cell,
   Legend,
+  Pie,
+  PieChart,
+  PieLabelRenderProps,
   PolarAngleAxis,
   PolarGrid,
   PolarRadiusAxis,
@@ -14,6 +17,7 @@ import {
   RadarChart,
   ResponsiveContainer,
   Tooltip,
+  TooltipProps,
   XAxis,
   YAxis,
 } from "recharts";
@@ -42,6 +46,44 @@ interface CategoryData {
   [key: string]: string | number;
 }
 
+interface TopicFrequency {
+  [key: string]: number;
+}
+
+interface Info {
+  id: number;
+  name: string;
+  description: string;
+}
+
+interface Image {
+  id: number;
+  url: string;
+  download: number;
+}
+
+interface Voice {
+  id: number;
+  content: string;
+  url: string;
+  download: number;
+}
+
+interface TopicFrequency {
+  취업: number;
+  학업: number;
+  인간관계: number;
+  연애: number;
+}
+
+interface CharacterDetail {
+  average_spice_level: number;
+  info: Info;
+  top_images: Image[];
+  top_voices: Voice[];
+  topic_frequency: TopicFrequency;
+}
+
 interface SpicyData {
   subject: string;
   [key: string]: string | number;
@@ -50,6 +92,13 @@ interface SpicyData {
 interface PopularData {
   name: string;
   total: number;
+}
+
+interface CustomTooltipProps extends TooltipProps<number, string> {
+  payload?: Array<{
+    name: string;
+    value: number;
+  }>;
 }
 
 const SideMenu = ({
@@ -228,7 +277,7 @@ const OverView = () => {
     fetchData();
   }, []);
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-2 border rounded">
@@ -452,7 +501,7 @@ const OverView = () => {
 };
 
 const CharacterChart = ({ character }: { character: string }) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<CharacterDetail | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -463,9 +512,77 @@ const CharacterChart = ({ character }: { character: string }) => {
     fetchData();
   }, [character]);
 
+  const PieCategoryChart = ({ data }: { data: TopicFrequency }) => {
+    const COLORS = ["#17B069", "#475BA1", "#4F378B", "#C93988"];
+    const chartData: CategoryData[] = data
+      ? Object.keys(data).map((key) => ({
+          name: key,
+          value: data[key],
+        }))
+      : [];
+    console.log(chartData);
+    const RADIAN = Math.PI / 180;
+    const renderCustomizedLabel = ({
+      cx,
+      cy,
+      midAngle,
+      innerRadius,
+      outerRadius,
+      percent,
+      index,
+    }: PieLabelRenderProps & { index: number }) => {
+      const radius =
+        Number(innerRadius) +
+          (Number(outerRadius) - Number(innerRadius)) * 0.5 || 0;
+      const x = Number(cx) + radius * Math.cos(-midAngle * RADIAN) || 0;
+      const y = Number(cy) + radius * Math.sin(-midAngle * RADIAN) || 0;
+      const displayPercent =
+        percent !== undefined ? (percent * 100).toFixed(0) : "0";
+
+      return (
+        <text
+          x={x}
+          y={y}
+          fill="white"
+          textAnchor={x > Number(cx) ? "start" : "end"}
+          dominantBaseline="central"
+        >
+          {`${chartData[index].name} - ${displayPercent}%`}
+        </text>
+      );
+    };
+    return (
+      <ResponsiveContainer width="100%" height="100%">
+        <PieChart width={800} height={800}>
+          <Pie
+            data={chartData}
+            cx="50%"
+            cy="50%"
+            labelLine={false}
+            label={renderCustomizedLabel}
+            outerRadius="70%"
+            stroke="none"
+            fill="#8884d8"
+            dataKey="value"
+          >
+            {chartData.map((_, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            ))}
+          </Pie>
+        </PieChart>
+      </ResponsiveContainer>
+    );
+  };
+
   useEffect(() => {
     console.log(data);
   }, [data]);
+  if (!data) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="flex flex-col  basis-5/6 gap-8">
       <div className="basis-[40%]  flex flex-row gap-8">
@@ -473,7 +590,10 @@ const CharacterChart = ({ character }: { character: string }) => {
         <div className="basis-2/5 bg-glass backdrop-blur rounded-xl shadow-2xl"></div>
       </div>
       <div className="flex flex-row basis-[60%] gap-8">
-        <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl"></div>
+        <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl py-[1.5%] px-[2%] flex flex-col gap-4">
+          <p className="text-2xl text-gray-50 basis-1/10">인기 카테고리</p>
+          <PieCategoryChart data={data.topic_frequency} />
+        </div>
         <div className="basis-2/5  flex flex-col gap-8">
           <div className="bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/2"></div>
           <div className="bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/2"></div>
