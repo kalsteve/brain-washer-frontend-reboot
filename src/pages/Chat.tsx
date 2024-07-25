@@ -406,8 +406,18 @@ export default function Chat({ description }: ChatProps) {
     "https://i.ibb.co/mhx194f/2024-07-02-2-51-19-1.png",
   ];
   const [image, setImage] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const handleImageClose = () => {
+    setSelectedImage(null);
+  };
 
   const playAudio = (audioUrl, index) => {
     const audio = new Audio(audioUrl);
@@ -811,31 +821,46 @@ export default function Chat({ description }: ChatProps) {
         {menu === menuOptions[1] && (
           <div
             data-aos="zoom-in"
-            className="flex flex-col gap-5 mx-[10%] justify-center h-[40%]"
+            className="flex flex-col gap-5 mx-[10%] justify-start h-[40%]"
           >
             {/*<p className="text-white text-2xl  font-normal">저장한 이미지</p>*/}
-            <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
-              <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[5%] overflow-y-auto no-scrollbar">
-                {imageList.length > 0 ? (
-                  imageList.map((item, i) => (
-                    <li
-                      key={i}
-                      className="flex flex-row w-full justify-between"
-                    >
-                      <img
-                        src={item.image_url}
-                        alt={item.content}
-                        className="size-16"
-                      />
-                    </li>
-                  ))
-                ) : (
-                  <p className="items-center text-center my-auto text-2xl font-light">
+            <div className="flex flex-col h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
+            <ul className="grid grid-cols-4 gap-4 m-[5%] overflow-y-auto w-full text-2xl font-light text-white pr-10">
+              {imageList.length > 0 ? (
+                imageList.map((item, i) => (
+                  <li key={i} className="w-full h-full">
+                    <img
+                      src={item.image_url}
+                      alt={item.content}
+                      className="w-24 h-24 object-cover cursor-pointer rounded-lg"
+                      onClick={() => handleImageClick(item.image_url)}
+                    />
+                  </li>
+                ))
+              ) : (
+                <li className="col-span-4 flex items-center justify-center">
+                  <p className="text-center text-2xl font-light">
                     해당 채팅방에서 생성한 이미지가 없습니다
                   </p>
-                )}
-              </ul>
+                </li>
+              )}
+            </ul>
+
+              {selectedImage && (
+                <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
+                  <div className="relative">
+                    <button
+                      className="absolute top-2 right-2 text-white text-2xl"
+                      onClick={handleImageClose}
+                    >
+                      &times;
+                    </button>
+                    <img src={selectedImage} alt="Enlarged" className="max-w-full max-h-full" />
+                  </div>
+                </div>
+              )}
             </div>
+          
           </div>
         )}
         {menu === menuOptions[2] && (
