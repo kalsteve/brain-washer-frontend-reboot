@@ -59,7 +59,7 @@ interface Info {
 interface Image {
   id: number;
   url: string;
-  download: string;
+  download: number;
 }
 
 interface Voice {
@@ -308,7 +308,7 @@ const OverView = () => {
   // SpicyChart 에 사용할 데이터를 가공하는 함수
   const processSpicyData = (data: Character[]): SpicyData[] => {
     if (!data) return [];
-    const categories = ["0-2", "2-4", "4-6", "6-8", "8-10"];
+    const categories = ["0-20", "20-40", "40-60", "60-80", "80-100"];
     const result = categories.map((category) => {
       const entry: SpicyData = { subject: category };
       data.forEach((character) => {
@@ -475,7 +475,7 @@ const OverView = () => {
   };
 
   return (
-    <div className="flex flex-col basis-5/6 gap-8">
+    <div className="flex flex-col basis-5/6 gap-8 h-full">
       <div className="flex flex-col w-full h-full gap-4 basis-1/2">
         <p className="text-2xl text-gray-50">카테고리</p>
         <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[1%]">
@@ -587,12 +587,14 @@ const CharacterChart = ({ character }: { character: string }) => {
       document.body.removeChild(link);
     };
 
+    const navigate = useNavigate();
+
     return (
       <div className="w-full h-full px-[4%] py-[4%] flex flex-col gap-4">
         <p className="text-2xl text-gray-50">생성 이미지</p>
-        <div className="grid grid-cols-3 gap-4 overflow-auto no-scrollbar">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 h-full mx-auto">
           {data.map((item) => (
-            <div key={item.id} className="relative w-full h-full group">
+            <div key={item.id} className="relative size-40 group">
               <img
                 src={item.url}
                 className="w-full h-full object-cover rounded-xl"
@@ -625,7 +627,157 @@ const CharacterChart = ({ character }: { character: string }) => {
               </div>
             </div>
           ))}
+          <div className="relative w-full h-full flex items-center justify-center bg-glass backdrop-blur rounded-xl hover:bg-opacity-30 hover:bg-gray-900 transition-all duration-200 ease-linear">
+            <button
+              className="text-white w-full h-full"
+              onClick={() => navigate("/list_board")}
+            >
+              모두 보기
+            </button>
+          </div>
         </div>
+      </div>
+    );
+  };
+
+  const TtsList = ({ data }: { data: Voice[] }) => {
+    const playAudio = (audioUrl: string) => {
+      const audio = new Audio(audioUrl);
+      audio.play();
+    };
+
+    const downloadAudio = (audioUrl: string, voiceId: number) => {
+      const link = document.createElement("a");
+      link.href = audioUrl;
+      link.download = `voice_${voiceId}.mp3`; // 다운로드할 파일명 지정
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    return (
+      <div className="w-full max-h-full px-[4%] py-[4%] flex flex-col gap-4">
+        <p className="text-2xl text-gray-50">어록</p>
+        <ul className="gap-2 flex flex-col w-full h-full">
+          {data.map((item) => (
+            <li
+              key={item.id}
+              className="flex flex-row w-full justify-between gap-2"
+            >
+              <p className="truncate text-[#cccccc] text-xl w-[20rem] lg:w-[25rem] xl:w-[30rem] 2xl:w-[40rem]">
+                {item.content}
+              </p>
+
+              <svg
+                className="cursor-pointer hover:opacity-50"
+                width="40"
+                height="40"
+                viewBox="0 0 45 45"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                onClick={() => downloadAudio(item.url, item.id)}
+              >
+                <g filter="url(#filter0_d_924_519)">
+                  <circle
+                    cx="22.5"
+                    cy="18.5"
+                    r="18.5"
+                    fill="url(#paint0_linear_924_519)"
+                  />
+                </g>
+                <path
+                  d="M28.4168 17.9999L23.0002 23.4166M23.0002 23.4166L17.5835 17.9999M23.0002 23.4166V9.33325M28.4168 26.6666H17.5835"
+                  stroke="white"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <defs>
+                  <filter
+                    id="filter0_d_924_519"
+                    x="0"
+                    y="0"
+                    width="45"
+                    height="45"
+                    filterUnits="userSpaceOnUse"
+                    colorInterpolationFilters="sRGB"
+                  >
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                    <feColorMatrix
+                      in="SourceAlpha"
+                      type="matrix"
+                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                      result="hardAlpha"
+                    />
+                    <feOffset dy="4" />
+                    <feGaussianBlur stdDeviation="2" />
+                    <feComposite in2="hardAlpha" operator="out" />
+                    <feColorMatrix
+                      type="matrix"
+                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                    />
+                    <feBlend
+                      mode="normal"
+                      in2="BackgroundImageFix"
+                      result="effect1_dropShadow_924_519"
+                    />
+                    <feBlend
+                      mode="normal"
+                      in="SourceGraphic"
+                      in2="effect1_dropShadow_924_519"
+                      result="shape"
+                    />
+                  </filter>
+                  <linearGradient
+                    id="paint0_linear_924_519"
+                    x1="22.5"
+                    y1="0"
+                    x2="22.5"
+                    y2="37"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop stopColor="#631C43" />
+                    <stop offset="1" stopColor="#C93988" />
+                  </linearGradient>
+                </defs>
+              </svg>
+
+              <svg
+                width="35"
+                height="35"
+                viewBox="0 0 26 26"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="cursor-pointer hover:opacity-50"
+                onClick={() => playAudio(item.url)}
+              >
+                <circle
+                  cx="13"
+                  cy="13"
+                  r="13"
+                  fill="url(#paint0_linear_779_384)"
+                />
+                <path
+                  d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
+                  fill="white"
+                />
+                <defs>
+                  <linearGradient
+                    id="paint0_linear_779_384"
+                    x1="13"
+                    y1="0"
+                    x2="13"
+                    y2="26"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop stopColor="#631C43" />
+                    <stop offset="1" stopColor="#C93988" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </li>
+          ))}
+        </ul>
       </div>
     );
   };
@@ -638,20 +790,22 @@ const CharacterChart = ({ character }: { character: string }) => {
     return <div>Loading...</div>;
   }
   return (
-    <div className="flex flex-col  basis-5/6 gap-8">
-      <div className="basis-[40%]  flex flex-row gap-8">
+    <div className="flex flex-col h-full basis-5/6 gap-8">
+      <div className="basis-[40%]  flex flex-row gap-8 h-1/2 overflow-hidden">
         <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl"></div>
         <div className="basis-2/5 bg-glass backdrop-blur rounded-xl shadow-2xl">
           <ImageList data={data.top_images} />
         </div>
       </div>
       <div className="flex flex-row basis-[60%] gap-8">
-        <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl py-[1.5%] px-[2%] flex flex-col gap-4">
+        <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl py-[1.5%] px-[2%] flex flex-col gap-4 max-h-full">
           <p className="text-2xl text-gray-50 basis-1/10">인기 카테고리</p>
           <PieCategoryChart data={data.topic_frequency} />
         </div>
-        <div className="basis-2/5  flex flex-col gap-8">
-          <div className="bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/2"></div>
+        <div className="basis-2/5 flex flex-col gap-8 h-full">
+          <div className="bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/2 w-full">
+            <TtsList data={data.top_voices} />
+          </div>
           <div className="bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/2"></div>
         </div>
       </div>
@@ -668,7 +822,7 @@ const DashBoard = () => {
       {/* 배경이미지 */}
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/W5LP6yn/Brain-Wahser.png)] bg-cover bg-fixed z-10 transform scale-y-[-1]" />
       {/* 대시보드 */}
-      <div className="h-full w-full flex flex-row z-10 rounded-lg gap-8">
+      <div className="max-w-full h-full w-full flex flex-row z-10 rounded-lg gap-8">
         {/* 메뉴 */}
         <SideMenu
           selectedMenu={selectedMenu}
