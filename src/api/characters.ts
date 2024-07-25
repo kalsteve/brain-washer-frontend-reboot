@@ -10,4 +10,15 @@ const fetchDashBoard = async () => {
   }
 };
 
-export { fetchDashBoard };
+const fetchCharacterDashBoard = async (character_name: string) => {
+  try {
+    const response = await axiosInstance.get(
+      `/characters/dashboards/${character_name}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { fetchDashBoard, fetchCharacterDashBoard };
