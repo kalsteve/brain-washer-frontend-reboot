@@ -59,7 +59,7 @@ interface Info {
 interface Image {
   id: number;
   url: string;
-  download: number;
+  download: string;
 }
 
 interface Voice {
@@ -577,9 +577,63 @@ const CharacterChart = ({ character }: { character: string }) => {
     );
   };
 
+  const ImageList = ({ data }: { data: Image[] }) => {
+    const downloadImage = (url: string) => {
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = url.substring(url.lastIndexOf("/") + 1);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    return (
+      <div className="w-full h-full px-[4%] py-[4%] flex flex-col gap-4">
+        <p className="text-2xl text-gray-50">생성 이미지</p>
+        <div className="grid grid-cols-3 gap-4 overflow-auto no-scrollbar">
+          {data.map((item) => (
+            <div key={item.id} className="relative w-full h-full group">
+              <img
+                src={item.url}
+                className="w-full h-full object-cover rounded-xl"
+              />
+              <div className="absolute inset-0 w-full h-full bg-black bg-opacity-50 flex flex-col items-center justify-evenly text-white opacity-0 group-hover:opacity-100 transition-opacity rounded-xl duration-200 ease-linear">
+                <div className="flex flex-row items-center gap-2">
+                  <svg
+                    width="25"
+                    height="25"
+                    viewBox="0 0 30 30"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M20 8.75L15 3.75M15 3.75L10 8.75M15 3.75L15 20M25 16.25V23C25 24.1046 24.1046 25 23 25H7C5.89543 25 5 24.1046 5 23V16.25"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  <p className="text-lg">{item.download}</p>
+                </div>
+                <button
+                  onClick={() => downloadImage(item.url)}
+                  className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded"
+                >
+                  다운로드
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   useEffect(() => {
     console.log(data);
   }, [data]);
+
   if (!data) {
     return <div>Loading...</div>;
   }
@@ -587,7 +641,9 @@ const CharacterChart = ({ character }: { character: string }) => {
     <div className="flex flex-col  basis-5/6 gap-8">
       <div className="basis-[40%]  flex flex-row gap-8">
         <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl"></div>
-        <div className="basis-2/5 bg-glass backdrop-blur rounded-xl shadow-2xl"></div>
+        <div className="basis-2/5 bg-glass backdrop-blur rounded-xl shadow-2xl">
+          <ImageList data={data.top_images} />
+        </div>
       </div>
       <div className="flex flex-row basis-[60%] gap-8">
         <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl py-[1.5%] px-[2%] flex flex-col gap-4">
