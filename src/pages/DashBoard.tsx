@@ -666,7 +666,7 @@ const DashBoard = () => {
   return (
     <div className="w-screen h-screen flex flex-col items-center justify-center px-[3%] py-[2%]">
       {/* 배경이미지 */}
-      <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed" />
+      <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/W5LP6yn/Brain-Wahser.png)] bg-cover bg-fixed z-10 transform scale-y-[-1]" />
       {/* 대시보드 */}
       <div className="h-full w-full flex flex-row z-10 rounded-lg gap-8">
         {/* 메뉴 */}
