@@ -24,6 +24,26 @@ interface MenuProps {
   setSelectedMenu: (selectedMenu: string) => void;
 }
 
+interface Character {
+  name: string;
+  topic_frequency: {
+    [key: string]: number;
+  };
+  spicy_frequency: {
+    [key: string]: number;
+  };
+}
+
+interface CategoryData {
+  name: string;
+  [key: string]: string | number;
+}
+
+interface SpicyData {
+  subject: string;
+  [key: string]: string | number;
+}
+
 const SideMenu = ({ selectedMenu, setSelectedMenu }: MenuProps) => {
   const navigate = useNavigate();
   return (
@@ -180,20 +200,35 @@ const OverView = () => {
   }, []);
 
   // 서버에서 응답받은 데이터를 원하는 객체 형식으로 가공
-  const processData = (data) => {
+  const processCategoryData = (data: Character[]): CategoryData[] => {
     if (!data) return [];
     const categories = ["취업", "학업", "인간관계", "연애"];
     const result = categories.map((category) => {
-      const entry = { name: category };
+      const entry: CategoryData = { name: category };
       data.forEach((character) => {
         entry[character.name] = character.topic_frequency[category];
+      });
+      return entry;
+    });
+
+    return result;
+  };
+
+  // 서버에서 응답받은 데이터를 원하는 객체 형식으로 가공
+  const processSpicyData = (data: Character[]): SpicyData[] => {
+    if (!data) return [];
+    const categories = ["1-2", "2-4", "5-6", "7-8", "9-10"];
+    const result = categories.map((category) => {
+      const entry: SpicyData = { subject: category };
+      data.forEach((character) => {
+        entry[character.name] = character.spicy_frequency[category];
       });
       return entry;
     });
     return result;
   };
 
-  const CategoryChart = ({ data }) => {
+  const CategoryChart = ({ data }: { data: CategoryData[] }) => {
     return (
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
@@ -260,58 +295,69 @@ const OverView = () => {
     );
   };
 
-  const PopularChart = () => {
-    return (
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar
-            dataKey="pv"
-            fill="#8884d8"
-            activeBar={<Rectangle fill="pink" stroke="blue" />}
-          />
-          <Bar
-            dataKey="uv"
-            fill="#82ca9d"
-            activeBar={<Rectangle fill="gold" stroke="purple" />}
-          />
-        </BarChart>
-      </ResponsiveContainer>
-    );
-  };
+  // const PopularChart = () => {
+  //   return (
+  //     <ResponsiveContainer width="100%" height="100%">
+  //       <BarChart
+  //         width={500}
+  //         height={300}
+  //         data={data}
+  //         margin={{
+  //           top: 5,
+  //           right: 30,
+  //           left: 20,
+  //           bottom: 5,
+  //         }}
+  //       >
+  //         <XAxis dataKey="name" />
+  //         <YAxis />
+  //         <Tooltip />
+  //         <Legend />
+  //         <Bar
+  //           dataKey="pv"
+  //           fill="#8884d8"
+  //           activeBar={<Rectangle fill="pink" stroke="blue" />}
+  //         />
+  //         <Bar
+  //           dataKey="uv"
+  //           fill="#82ca9d"
+  //           activeBar={<Rectangle fill="gold" stroke="purple" />}
+  //         />
+  //       </BarChart>
+  //     </ResponsiveContainer>
+  //   );
+  // };
 
-  const SpicyChart = () => {
+  const SpicyChart = ({ data }: { data: SpicyData[] }) => {
     return (
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
           <PolarGrid />
-          <PolarAngleAxis dataKey="subject" />
-          <PolarRadiusAxis angle={30} domain={[0, 150]} />
+          <PolarAngleAxis dataKey="subject" tick={{ fill: "white" }} />
+          <PolarRadiusAxis
+            angle={30}
+            domain={[0, 30]}
+            tick={{ fill: "white" }}
+          />
           <Radar
-            name="Mike"
-            dataKey="A"
+            name="Andrew"
+            dataKey="Andrew"
             stroke="#8884d8"
             fill="#8884d8"
             fillOpacity={0.6}
           />
           <Radar
-            name="Lily"
-            dataKey="B"
+            name="Hyunwoojin"
+            dataKey="Hyunwoojin"
             stroke="#82ca9d"
             fill="#82ca9d"
+            fillOpacity={0.6}
+          />
+          <Radar
+            name="Jeonhangil"
+            dataKey="Jeonhangil"
+            stroke="#ffc658"
+            fill="#ffc658"
             fillOpacity={0.6}
           />
           <Legend />
@@ -323,17 +369,23 @@ const OverView = () => {
   return (
     <div className="flex flex-col basis-5/6 gap-8">
       <div className="flex flex-col w-full h-full gap-4 basis-1/2">
-        <p className="text-2xl text-gray-50">캐릭터별 카테고리</p>
+        <p className="text-2xl text-gray-50">카테고리</p>
         <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[1%]">
-          <CategoryChart data={processData(categoryData)} />
+          <CategoryChart data={processCategoryData(categoryData)} />
         </div>
       </div>
       <div className="flex flex-row basis-1/2 gap-8">
-        <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-          {/*<PopularChart />*/}
+        <div className="flex flex-col w-full h-full gap-4 basis-1/2">
+          <p className="text-2xl text-gray-50">인기순위</p>
+          <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
+            {/*<PopularChart />*/}
+          </div>
         </div>
-        <div className="basis-1/2 bg-glass backdrop-blur rounded-xl shadow-2xl">
-          {/*<SpicyChart />*/}
+        <div className="flex flex-col w-full h-full gap-4 basis-1/2">
+          <p className="text-2xl text-gray-50">매운맛 지수</p>
+          <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
+            <SpicyChart data={processSpicyData(categoryData)} />
+          </div>
         </div>
       </div>
     </div>
