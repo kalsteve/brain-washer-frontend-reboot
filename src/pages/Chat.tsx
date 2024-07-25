@@ -9,6 +9,7 @@ import { getRoomImages } from "../api/images.ts";
 
 interface ChatProps {
   name?: string;
+  chatName?: string;
   description?: string;
   image?: string;
   audioStreamUrl?: string;
@@ -34,7 +35,7 @@ const formatToKoreanTime = (createdAt: string) => {
   return `${year}-${month}-${day} ${ampm} ${formattedHours}:${minutes}`;
 };
 
-const ChatHeader = ({ name, image }: ChatProps) => {
+const ChatHeader = ({ name, chatName, image }: ChatProps) => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col justify-center space-y-8">
@@ -46,7 +47,7 @@ const ChatHeader = ({ name, image }: ChatProps) => {
             alt={name}
             className={`rounded-full object-cover shadow-2xl size-16 my-auto`}
           />
-          <p className="text-white my-auto text-3xl font-bold">{name}</p>
+          <p className="text-white my-auto text-3xl font-bold">{chatName}</p>
         </div>
         <div
           className="btn bg-transparent border-none my-auto ml-auto hover:bg-blue-500"
@@ -690,7 +691,7 @@ export default function Chat({ description }: ChatProps) {
         )}
       </div>
       <div className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]">
-        <ChatHeader name={chatName} image={image} />
+        <ChatHeader name={name} chatName={chatName} image={image} />
         <div className="flex flex-col space-y-4 overflow-auto mb-auto">
           {messages.map((msg, index) => (
             <ChatMessage

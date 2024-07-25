@@ -1,5 +1,5 @@
 import { fontFamily } from "tailwindcss/defaultTheme";
-import lineClamp from '@tailwindcss/line-clamp';
+import lineClamp from "@tailwindcss/line-clamp";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -92,6 +92,5 @@ export default {
     require("tailwindcss-animate"),
     require("daisyui"),
     require("tailwindcss-filters"),
-    lineClamp, // Add this line to include @tailwindcss/line-clamp plugin
   ],
 };
