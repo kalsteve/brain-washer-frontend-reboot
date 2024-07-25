@@ -3,7 +3,7 @@ import axiosInstance from "./axios.ts";
 
 const fetchDashBoard = async () => {
   try {
-    const response = await axiosInstance.get(`/characters/dashboard/total`);
+    const response = await axiosInstance.get(`/characters/dashboards/total`);
     return response.data;
   } catch (error) {
     console.error(error);

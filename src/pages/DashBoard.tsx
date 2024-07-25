@@ -5,13 +5,13 @@ import {
   AreaChart,
   Bar,
   BarChart,
+  Cell,
   Legend,
   PolarAngleAxis,
   PolarGrid,
   PolarRadiusAxis,
   Radar,
   RadarChart,
-  Rectangle,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -32,6 +32,7 @@ interface Character {
   spicy_frequency: {
     [key: string]: number;
   };
+  chat_count: number;
 }
 
 interface CategoryData {
@@ -42,6 +43,11 @@ interface CategoryData {
 interface SpicyData {
   subject: string;
   [key: string]: string | number;
+}
+
+interface PopularData {
+  name: string;
+  total: number;
 }
 
 const SideMenu = ({ selectedMenu, setSelectedMenu }: MenuProps) => {
@@ -199,7 +205,20 @@ const OverView = () => {
     fetchData();
   }, []);
 
-  // 서버에서 응답받은 데이터를 원하는 객체 형식으로 가공
+  const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-white p-2 border rounded">
+          <p className="label">{`채팅방 총합: ${payload[0].value}`}</p>
+          <p className="intro"></p>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
+  // CategoryChart 에 사용할 데이터를 가공하는 함수
   const processCategoryData = (data: Character[]): CategoryData[] => {
     if (!data) return [];
     const categories = ["취업", "학업", "인간관계", "연애"];
@@ -214,10 +233,10 @@ const OverView = () => {
     return result;
   };
 
-  // 서버에서 응답받은 데이터를 원하는 객체 형식으로 가공
+  // SpicyChart 에 사용할 데이터를 가공하는 함수
   const processSpicyData = (data: Character[]): SpicyData[] => {
     if (!data) return [];
-    const categories = ["1-2", "2-4", "5-6", "7-8", "9-10"];
+    const categories = ["0-2", "2-4", "4-6", "6-8", "8-10"];
     const result = categories.map((category) => {
       const entry: SpicyData = { subject: category };
       data.forEach((character) => {
@@ -226,6 +245,16 @@ const OverView = () => {
       return entry;
     });
     return result;
+  };
+
+  // PopularChart 에 사용할 데이터를 가공하는 함수
+  const processPopularData = (data: Character[]): PopularData[] => {
+    return data.map((character) => {
+      return {
+        name: character.name,
+        total: character.chat_count,
+      };
+    });
   };
 
   const CategoryChart = ({ data }: { data: CategoryData[] }) => {
@@ -257,10 +286,10 @@ const OverView = () => {
           </defs>
           <XAxis
             dataKey="name"
-            tick={{ fill: "white" }}
-            axisLine={{ stroke: "white" }}
+            tick={{ fill: "#cccccc" }}
+            axisLine={{ stroke: "#cccccc" }}
           />
-          <YAxis tick={{ fill: "white" }} axisLine={{ stroke: "white" }} />
+          <YAxis tick={{ fill: "#cccccc" }} axisLine={{ stroke: "#cccccc" }} />
           <Tooltip />
           <Area
             type="monotone"
@@ -295,38 +324,45 @@ const OverView = () => {
     );
   };
 
-  // const PopularChart = () => {
-  //   return (
-  //     <ResponsiveContainer width="100%" height="100%">
-  //       <BarChart
-  //         width={500}
-  //         height={300}
-  //         data={data}
-  //         margin={{
-  //           top: 5,
-  //           right: 30,
-  //           left: 20,
-  //           bottom: 5,
-  //         }}
-  //       >
-  //         <XAxis dataKey="name" />
-  //         <YAxis />
-  //         <Tooltip />
-  //         <Legend />
-  //         <Bar
-  //           dataKey="pv"
-  //           fill="#8884d8"
-  //           activeBar={<Rectangle fill="pink" stroke="blue" />}
-  //         />
-  //         <Bar
-  //           dataKey="uv"
-  //           fill="#82ca9d"
-  //           activeBar={<Rectangle fill="gold" stroke="purple" />}
-  //         />
-  //       </BarChart>
-  //     </ResponsiveContainer>
-  //   );
-  // };
+  const PopularChart = ({ data }: { data: PopularData[] }) => {
+    const colors = ["#C93988", "#17B069", "#8979FF"];
+
+    return (
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          width={500}
+          height={300}
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <XAxis
+            dataKey="name"
+            tick={{ fill: "#cccccc" }}
+            axisLine={{ stroke: "#cccccc" }}
+          />
+          <YAxis tick={{ fill: "#cccccc" }} axisLine={{ stroke: "#cccccc" }} />
+          <Tooltip
+            content={<CustomTooltip />}
+            cursor={{ fill: "rgba(21,21,21,0.35)" }}
+          />
+          <Bar dataKey="total" barSize={60}>
+            {data.map((_, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={colors[index % colors.length]}
+                fillOpacity={0.75}
+              />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    );
+  };
 
   const SpicyChart = ({ data }: { data: SpicyData[] }) => {
     return (
@@ -378,7 +414,7 @@ const OverView = () => {
         <div className="flex flex-col w-full h-full gap-4 basis-1/2">
           <p className="text-2xl text-gray-50">인기순위</p>
           <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
-            {/*<PopularChart />*/}
+            <PopularChart data={processPopularData(categoryData)} />
           </div>
         </div>
         <div className="flex flex-col w-full h-full gap-4 basis-1/2">
