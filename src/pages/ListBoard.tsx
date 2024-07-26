@@ -398,10 +398,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div
-      className="relative w-full h-screen bg-cover bg-center bg-fixed"
-      style={{ backgroundImage: "url('https://i.ibb.co/s3QC5vr/3.jpg')" }}
-    >
+    <div className="relative w-full h-screen">
+      <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/W5LP6yn/Brain-Wahser.png)] bg-cover bg-fixed z-0 transform scale-y-[-1] " />
       <div className="fixed inset-0 bg-black bg-opacity-30 text-white overflow-hidden">
         <div className="flex flex-col items-start p-6 px-[5%] ">
           <div className="flex flex-row">

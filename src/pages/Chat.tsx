@@ -23,6 +23,23 @@ interface Message {
   bubble_id?: number;
 }
 
+interface Bubble {
+  content: string;
+  writer: boolean;
+  created_at: string;
+  id: number;
+}
+
+interface TtsData {
+  content: string;
+  audio_url: string;
+}
+
+interface ImageData {
+  content: string;
+  image_url: string;
+}
+
 const formatToKoreanTime = (createdAt: string) => {
   const date = new Date(createdAt);
   const year = date.getFullYear().toString().slice(2);
@@ -220,7 +237,7 @@ const ChatInput = ({
   chat_id: number | null;
   onNewMessage: (message: Message) => void;
   onUpdateResponse: (message: string) => void;
-  setAudioData: (audioData: Uint8Array[]) => void;
+  setAudioData: (audioData: (prevData: Uint8Array[]) => Uint8Array[]) => void;
   setLastBubbleId: (bubbleId: number) => void;
 }) => {
   const [chatContent, setChatContent] = useState("");
@@ -294,8 +311,10 @@ const ChatInput = ({
 
                 if (data.audio) {
                   const binaryData = hexToBinary(data.audio);
-                  // console.log("binaryData: ", binaryData);
-                  setAudioData((prevData) => [...(prevData || []), binaryData]);
+                  setAudioData((prevData: Uint8Array[]) => [
+                    ...(prevData || []),
+                    binaryData,
+                  ]);
                 }
                 if (data.bubble_id) {
                   setLastBubbleId(data.bubble_id);
@@ -315,18 +334,13 @@ const ChatInput = ({
     }
   };
 
-  const hexToBinary = (hex) => {
+  const hexToBinary = (hex: string): Uint8Array => {
     const bytes = new Uint8Array(hex.length / 2);
     for (let i = 0; i < hex.length; i += 2) {
       bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
     }
     return bytes;
   };
-
-
-
-
-
 
   return (
     <div className="chat-input mx-[3%] h-[25%] items-center shadow-lg flex">
@@ -399,7 +413,7 @@ export default function Chat({ description }: ChatProps) {
   const [name, setName] = useState("");
   const [chatName, setChatName] = useState("");
   const [lastBubbleId, setLastBubbleId] = useState<number>();
-  const [playingId, setPlayingId] = useState(null);
+  const [playingId, setPlayingId] = useState<number | null>(null);
 
   const images = [
     "https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png",
@@ -407,12 +421,11 @@ export default function Chat({ description }: ChatProps) {
     "https://i.ibb.co/mhx194f/2024-07-02-2-51-19-1.png",
   ];
   const [image, setImage] = useState("");
-  const [selectedImage, setSelectedImage] = useState(null);
-
+  const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleImageClick = (imageUrl) => {
+  const handleImageClick = (imageUrl: string) => {
     setSelectedImage(imageUrl);
   };
 
@@ -420,14 +433,14 @@ export default function Chat({ description }: ChatProps) {
     setSelectedImage(null);
   };
 
-  const playAudio = (audioUrl, index) => {
+  const playAudio = (audioUrl: string, index: number) => {
     const audio = new Audio(audioUrl);
     audio.play();
     setPlayingId(index);
     audio.onended = () => setPlayingId(null); // 오디오가 끝나면 playingId를 null로 설정
   };
 
-  const getSvgIcon = (index) => {
+  const getSvgIcon = (index: number) => {
     if (playingId === index) {
       // 음성 재생 중일 때 SVG
       return (
@@ -656,7 +669,7 @@ export default function Chat({ description }: ChatProps) {
     if (chatIdNumber) {
       await readChatRoom(chatIdNumber);
       const response = await getChatHistory(chatIdNumber);
-      const chatHistory = response.data.bubbles.map((bubble: any) => ({
+      const chatHistory = response.data.bubbles.map((bubble: Bubble) => ({
         content: bubble.content,
         isUser: bubble.writer, // API 응답에 따라 이 값을 설정해야 합니다.
         createdAt: bubble.created_at,
@@ -691,7 +704,7 @@ export default function Chat({ description }: ChatProps) {
   }, [name, images]);
   return (
     <div className="flex flex-row w-screen h-screen px-[3%] py-[3%] gap-10">
-      <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed z-10" />
+      <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/W5LP6yn/Brain-Wahser.png)] bg-cover bg-fixed z-10 transform scale-y-[-1]" />
       <div className=" justify-evenly flex flex-col basis-1/4 h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl">
         <div data-aos="zoom-in" className="flex flex-col space-y-12">
           <img
@@ -826,26 +839,26 @@ export default function Chat({ description }: ChatProps) {
           >
             {/*<p className="text-white text-2xl  font-normal">저장한 이미지</p>*/}
             <div className="flex flex-col h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
-            <ul className="grid grid-cols-4 gap-4 m-[5%] overflow-y-auto w-full text-2xl font-light text-white pr-10">
-              {imageList.length > 0 ? (
-                imageList.map((item, i) => (
-                  <li key={i} className="w-full h-full">
-                    <img
-                      src={item.image_url}
-                      alt={item.content}
-                      className="w-24 h-24 object-cover cursor-pointer rounded-lg"
-                      onClick={() => handleImageClick(item.image_url)}
-                    />
+              <ul className="grid grid-cols-4 gap-4 m-[5%] overflow-y-auto w-full text-2xl font-light text-white pr-10">
+                {imageList.length > 0 ? (
+                  imageList.map((item: ImageData, i) => (
+                    <li key={i} className="w-full h-full">
+                      <img
+                        src={item.image_url}
+                        alt={item.content}
+                        className="w-24 h-24 object-cover cursor-pointer rounded-lg"
+                        onClick={() => handleImageClick(item.image_url)}
+                      />
+                    </li>
+                  ))
+                ) : (
+                  <li className="col-span-4 flex items-center justify-center">
+                    <p className="text-center text-2xl font-light">
+                      해당 채팅방에서 생성한 이미지가 없습니다
+                    </p>
                   </li>
-                ))
-              ) : (
-                <li className="col-span-4 flex items-center justify-center">
-                  <p className="text-center text-2xl font-light">
-                    해당 채팅방에서 생성한 이미지가 없습니다
-                  </p>
-                </li>
-              )}
-            </ul>
+                )}
+              </ul>
 
               {selectedImage && (
                 <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
@@ -856,12 +869,15 @@ export default function Chat({ description }: ChatProps) {
                     >
                       &times;
                     </button>
-                    <img src={selectedImage} alt="Enlarged" className="max-w-full max-h-full" />
+                    <img
+                      src={selectedImage}
+                      alt="Enlarged"
+                      className="max-w-full max-h-full"
+                    />
                   </div>
                 </div>
               )}
             </div>
-          
           </div>
         )}
         {menu === menuOptions[2] && (
@@ -873,7 +889,7 @@ export default function Chat({ description }: ChatProps) {
             <div className="flex flex-row h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
               <ul className="flex flex-col items-start w-full text-2xl font-light text-white space-y-5 m-[5%] overflow-y-auto no-scrollbar">
                 {ttsList.length > 0 ? (
-                  ttsList.map((item, i) => (
+                  ttsList.map((item: TtsData, i) => (
                     <li
                       key={i}
                       className="flex flex-row w-full justify-between  bg-white bg-opacity-10 px-5 py-2 rounded-xl text-lg"
@@ -882,7 +898,10 @@ export default function Chat({ description }: ChatProps) {
                         {item.content}
                       </p>
 
-                      <div className="cursor-pointer hover:opacity-50 pt-0.5" onClick={() => playAudio(item.audio_url, i)}>
+                      <div
+                        className="cursor-pointer hover:opacity-50 pt-0.5"
+                        onClick={() => playAudio(item.audio_url, i)}
+                      >
                         {getSvgIcon(i)}
                       </div>
                     </li>
