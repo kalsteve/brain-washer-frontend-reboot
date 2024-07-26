@@ -435,7 +435,7 @@ export default function Chat({ description }: ChatProps) {
     setSelectedImage(null);
   };
 
-  const playAudio = async (audio_url: string, index) => {
+  const playAudio = async (audio_url: string, index: number) => {
     try {
       // 현재 오디오와 같은 URL이거나 오디오가 없는 경우
       if (audio && currentAudioUrl === audio_url) {
@@ -478,7 +478,6 @@ export default function Chat({ description }: ChatProps) {
     } catch (error) {
       console.error("Error playing audio:", error);
     }
-   
   };
 
   const getSvgIcon = (index: number) => {
@@ -882,7 +881,7 @@ export default function Chat({ description }: ChatProps) {
             <div className="flex flex-col h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
               <ul
                 className={`grid grid-cols-4 gap-4 m-[5%] overflow-y-auto w-full text-2xl font-light text-white pr-10 ${
-                  imageList.length === 0 ? 'h-full' : 'h-auto'
+                  imageList.length === 0 ? "h-full" : "h-auto"
                 }`}
               >
                 {imageList.length > 0 ? (

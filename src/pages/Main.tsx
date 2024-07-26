@@ -114,7 +114,8 @@ const TransitionPage = ({ onTransitionEnd }) => {
       star.style.animation = "";
     };
 
-    const rand = (min, max) => Math.random() * (max - min) + min;
+    const rand = (min: number, max: number) =>
+      Math.random() * (max - min) + min;
 
     const stars = document.getElementsByClassName("magic-star");
     Array.from(stars).forEach((star, index) => {
