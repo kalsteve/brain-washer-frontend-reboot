@@ -322,20 +322,20 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (!Kakao.isInitialized()) {
-      Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
+    if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
     }
   }, []);
 
   const kakaoShare = async (
     voiceId: number,
     content: string,
-    character_image: number,
+    character_image: string,
   ) => {
     try {
       // Kakao SDK 초기화 상태 체크
-      if (!Kakao.isInitialized()) {
-        Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
       }
 
       // 공유할 내용과 URL 설정
@@ -351,7 +351,7 @@ const App: React.FC = () => {
       };
 
       // 카카오톡 공유하기
-      Kakao.Share.sendDefault({
+      window.Kakao.Share.sendDefault({
         objectType: "feed",
         content: shareContent,
         buttons: [
@@ -372,8 +372,8 @@ const App: React.FC = () => {
   const kakaoImageShare = async (content: string, imageUrl: string) => {
     try {
       // Kakao SDK 초기화 상태 체크
-      if (!Kakao.isInitialized()) {
-        Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
+      if (!window.Kakao.isInitialized()) {
+        window.Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
       }
 
       // 공유할 내용과 URL 설정
@@ -389,7 +389,7 @@ const App: React.FC = () => {
       };
 
       // 카카오톡 공유하기
-      Kakao.Share.sendDefault({
+      window.Kakao.Share.sendDefault({
         objectType: "feed",
         content: shareContent,
         buttons: [
@@ -407,7 +407,7 @@ const App: React.FC = () => {
     }
   };
 
-  const downloadAudio = (audioUrl: string, voiceId: number, index: number) => {
+  const downloadAudio = (audioUrl: string, voiceId: number) => {
     const link = document.createElement("a");
     link.href = audioUrl;
     link.download = `voice_${voiceId}.mp3`; // 다운로드할 파일명 지정
@@ -502,9 +502,7 @@ const App: React.FC = () => {
 
                       <button
                         className="w-auto h-auto text-white rounded"
-                        onClick={() =>
-                          downloadAudio(item.audio_url, index, item.id)
-                        } // item.id를 사용하여 파일명 지정
+                        onClick={() => downloadAudio(item.audio_url, index)} // item.id를 사용하여 파일명 지정
                       >
                         <div className="group rounded-full transition duration-300 ease-in-out">
                           <svg
