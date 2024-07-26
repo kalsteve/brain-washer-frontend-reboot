@@ -10,7 +10,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioData }) => {
   const sourceBufferRef = useRef<SourceBuffer | null>(null);
   const queueRef = useRef<Uint8Array[]>([]);
   const mediaSourceOpened = useRef(false);
-  const [audioSet, setAudioSet] = useState(new Set<string>());
+  const [audioSet] = useState(new Set<string>());
 
   useEffect(() => {
     if (audioRef.current) {
