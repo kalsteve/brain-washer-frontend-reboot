@@ -401,7 +401,7 @@ const App: React.FC = () => {
     <div className="relative w-full h-screen">
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/W5LP6yn/Brain-Wahser.png)] bg-cover bg-fixed z-0 transform scale-y-[-1] " />
       <div className="fixed inset-0 bg-black bg-opacity-30 text-white overflow-hidden">
-        <div className="flex flex-col items-start p-6 px-[5%] ">
+        <div className="flex flex-col items-start p-6 sm:p-6 md:p-8 lg:px-[5%] xl:px-[5%] ">
           <div className="flex flex-row">
             <Link to="/" className="inline-block mt-[8%]">
               <img
@@ -411,13 +411,13 @@ const App: React.FC = () => {
               />
             </Link>
 
-            <h1 className="text-3xl font-bold mt-7 mb-6 ml-7 ">
+            <h1 className="text-3xl font-bold sm:mt-6 mt-7 mb-6 ml-7 ">
               저장한 음성 및 이미지
             </h1>
           </div>
           <div
             role="tablist"
-            className="tabs tabs-lifted bg-glass w-[100%] mt-5 flex justify-center"
+            className="tabs tabs-lifted bg-glass w-[100%] sm:mt-6 mt-5 flex justify-center"
           >
             <a
               role="tab"
@@ -446,7 +446,7 @@ const App: React.FC = () => {
           <div className="bg-white bg-opacity-25 px-6 pt-[0.5%] rounded-b-lg pb-[2%] mb-[10%] shadow-md w-full h-full ">
             <div className="flex justify-center space-x-8 mb-8 "></div>
             {showTts ? (
-              <div className="grid grid-cols-2 gap-6 mx-[2%] max-h-[660px] overflow-y-auto overflow-x-hidden">
+              <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 mx-[2%] max-h-[660px] overflow-y-auto overflow-x-hidden">
                 {voices?.map((item, index) => (
                   <div
                     key={index}
@@ -457,21 +457,15 @@ const App: React.FC = () => {
                       alt="Profile"
                       className="w-16 h-18 rounded-full"
                     />
-                    <div className="flex flex-col flex-grow mx-4">
+                    <div className="flex flex-col flex-grow flex-shrinksm:max-w-[20%] md:max-w-[30%] lg:max-w-[70%]">
                       <span className="text-sm text-gray-300">
                       {formatDateTime(item.created_at)}
                       </span>
                       <p
-                        className="text-left mt-2"
-                        style={{
-                          maxWidth: "550px",
-                          whiteSpace: "nowrap",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                        }}
+                        className="text-left mt-2 max-w-[100%] whitespace-nowrap overflow-hidden text-ellipsis "
                       >
                         {item.content}
-                      </p>
+                      </p>                   
                     </div>
                     <div className="flex space-x-2">
                       <button
