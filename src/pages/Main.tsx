@@ -187,7 +187,7 @@ export default function Main() {
 
   return (
     <div className="flex flex-col w-screen min-h-screen">
-      <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/s3QC5vr/3.jpg)] bg-cover bg-fixed z-10" />
+      <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/W5LP6yn/Brain-Wahser.png)] bg-cover bg-fixed z-10 transform scale-y-[-1]" />
       {!isTransitionComplete && (
         <div className="relative z-10">
           <TransitionPage
