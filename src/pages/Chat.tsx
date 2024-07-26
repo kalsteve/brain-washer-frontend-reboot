@@ -414,6 +414,8 @@ export default function Chat({ description }: ChatProps) {
   const [chatName, setChatName] = useState("");
   const [lastBubbleId, setLastBubbleId] = useState<number>();
   const [playingId, setPlayingId] = useState<number | null>(null);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const [currentAudioUrl, setCurrentAudioUrl] = useState<string | null>(null);
 
   const images = [
     "https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png",
@@ -433,11 +435,49 @@ export default function Chat({ description }: ChatProps) {
     setSelectedImage(null);
   };
 
-  const playAudio = (audioUrl: string, index: number) => {
-    const audio = new Audio(audioUrl);
-    audio.play();
-    setPlayingId(index);
-    audio.onended = () => setPlayingId(null); // 오디오가 끝나면 playingId를 null로 설정
+  const playAudio = async (audio_url: string, index: number) => {
+    try {
+      // 현재 오디오와 같은 URL이거나 오디오가 없는 경우
+      if (audio && currentAudioUrl === audio_url) {
+        if (playingId == index) {
+          // 현재 오디오가 재생 중이면 일시 정지
+          audio.pause();
+          setPlayingId(null);
+        } else {
+          // 현재 오디오가 일시 정지 상태이면 재생
+          audio.play();
+          setPlayingId(index);
+
+          // 음성이 끝나면 상태를 업데이트합니다.
+          audio.onended = () => {
+            setPlayingId(null);
+          };
+        }
+      } else {
+        // 다른 오디오가 재생 중이거나 새로운 오디오 URL인 경우
+        if (audio) {
+          // 기존 오디오가 있을 경우 정리
+          audio.pause();
+          setAudio(null);
+        }
+
+        // 새로운 오디오 객체 생성 및 재생
+        const newAudio = new Audio(audio_url);
+        setAudio(newAudio);
+        setCurrentAudioUrl(audio_url);
+        newAudio
+          .play()
+          .then(() => {
+            // setIsPlaying(true);
+            setPlayingId(index);
+          })
+          .catch((error) => {
+            console.error("Error playing audio:", error);
+          });
+      }
+    } catch (error) {
+      console.error("Error playing audio:", error);
+    }
   };
 
   const getSvgIcon = (index: number) => {
@@ -839,7 +879,11 @@ export default function Chat({ description }: ChatProps) {
           >
             {/*<p className="text-white text-2xl  font-normal">저장한 이미지</p>*/}
             <div className="flex flex-col h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
-              <ul className="grid grid-cols-4 gap-4 m-[5%] overflow-y-auto w-full text-2xl font-light text-white pr-10">
+              <ul
+                className={`grid grid-cols-4 gap-4 m-[5%] overflow-y-auto w-full text-2xl font-light text-white pr-10 ${
+                  imageList.length === 0 ? "h-full" : "h-auto"
+                }`}
+              >
                 {imageList.length > 0 ? (
                   imageList.map((item: ImageData, i) => (
                     <li key={i} className="w-full h-full">
@@ -852,7 +896,7 @@ export default function Chat({ description }: ChatProps) {
                     </li>
                   ))
                 ) : (
-                  <li className="col-span-4 flex items-center justify-center">
+                  <li className="col-span-4 flex items-center justify-center h-full">
                     <p className="text-center text-2xl font-light">
                       해당 채팅방에서 생성한 이미지가 없습니다
                     </p>
