@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 
 const App: React.FC = () => {
   const [showTts, setShowTts] = useState(true);
-  const [voices, setVoices] = useState([]);
+  const [voices, setVoices] = useState<Voice[]>([]);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const [currentAudioUrl, setCurrentAudioUrl] = useState<string | null>(null);
-  const [playingId, setPlayingId] = useState(null);
-  const [Images, setImages] = useState([]);
+  const [playingId, setPlayingId] = useState<number | null>(null);
+  const [Images, setImages] = useState<ImageItem[]>([]);
 
   useEffect(() => {
     const fetchVoices = async () => {
@@ -26,7 +26,7 @@ const App: React.FC = () => {
     fetchVoices();
   }, []);
 
-  const handlePlayAudio = async (audio_url: string, index) => {
+  const handlePlayAudio = async (audio_url: string, index: number) => {
     try {
       // 현재 오디오와 같은 URL이거나 오디오가 없는 경우
       if (audio && currentAudioUrl === audio_url) {
@@ -72,7 +72,7 @@ const App: React.FC = () => {
    
   };
 
-  const getSvgIcon = (index) => {
+  const getSvgIcon = (index: number) => {
     if (playingId == index) {
       // 음성 재생 중일 때 SVG
       return (
@@ -275,7 +275,7 @@ const App: React.FC = () => {
     }
   };
 
-  const formatDateTime = (dateTimeString) => {
+  const formatDateTime = (dateTimeString: string) => {
     const date = new Date(dateTimeString);
     //const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -388,7 +388,7 @@ const App: React.FC = () => {
     }
   };
 
-  const downloadAudio = (audioUrl: string, voiceId: number) => {
+  const downloadAudio = (audioUrl: string, voiceId: number, index: number) => {
     const link = document.createElement('a');
     link.href = audioUrl;
     link.download = `voice_${voiceId}.mp3`; // 다운로드할 파일명 지정
@@ -447,7 +447,7 @@ const App: React.FC = () => {
             <div className="flex justify-center space-x-8 mb-8 "></div>
             {showTts ? (
               <div className="grid grid-cols-2 gap-6 mx-[2%] max-h-[660px] overflow-y-auto overflow-x-hidden">
-                {voices.map((item, index) => (
+                {voices?.map((item, index) => (
                   <div
                     key={index}
                     className="bg-gradient-to-b from-[rgba(224,224,224,0.2)] to-[rgba(71,91,161,0.2)] shadow-lg shadow-black/25 backdrop-blur-[3px] rounded-[25px] bg-opacity-20  p-6 flex items-center justify-between text-white"
