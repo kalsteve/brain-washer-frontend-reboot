@@ -101,11 +101,15 @@ const Onboarding = () => {
   );
 };
 
-const TransitionPage = ({ onTransitionEnd }) => {
+const TransitionPage = ({
+  onTransitionEnd,
+}: {
+  onTransitionEnd: () => void;
+}) => {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    const animate = (star) => {
+    const animate = (star: HTMLElement) => {
       star.style.setProperty("--star-left", `${rand(-10, 100)}%`);
       star.style.setProperty("--star-top", `${rand(-40, 80)}%`);
 
@@ -120,8 +124,8 @@ const TransitionPage = ({ onTransitionEnd }) => {
     const stars = document.getElementsByClassName("magic-star");
     Array.from(stars).forEach((star, index) => {
       setTimeout(() => {
-        animate(star);
-        setInterval(() => animate(star), 1000);
+        animate(star as HTMLElement);
+        setInterval(() => animate(star as HTMLElement), 1000);
       }, index * 333); // interval/3 = 1000ms / 3
     });
 
