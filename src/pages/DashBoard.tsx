@@ -110,13 +110,13 @@ const SideMenu = ({
 }: MenuProps) => {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/6 p-[1%] gap-4 text-gray-50">
+    <div className="flex flex-col bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/4 lg:basis-1/4 xl:basis-1/5 2xl:basis-1/6 p-[1%] gap-4 text-gray-50">
       <img
         alt="Brain Washer logo"
         src="https://i.ibb.co/Mk5gYZq/brainwasher-logo-text.png"
         className="w-[80%]"
       />
-      <p className="text-2xl ml-[3%] mt-[10%] font-bold">DashBoard</p>
+      <p className="2xl:text-xl ml-[3%] mt-[10%] font-bold">DashBoard</p>
 
       <div
         className={`collapse hover:glass hover:bg-glass hover:backdrop-filter hover:backdrop-blur transition-all duration-300 ease-linear rounded-lg border-none
@@ -134,6 +134,7 @@ const SideMenu = ({
               viewBox="0 0 60 60"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              className="size-6 lg:size-6 xl:size-7 2xl:size-8"
             >
               <path
                 d="M12.5 14.5C12.5 13.3954 13.3954 12.5 14.5 12.5H23C24.1046 12.5 25 13.3954 25 14.5V23C25 24.1046 24.1046 25 23 25H14.5C13.3954 25 12.5 24.1046 12.5 23V14.5Z"
@@ -180,7 +181,9 @@ const SideMenu = ({
                 strokeLinejoin="round"
               />
             </svg>
-            <p className="my-auto">Overview</p>
+            <p className="my-auto text-base lg:text-base xl:text-lg 2xl:text-lg">
+              Overview
+            </p>
           </div>
         </div>
       </div>
@@ -197,6 +200,7 @@ const SideMenu = ({
               viewBox="0 0 40 40"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              className="size-6 lg:size-6 xl:size-7 2xl:size-8"
             >
               <path
                 d="M31.6667 21.6667C31.6667 29.0305 25.6971 35 18.3333 35C10.9695 35 5 29.0305 5 21.6667C5 14.3029 10.9695 8.33333 18.3333 8.33333M18.3333 19.6667V6C18.3333 5.44771 18.7821 4.99688 19.3335 5.02951C27.7417 5.52716 34.4728 12.2583 34.9705 20.6665C35.0031 21.2179 34.5523 21.6667 34 21.6667H20.3333C19.2288 21.6667 18.3333 20.7712 18.3333 19.6667Z"
@@ -207,7 +211,9 @@ const SideMenu = ({
               />
             </svg>
 
-            <p className="my-auto">캐릭터별 통계</p>
+            <p className="my-auto text-base lg:text-base xl:text-lg 2xl:text-lg">
+              캐릭터별 통계
+            </p>
           </div>
         </div>
 
@@ -479,20 +485,24 @@ const OverView = () => {
   return (
     <div className="flex flex-col basis-5/6 gap-8 h-full">
       <div className="flex flex-col w-full h-full gap-4 basis-1/2">
-        <p className="text-2xl text-gray-50">카테고리</p>
+        <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">카테고리</p>
         <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[1%]">
           <CategoryChart data={processCategoryData(categoryData)} />
         </div>
       </div>
       <div className="flex flex-row basis-1/2 gap-8">
         <div className="flex flex-col w-full h-full gap-4 basis-1/2">
-          <p className="text-2xl text-gray-50">인기순위</p>
+          <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">
+            인기순위
+          </p>
           <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
             <PopularChart data={processPopularData(categoryData)} />
           </div>
         </div>
         <div className="flex flex-col w-full h-full gap-4 basis-1/2">
-          <p className="text-2xl text-gray-50">매운맛 빈도</p>
+          <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">
+            매운맛 빈도
+          </p>
           <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
             <SpicyChart data={processSpicyData(categoryData)} />
           </div>
@@ -516,16 +526,16 @@ const CharacterChart = ({ character }: { character: string }) => {
 
   const CharacterCard = ({ data }: { data: Info }) => {
     return (
-      <div className="flex flex-row justify-start w-full h-full items-center gap-8 lg:gap-12 xl:gap-16 2xl:gap-20 p-[10%]">
+      <div className="flex flex-row justify-start w-full h-full items-center gap-2 lg:gap-2 xl:gap-6 2xl:gap-10 p-[10%]">
         <img
-          className="rounded-full size-24 lg:size-36 xl:size-48 2xl:size-60"
+          className="rounded-full size-24 lg:size-24 xl:size-28 2xl:size-32"
           src={data.image}
         />
-        <div className="flex flex-col gap-1 lg:gap-2 xl:gap-3 2xl:gap-4">
-          <p className="text-lg lg:text-2xl xl:text-3xl 2xl:text-4xl text-[#eeeeee] font-bold">
+        <div className="flex flex-col gap-1 2xl:gap-2">
+          <p className="text-base lg:text-lg xl:text-xl 2xl:text-2xl text-[#eeeeee] font-bold">
             {data.name}
           </p>
-          <p className="text-base lg:text-lg xl:text-2xl 2xl:text-3xl text-[#c1c1c1]">
+          <p className="text-sm lg:text-base xl:text-lg 2xl:text-xl text-[#c1c1c1]">
             {data.description}
           </p>
         </div>
@@ -611,14 +621,24 @@ const CharacterChart = ({ character }: { character: string }) => {
     const navigate = useNavigate();
 
     return (
-      <div className="w-full h-full px-[4%] py-[4%] flex flex-col gap-4">
-        <p className="text-2xl text-gray-50">생성 이미지</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 h-full mx-auto">
+      <div className="w-full h-full px-[4%] py-[2%] flex flex-col gap-4">
+        <div className="flex flex-row items-center">
+          <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">
+            생성 이미지
+          </p>
+          <button
+            className="btn bg-transparent border-none my-auto text-blue-500 hover:bg-transparent cursor-pointer"
+            onClick={() => navigate("/list_board")}
+          >
+            전체보기
+          </button>
+        </div>
+        <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-4 h-full mx-auto items-center">
           {data.map((item) => (
-            <div key={item.id} className="relative size-40 group">
+            <div key={item.id} className="relative group h-fit">
               <img
                 src={item.url}
-                className="w-full h-full object-cover rounded-xl"
+                className="size-28 lg:size-28 xl:size-36 object-cover rounded-xl"
               />
               <div className="absolute inset-0 w-full h-full bg-black bg-opacity-50 flex flex-col items-center justify-evenly text-white opacity-0 group-hover:opacity-100 transition-opacity rounded-xl duration-200 ease-linear">
                 <div className="flex flex-row items-center gap-2">
@@ -648,14 +668,6 @@ const CharacterChart = ({ character }: { character: string }) => {
               </div>
             </div>
           ))}
-          <div className="relative w-full h-full flex items-center justify-center bg-glass backdrop-blur rounded-xl hover:bg-opacity-30 hover:bg-gray-900 transition-all duration-200 ease-linear">
-            <button
-              className="text-white w-full h-full"
-              onClick={() => navigate("/list_board")}
-            >
-              모두 보기
-            </button>
-          </div>
         </div>
       </div>
     );
@@ -678,7 +690,7 @@ const CharacterChart = ({ character }: { character: string }) => {
 
     return (
       <div className="w-full max-h-full px-[4%] py-[4%] flex flex-col gap-4">
-        <p className="text-2xl text-gray-50">어록</p>
+        <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">어록</p>
         <ul className="gap-2 flex flex-col w-full h-full">
           {data.map((item) => (
             <li
@@ -690,7 +702,7 @@ const CharacterChart = ({ character }: { character: string }) => {
               </p>
 
               <svg
-                className="cursor-pointer hover:opacity-50"
+                className="cursor-pointer transition-all duration-200 ease-linear hover:scale-125"
                 width="40"
                 height="40"
                 viewBox="0 0 45 45"
@@ -764,12 +776,12 @@ const CharacterChart = ({ character }: { character: string }) => {
               </svg>
 
               <svg
+                className="cursor-pointer transition-all duration-200 ease-linear hover:scale-125"
                 width="35"
                 height="35"
                 viewBox="0 0 26 26"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="cursor-pointer hover:opacity-50"
                 onClick={() => playAudio(item.url)}
               >
                 <circle
@@ -813,16 +825,18 @@ const CharacterChart = ({ character }: { character: string }) => {
   return (
     <div className="flex flex-col h-full basis-5/6 gap-8">
       <div className="basis-[40%]  flex flex-row gap-8 h-1/2 overflow-hidden">
-        <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl">
+        <div className="basis-[35%] bg-glass backdrop-blur rounded-xl shadow-2xl">
           <CharacterCard data={data.info} />
         </div>
-        <div className="basis-2/5 bg-glass backdrop-blur rounded-xl shadow-2xl">
+        <div className="basis-[65%] bg-glass backdrop-blur rounded-xl shadow-2xl">
           <ImageList data={data.top_images} />
         </div>
       </div>
       <div className="flex flex-row basis-[60%] gap-8">
         <div className="basis-3/5 bg-glass backdrop-blur rounded-xl shadow-2xl py-[1.5%] px-[2%] flex flex-col gap-4 max-h-full">
-          <p className="text-2xl text-gray-50 basis-1/10">인기 카테고리</p>
+          <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50 basis-1/10">
+            인기 카테고리
+          </p>
           <PieCategoryChart data={data.topic_frequency} />
         </div>
         <div className="basis-2/5 flex flex-col gap-8 h-full">

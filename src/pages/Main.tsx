@@ -160,7 +160,7 @@ const TransitionPage = ({
         data-aos="fade-up"
         data-aos-duration="1000"
         data-aos-delay="500"
-        className=" text-[3rem]"
+        className="text-[2rem] md:text-[2.25rem] lg:text-[2.5rem] xl:text-[3rem]"
       >
         새로운 시작을 도와드립니다 &nbsp;
         <span className="magic">
