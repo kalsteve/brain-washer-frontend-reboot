@@ -35,6 +35,7 @@ jobs:
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL}}" >> .env
           echo "VITE_APP_KAKAO_KEY=${{ secrets.VITE_APP_KAKAO_KEY}}" >> .env
+          echo "VITE_BASE_URL=${{ secrets.VITE_BASE_URL}}" >> .env
 
       - name: Build Static Files by Yarn
         run: |
