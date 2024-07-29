@@ -22,6 +22,7 @@ const ImageGenerator = ({
   const [fontSize, setFontSize] = useState(30);
   const [fontColor, setFontColor] = useState("#000000");
   const [fontStyle, setFontStyle] = useState("normal");
+  const [isGrayScale, setIsGrayScale] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,6 +70,9 @@ const ImageGenerator = ({
     const imageToDraw = img || backgroundImage;
     if (imageToDraw) {
       ctx.drawImage(imageToDraw, 0, 0, canvas.width, canvas.height);
+      if (isGrayScale) {
+        applyGrayScale(ctx);
+      }
     } else {
       drawInitialText(ctx);
     }
@@ -89,6 +93,23 @@ const ImageGenerator = ({
     ctx.font = `${fontStyle} ${fontSize}px Arial`;
     const textWidth = ctx.measureText(text).width;
     ctx.fillText(text, textPosition.x - textWidth / 2, textPosition.y);
+  };
+
+  const applyGrayScale = (ctx: CanvasRenderingContext2D) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+      const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+      data[i] = avg;
+      data[i + 1] = avg;
+      data[i + 2] = avg;
+    }
+
+    ctx.putImageData(imageData, 0, 0);
   };
 
   const downloadImage = () => {
@@ -195,7 +216,7 @@ const ImageGenerator = ({
 
   useEffect(() => {
     drawCanvas();
-  }, [text, shouldDrawText, fontSize, fontColor, fontStyle]);
+  }, [text, shouldDrawText, fontSize, fontColor, fontStyle, isGrayScale]);
 
   return (
     <div className="flex flex-col w-full space-y-6">
@@ -286,7 +307,7 @@ const ImageGenerator = ({
           />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="btn text-white rounded glass bg-glass text-sm bg-[#2196F3] bg-opacity-80 hover:bg-opacity-100 hover:bg-[#2196F3]"
+            className="btn-sm text-white h-fit rounded glass bg-glass text-sm bg-[#2196F3] bg-opacity-80 hover:bg-opacity-100 hover:bg-[#2196F3]"
           >
             파일 선택
           </button>
@@ -307,9 +328,15 @@ const ImageGenerator = ({
       <div className="flex space-x-4 justify-center">
         <button
           onClick={downloadImage}
-          className="w-full btn p-2 text-white rounded glass bg-[#2196F3] bg-opacity-80 hover:bg-opacity-100 hover:bg-[#2196F3]"
+          className="basis-1/2 btn p-2 text-white rounded glass bg-[#2196F3] bg-opacity-80 hover:bg-opacity-100 hover:bg-[#2196F3]"
         >
           이미지 저장
+        </button>
+        <button
+          onClick={() => setIsGrayScale(!isGrayScale)}
+          className="basis-1/2  btn p-2 text-white rounded glass bg-[#2196F3] bg-opacity-80 hover:bg-opacity-100 hover:bg-[#2196F3]"
+        >
+          {isGrayScale ? "컬러 모드" : "흑백 모드"}
         </button>
       </div>
     </div>
