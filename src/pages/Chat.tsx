@@ -55,16 +55,18 @@ const formatToKoreanTime = (createdAt: string) => {
 const ChatHeader = ({ name, chatName, image }: ChatProps) => {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col justify-center space-y-8">
+    <div className="flex flex-col justify-center space-y-6">
       <div className="flex flex-row space-x-8 justify-between px-[3%]">
         <div></div>
-        <div className="flex flex-row space-x-8">
+        <div className="flex flex-row space-x-4 lg:space-x-4 xl:space-x-6 2xl:space-x-8">
           <img
             src={image}
             alt={name}
-            className={`rounded-full object-cover shadow-2xl size-16 my-auto`}
+            className={`rounded-full object-cover shadow-2xl size-10 lg:size-12 xl:size-14 2xl:size-16 my-auto`}
           />
-          <p className="text-white my-auto text-3xl font-bold">{chatName}</p>
+          <p className="text-white my-auto text-base lg:text-lg xl:text-xl 2xl:text-2xl font-bold">
+            {chatName}
+          </p>
         </div>
         <div
           className="btn bg-transparent border-none my-auto ml-auto hover:bg-blue-500"
@@ -88,7 +90,7 @@ const ChatHeader = ({ name, chatName, image }: ChatProps) => {
           </svg>
         </div>
       </div>
-      <p className="text-muted-foreground text-lg text-center">
+      <p className="text-muted-foreground text-xs lg:text-xs 2xl:text-sm text-center">
         채팅방에 입장하였습니다. {name} 과 대화를 나누어보세요.
       </p>
     </div>
@@ -155,7 +157,7 @@ const ChatMessage = ({
       <div
         className={`chat-bubble shadow-lg ${
           isUser ? "bg-[#2196F3] opacity-80 text-white" : "bg-glass"
-        } max-w-lg px-[2%] py-[1%] text-lg`}
+        } max-w-lg p-[2%] py-[1%] text-xs  xl:text-xs 2xl:text-sm`}
         onClick={() => setIsShow(!isShow)}
       >
         {message}
@@ -218,7 +220,7 @@ const ChatMessage = ({
           </div>
         )}
         {!isUser && (
-          <div className="text-right text-sm text-gray-500 mt-1">
+          <div className="text-right text-gray-500 mt-1 text-[0.6rem]  xl:text-[0.7rem] 2xl:text-xs">
             {createdAt ? formatToKoreanTime(createdAt) : ""}
           </div>
         )}
@@ -358,7 +360,7 @@ const ChatInput = ({
           viewBox="0 0 48 48"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="cursor-pointer hover:opacity-70 mb-auto transition-opacity duration-300 ease-in-out"
+          className="cursor-pointer hover:opacity-90 mb-auto duration-300 ease-in-out size-8 lg:size-8 xl:size-10 2xl:size-10 transition-all hover:scale-105"
           onClick={handleSendChat}
         >
           <circle cx="24" cy="24" r="24" fill="url(#paint0_linear_598_542)" />
@@ -525,9 +527,9 @@ export default function Chat({ description }: ChatProps) {
                 width="43"
                 height="43"
                 filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
+                colorInterpolationFilters="sRGB"
               >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feFlood floodOpacity="0" result="BackgroundImageFix" />
                 <feColorMatrix
                   in="SourceAlpha"
                   type="matrix"
@@ -561,8 +563,8 @@ export default function Chat({ description }: ChatProps) {
                 y2="35"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stop-color="#631C43" />
-                <stop offset="1" stop-color="#C93988" />
+                <stop stopColor="#631C43" />
+                <stop offset="1" stopColor="#C93988" />
               </linearGradient>
             </defs>
           </svg>
@@ -602,9 +604,9 @@ export default function Chat({ description }: ChatProps) {
                 width="43"
                 height="43"
                 filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
+                colorInterpolationFilters="sRGB"
               >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feFlood floodOpacity="0" result="BackgroundImageFix" />
                 <feColorMatrix
                   in="SourceAlpha"
                   type="matrix"
@@ -637,9 +639,9 @@ export default function Chat({ description }: ChatProps) {
                 width="27"
                 height="27"
                 filterUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB"
+                colorInterpolationFilters="sRGB"
               >
-                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feFlood floodOpacity="0" result="BackgroundImageFix" />
                 <feColorMatrix
                   in="SourceAlpha"
                   type="matrix"
@@ -673,8 +675,8 @@ export default function Chat({ description }: ChatProps) {
                 y2="35"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop stop-color="#631C43" />
-                <stop offset="1" stop-color="#C93988" />
+                <stop stopColor="#631C43" />
+                <stop offset="1" stopColor="#C93988" />
               </linearGradient>
             </defs>
           </svg>
@@ -750,12 +752,16 @@ export default function Chat({ description }: ChatProps) {
           <img
             src={image}
             alt={name}
-            className={`rounded-full object-cover shadow-2xl size-48 mx-auto`}
+            className={`rounded-full object-cover shadow-2xl size-24 lg:size-32 xl:size-40 2xl:size-48 mx-auto`}
           />
           <AudioPlayer audioData={audioData} />
           <div className="text-center space-y-2 mt-4">
-            <h3 className="text-3xl font-semibold text-white">{name}</h3>
-            <p className="text-muted-foreground text-lg">{description}</p>
+            <h3 className="text-lg lg-text-xl xl:text-2xl 2xl:text-3xl font-semibold text-white">
+              {name}
+            </h3>
+            <p className="text-muted-foreground text-xs lg-text-sm xl:text-base 2xl:text-lg">
+              {description}
+            </p>
           </div>
         </div>
         <div
@@ -768,7 +774,7 @@ export default function Chat({ description }: ChatProps) {
             viewBox="0 0 76 76"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="cursor-pointer duration-400 transform hover:scale-95 transition-transform drop-shadow-2xl"
+            className="cursor-pointer duration-400 transform hover:scale-95 transition-transform drop-shadow-2xl size-14 xl:size-14 2xl:size-16"
             onClick={async () => {
               if (chatIdNumber) {
                 const response = await getRoomTts(chatIdNumber);
@@ -809,7 +815,7 @@ export default function Chat({ description }: ChatProps) {
             viewBox="0 0 76 76"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="cursor-pointer duration-400 transform hover:scale-95 transition-transform drop-shadow-2xl"
+            className="cursor-pointer duration-400 transform hover:scale-95 transition-transform drop-shadow-2xl size-14 xl:size-14 2xl:size-16"
             onClick={async () => {
               if (chatIdNumber) {
                 const response = await getRoomImages(chatIdNumber);
@@ -880,7 +886,7 @@ export default function Chat({ description }: ChatProps) {
             {/*<p className="text-white text-2xl  font-normal">저장한 이미지</p>*/}
             <div className="flex flex-col h-full rounded-2xl backdrop-blur backdrop-filter backdrop:shadow w-full">
               <ul
-                className={`grid grid-cols-4 gap-4 m-[5%] overflow-y-auto w-full text-2xl font-light text-white pr-10 ${
+                className={`grid grid-cols-1 lg:grid-cols-2  xl:grid-cols-3 2xl:grid-cols-3 gap-4 overflow-y-auto w-full text-2xl font-light text-white p-[5%] ${
                   imageList.length === 0 ? "h-full" : "h-auto"
                 }`}
               >
@@ -890,15 +896,16 @@ export default function Chat({ description }: ChatProps) {
                       <img
                         src={item.image_url}
                         alt={item.content}
-                        className="w-24 h-24 object-cover cursor-pointer rounded-lg"
+                        className="size-24 object-cover cursor-pointer rounded-lg"
                         onClick={() => handleImageClick(item.image_url)}
                       />
                     </li>
                   ))
                 ) : (
                   <li className="col-span-4 flex items-center justify-center h-full">
-                    <p className="text-center text-2xl font-light">
-                      해당 채팅방에서 생성한 이미지가 없습니다
+                    <p className="items-center text-center my-auto text-sm lg:text-base xl:text-lg 2xl:text-xl font-light mx-auto">
+                      해당 채팅방에서 생성한 이미지가
+                      <br /> 없습니다
                     </p>
                   </li>
                 )}
@@ -951,8 +958,9 @@ export default function Chat({ description }: ChatProps) {
                     </li>
                   ))
                 ) : (
-                  <p className="items-center text-center my-auto text-2xl font-light">
-                    해당 채팅방에서 다운받은 TTS 가 없습니다
+                  <p className="items-center text-center my-auto text-sm lg:text-base xl:text-lg 2xl:text-xl font-ligh mx-auto">
+                    해당 채팅방에서 다운받은 TTS 가 <br />
+                    없습니다
                   </p>
                 )}
               </ul>
