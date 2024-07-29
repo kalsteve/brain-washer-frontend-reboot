@@ -7,7 +7,7 @@ export default function Navbar({
 }) {
   return (
     <div
-      className="flex w-full px-[10%] items-center h-[10%] justify-between"
+      className="flex w-full px-[7%] items-center h-[10%] justify-between"
       data-aos="fade-down"
       data-aos-duration="1000"
       data-aos-easing="ease-in-out"
@@ -16,10 +16,10 @@ export default function Navbar({
         <img
           alt="Brain Washer logo"
           src="https://i.ibb.co/Mk5gYZq/brainwasher-logo-text.png"
-          className="w-[65%] lg:w-[70%] xl:w-[75%] 2xl:w-[80%]"
+          className="w-[80%] sm:w-[65%] lg:w-[70%] xl:w-[75%] 2xl:w-[80%]"
         />
       </ul>
-      <ul className="flex justify-center text-base lg:text-base xl:text-lg 2xl:text-xl gap-20 cursor-pointer">
+      <ul className="flex justify-center text-sm md:text-base xl:text-lg 2xl:text-xl gap-5 md:gap-20 cursor-pointer">
         <li className="text-gray-200" onClick={scrollToBottom}>
           시작하기
         </li>

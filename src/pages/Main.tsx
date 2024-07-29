@@ -44,12 +44,12 @@ const CharacterSelect = () => {
         </div>
       </div>
     </div>
-  );
+      );
 };
 
 const Onboarding = () => {
   return (
-    <div className="w-screen h-[90%] flex flex-col text-white items-start px-[10%] justify-evenly">
+    <div className="w-screen h-[90%] flex flex-col text-white items-start px-[7%] sm:px-[10%] justify-evenly">
       <div
         className="flex flex-col w-fit space-y-2"
         data-aos="fade-down-right"

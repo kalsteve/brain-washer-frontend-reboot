@@ -110,7 +110,7 @@ const SideMenu = ({
 }: MenuProps) => {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col bg-glass backdrop-blur rounded-xl shadow-2xl basis-1/4 lg:basis-1/4 xl:basis-1/5 2xl:basis-1/6 p-[1%] gap-4 text-gray-50">
+    <div className="flex flex-col bg-glass backdrop-blur rounded-xl shadow-2xl sm:basis-1/4 lg:basis-1/4 xl:basis-1/5 2xl:basis-1/6 p-[1%] gap-4 text-gray-50">
       <img
         alt="Brain Washer logo"
         src="https://i.ibb.co/Mk5gYZq/brainwasher-logo-text.png"
@@ -484,31 +484,29 @@ const OverView = () => {
 
   return (
     <div className="flex flex-col basis-5/6 gap-8 h-full">
-      <div className="flex flex-col w-full h-full gap-4 basis-1/2">
-        <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">카테고리</p>
-        <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[1%]">
-          <CategoryChart data={processCategoryData(categoryData)} />
-        </div>
-      </div>
-      <div className="flex flex-row basis-1/2 gap-8">
-        <div className="flex flex-col w-full h-full gap-4 basis-1/2">
-          <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">
-            인기순위
-          </p>
-          <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
-            <PopularChart data={processPopularData(categoryData)} />
-          </div>
-        </div>
-        <div className="flex flex-col w-full h-full gap-4 basis-1/2">
-          <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">
-            매운맛 빈도
-          </p>
-          <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
-            <SpicyChart data={processSpicyData(categoryData)} />
-          </div>
-        </div>
+  <div className="flex flex-col w-full h-full gap-4 basis-1/2">
+    <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">카테고리</p>
+    <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[1%]">
+      <CategoryChart data={processCategoryData(categoryData)} />
+    </div>
+  </div>
+  <div className="flex flex-col sm:flex-row basis-1/2 gap-8">
+  <div className="flex flex-col w-full h-full gap-4 sm:basis-1/2">
+      <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">인기순위</p>
+      <div className="h-full sm:min-h-[300px] bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
+        <PopularChart data={processPopularData(categoryData)} />
       </div>
     </div>
+    <div className="flex flex-col w-full h-full gap-4 sm:basis-1/2">
+      <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">매운맛 빈도</p>
+      <div className="h-full sm:min-h-[300px] bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
+        <SpicyChart data={processSpicyData(categoryData)} />
+      </div>
+    </div>
+  </div>
+</div>
+
+
   );
 };
 
@@ -551,7 +549,6 @@ const CharacterChart = ({ character }: { character: string }) => {
           value: data[key],
         }))
       : [];
-    console.log(chartData);
     const RADIAN = Math.PI / 180;
     const renderCustomizedLabel = ({
       cx,
@@ -815,9 +812,7 @@ const CharacterChart = ({ character }: { character: string }) => {
     );
   };
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  useEffect(() => {}, [data]);
 
   if (!data) {
     return <div>Loading...</div>;
