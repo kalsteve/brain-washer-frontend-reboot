@@ -13,10 +13,7 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route path="/list_board" element={<ListBoard />} />
         <Route path="/play" element={<Play />} />
-        <Route
-          path="/chat/:chat_id"
-          element={<Chat description={"직설적인 피드백을 통한 냉철한 조언"} />}
-        />
+        <Route path="/chat/:chat_id" element={<Chat />} />
         <Route path="/dashboard" element={<DashBoard />} />
       </Routes>
     </BrowserRouter>
