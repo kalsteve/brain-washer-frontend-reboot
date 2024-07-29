@@ -402,7 +402,7 @@ const ChatInput = ({
   );
 };
 
-export default function Chat({ description }: ChatProps) {
+export default function Chat() {
   const { chat_id } = useParams();
   const chatIdNumber = chat_id ? parseInt(chat_id) : null;
   const [messages, setMessages] = useState<Message[]>([]);
@@ -418,12 +418,14 @@ export default function Chat({ description }: ChatProps) {
   const [playingId, setPlayingId] = useState<number | null>(null);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
   const [currentAudioUrl, setCurrentAudioUrl] = useState<string | null>(null);
-
+  const [description, setDescription] = useState<string | null>(null);
   const images = [
     "https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png",
     "https://i.ibb.co/yBFH4tY/2024-07-02-2-53-32.png",
     "https://i.ibb.co/mhx194f/2024-07-02-2-51-19-1.png",
   ];
+  const descriptions = ["MZ 저격수", "Certified 믹서기", "Lovely 정신 탈곡기"];
+
   const [image, setImage] = useState("");
   const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
@@ -738,17 +740,25 @@ export default function Chat({ description }: ChatProps) {
   useEffect(() => {
     if (name === "Andrew") {
       setImage(images[0]);
+      setDescription(descriptions[0]);
     } else if (name === "Hyunwoojin") {
       setImage(images[1]);
+      setDescription(descriptions[1]);
     } else if (name === "Jeonhangil") {
       setImage(images[2]);
+      setDescription(descriptions[2]);
     }
   }, [name, images]);
   return (
     <div className="flex flex-row w-screen h-screen px-[3%] py-[3%] gap-10">
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/W5LP6yn/Brain-Wahser.png)] bg-cover bg-fixed z-10 transform scale-y-[-1]" />
-      <div className=" justify-evenly flex flex-col basis-1/4 h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl">
-        <div data-aos="zoom-in" className="flex flex-col space-y-12">
+      <div
+        data-aos="fade-right"
+        data-aos-duration="500"
+        data-aos-easing="linear"
+        className="justify-evenly flex flex-col basis-1/4 h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl"
+      >
+        <div className="flex flex-col space-y-12">
           <img
             src={image}
             alt={name}
@@ -968,7 +978,12 @@ export default function Chat({ description }: ChatProps) {
           </div>
         )}
       </div>
-      <div className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]">
+      <div
+        data-aos="fade-left"
+        data-aos-duration="500"
+        data-aos-easing="linear"
+        className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]"
+      >
         <ChatHeader name={name} chatName={chatName} image={image} />
         <div className="flex flex-col space-y-4 overflow-auto mb-auto">
           {messages.map((msg, index) => (

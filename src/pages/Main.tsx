@@ -32,12 +32,12 @@ const CharacterSelect = () => {
             />
             <CharacterCard
               name={"Hyunwoojin"}
-              description={"특징설명"}
+              description={"Certified 믹서기"}
               image={"https://i.ibb.co/yBFH4tY/2024-07-02-2-53-32.png"}
             />
             <CharacterCard
               name={"Jeonhangil"}
-              description={"특징설명"}
+              description={"Lovely 정신 탈곡기"}
               image={"https://i.ibb.co/mhx194f/2024-07-02-2-51-19-1.png"}
             />
           </div>
@@ -160,7 +160,7 @@ const TransitionPage = ({
         data-aos="fade-up"
         data-aos-duration="1000"
         data-aos-delay="500"
-        className="text-[2rem] md:text-[2.25rem] lg:text-[2.5rem] xl:text-[3rem]"
+        className="text-[1rem] sm:text-[1.25rem] md:text-[1.5rem] lg:text-[2.25rem] xl:text-[3rem]"
       >
         새로운 시작을 도와드립니다 &nbsp;
         <span className="magic">
