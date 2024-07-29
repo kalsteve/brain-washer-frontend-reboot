@@ -476,7 +476,7 @@ const App: React.FC = () => {
                       alt="Profile"
                       className="w-16 h-18 rounded-full"
                     />
-                    <div className="flex flex-col flex-grow flex-shrink sm:mx-[3%] sm:max-w-[70%] md:max-w-[60%] lg:max-w-[40%] xl:max-w-[50%] 2xl:max-w-[68%]">
+                    <div className="flex flex-col flex-grow flex-shrink sm:mx-[3%] max-w-[70%] sm:max-w-[70%] md:max-w-[60%] lg:max-w-[40%] xl:max-w-[50%] 2xl:max-w-[60%]">
                       <span className="text-sm text-gray-300">
                         {formatDateTime(item.created_at)}
                       </span>
