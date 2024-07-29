@@ -146,7 +146,7 @@ Dial.prototype.createText = function () {
 
   text.setAttribute("x", (this.size / 2).toString());
   text.setAttribute("y", (this.size / 2 + fontSize / 4).toString());
-  text.setAttribute("font-family", "Century Gothic, Lato");
+  text.setAttribute("font-family", "sans-serif");
   text.setAttribute("font-size", fontSize.toString());
   text.setAttribute("fill", "#78F8EC");
   text.setAttribute("text-anchor", "middle");
@@ -278,9 +278,11 @@ const SpicyDial = ({ data }: { data: number }) => {
 
   return (
     <div className="flex justify-center items-center w-full h-full">
-      <p className="absolute inset-6 text-2xl text-gray-50">매운맛 지수</p>
+      <p className="absolute inset-6 text-lg xl:text-xl 2xl:text-2xl text-gray-50">
+        매운맛 지수
+      </p>
       <div
-        className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 h-auto chart"
+        className="w-fit sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 h-auto chart"
         ref={containerRef}
       ></div>
     </div>
