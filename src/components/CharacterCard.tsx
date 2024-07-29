@@ -31,8 +31,12 @@ const CharacterCard = ({
         className={`rounded-full object-cover shadow-lg ${imageSizeClass}`}
       />
       <div className="text-center space-y-2 mt-4">
-        <h3 className="text-2xl font-semibold">{name}</h3>
-        <p className="text-gray-400">{description}</p>
+        <h3 className="text-base lg:text-lg xl:text-xl 2xl:text-2xl font-semibold">
+          {name}
+        </h3>
+        <p className="text-gray-400 text-xs lg:text-sm xl:text-base 2xl:text-lg">
+          {description}
+        </p>
       </div>
     </div>
   );
