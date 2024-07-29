@@ -16,10 +16,10 @@ export default function Navbar({
         <img
           alt="Brain Washer logo"
           src="https://i.ibb.co/Mk5gYZq/brainwasher-logo-text.png"
-          className="w-[70%] lg:w-[80%] xl:w-[90%] 2xl:w-full"
+          className="w-[65%] lg:w-[70%] xl:w-[75%] 2xl:w-[80%]"
         />
       </ul>
-      <ul className="flex justify-center text-base lg:text-lg xl:text-xl 2xl:text-2xl gap-20 cursor-pointer">
+      <ul className="flex justify-center text-base lg:text-base xl:text-lg 2xl:text-xl gap-20 cursor-pointer">
         <li className="text-gray-200" onClick={scrollToBottom}>
           시작하기
         </li>
