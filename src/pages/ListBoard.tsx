@@ -339,7 +339,8 @@ const App: React.FC = () => {
       }
 
       // 공유할 내용과 URL 설정
-      const url = `http://localhost:5173/play?v=${voiceId}`;
+      const url = `${import.meta.env.VITE_BASE_URL}/play?v=${voiceId}`;
+
       const shareContent = {
         title: "Brain Washer | 브레인 워셔",
         description: content,
@@ -480,11 +481,9 @@ const App: React.FC = () => {
                       <span className="text-sm text-gray-300">
                         {formatDateTime(item.created_at)}
                       </span>
-                      <p
-                        className="text-left mt-2 max-w-[100%] whitespace-nowrap overflow-hidden text-ellipsis "
-                      >
+                      <p className="text-left mt-2 max-w-[100%] whitespace-nowrap overflow-hidden text-ellipsis ">
                         {item.content}
-                      </p>                   
+                      </p>
                     </div>
                     <div className="flex space-x-2">
                       <button
