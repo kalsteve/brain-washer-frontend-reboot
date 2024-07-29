@@ -20,13 +20,16 @@ export default function Navbar({
         />
       </ul>
       <ul className="flex justify-center text-base lg:text-base xl:text-lg 2xl:text-xl gap-20 cursor-pointer">
-        <li className="text-gray-200" onClick={scrollToBottom}>
+        <li
+          className="text-gray-200 transition duration-200 hover:scale-105"
+          onClick={scrollToBottom}
+        >
           시작하기
         </li>
-        <li className="cursor-pointer text-gray-200">
+        <li className="cursor-pointer text-gray-200 transition duration-200 hover:scale-105">
           <Link to="/list_board">저장한 음성 및 이미지</Link>
         </li>
-        <li className="cursor-pointer text-gray-200">
+        <li className="cursor-pointer text-gray-200 transition duration-200 hover:scale-105">
           <Link to="/dashboard">대시보드</Link>
         </li>
       </ul>
