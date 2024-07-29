@@ -98,7 +98,7 @@ const App: React.FC = () => {
       return (
         <div className="group rounded-full transition duration-300 ease-in-out">
           <svg
-            className="w-12 h-12 group-hover:scale-110 transition-transform duration-300 ease-in-out"
+            className="w-10 h-10 sm:w-12 sm:h-12 group-hover:scale-110 transition-transform duration-300 ease-in-out"
             width="45"
             height="45"
             viewBox="0 0 45 45"
@@ -185,7 +185,7 @@ const App: React.FC = () => {
       return (
         <div className="group rounded-full transition duration-300 ease-in-out">
           <svg
-            className="w-12 h-12 group-hover:scale-110 transition-transform duration-300 ease-in-out"
+            className="w-10 h-10 sm:w-12 sm:h-12 group-hover:scale-110 transition-transform duration-300 ease-in-out"
             width="45"
             height="45"
             viewBox="0 0 45 45"
@@ -423,7 +423,7 @@ const App: React.FC = () => {
       <div className="fixed inset-0 bg-black bg-opacity-30 text-white overflow-hidden">
         <div className="flex flex-col items-start p-6 sm:p-6 md:p-8 lg:px-[5%] xl:px-[5%] ">
           <div className="flex flex-row">
-            <Link to="/" className="inline-block mt-[8%]">
+            <Link to="/" className="inline-block mt-2 sm:mt-[8%]">
               <img
                 src="https://i.postimg.cc/rsr08G5r/Group-59.png"
                 alt="Icon"
@@ -431,13 +431,13 @@ const App: React.FC = () => {
               />
             </Link>
 
-            <h1 className="text-3xl font-bold sm:mt-6 mt-7 mb-6 ml-7 ">
+            <h1 className="text-2xl md:text-3xl font-bold mt-1 sm:mt-6 mb-1 sm:mb-6 ml-2 md:ml-7 ">
               저장한 음성 및 이미지
             </h1>
           </div>
           <div
             role="tablist"
-            className="tabs tabs-lifted bg-glass w-[100%] sm:mt-6 mt-5 flex justify-center"
+            className="tabs tabs-lifted bg-glass w-[100%] mt-5 sm:mt-6 flex justify-center"
           >
             <a
               role="tab"
@@ -463,22 +463,22 @@ const App: React.FC = () => {
             </a>
           </div>
 
-          <div className="bg-white bg-opacity-25 px-6 pt-[0.5%] rounded-b-lg pb-[2%] mb-[10%] shadow-md w-full h-full ">
+          <div className="bg-white bg-opacity-25 px-6 pt-[0.5%] rounded-b-lg pb-[2%] mb-[10%] sm:mb-[10%] shadow-md w-full h-full ">
             <div className="flex justify-center space-x-8 mb-8 "></div>
             {showTts ? (
-              <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-6 mx-[2%] max-h-[660px] overflow-y-auto overflow-x-hidden">
+              <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 mx-[2%] max-h-[445px] sm:max-h-[660px] overflow-y-auto overflow-x-hidden">
                 {voices?.map((item: Voice, index: number) => (
                   <div
                     key={index}
-                    className="bg-gradient-to-b from-[rgba(224,224,224,0.2)] to-[rgba(71,91,161,0.2)] shadow-lg shadow-black/25 backdrop-blur-[3px] rounded-[25px] bg-opacity-20  p-6 flex items-center justify-between text-white"
+                    className="bg-gradient-to-b from-[rgba(224,224,224,0.2)] to-[rgba(71,91,161,0.2)] shadow-lg shadow-black/25 backdrop-blur-[3px] rounded-[25px] bg-opacity-20 p-3 sm:p-6 flex items-center justify-between text-white"
                   >
                     <img
                       src={item.character_image}
                       alt="Profile"
-                      className="w-16 h-18 rounded-full"
+                      className="w-10 h-10 sm:w-16 sm:h-16 rounded-full"
                     />
-                    <div className="flex flex-col flex-grow flex-shrink sm:mx-[3%] max-w-[70%] sm:max-w-[70%] md:max-w-[60%] lg:max-w-[40%] xl:max-w-[50%] 2xl:max-w-[60%]">
-                      <span className="text-sm text-gray-300">
+                    <div className="flex flex-col flex-grow flex-shrink sm:mx-[3%] max-w-[30%] sm:max-w-[70%] md:max-w-[60%] lg:max-w-[40%] xl:max-w-[50%] 2xl:max-w-[60%]">
+                      <span className="text-xs sm:text-sm text-gray-300">
                         {formatDateTime(item.created_at)}
                       </span>
                       <p className="text-left mt-2 max-w-[100%] whitespace-nowrap overflow-hidden text-ellipsis ">
@@ -487,19 +487,19 @@ const App: React.FC = () => {
                     </div>
                     <div className="flex space-x-2">
                       <button
-                        className="w-auto h-auto text-white rounded"
+                        className="sm:w-auto sm:h-auto text-white rounded"
                         onClick={() => handlePlayAudio(item.audio_url, index)}
                       >
                         {getSvgIcon(index)}
                       </button>
 
                       <button
-                        className="w-auto h-auto text-white rounded"
+                        className="sm:w-auto sm:h-auto text-white rounded"
                         onClick={() => downloadAudio(item.audio_url, index)} // item.id를 사용하여 파일명 지정
                       >
                         <div className="group rounded-full transition duration-300 ease-in-out">
                           <svg
-                            className="w-12 h-12 group-hover:scale-110 transition-transform duration-300 ease-in-out"
+                            className="w-10 h-10 sm:w-12 sm:h-12 group-hover:scale-110 transition-transform duration-300 ease-in-out"
                             width="45"
                             height="45"
                             viewBox="0 0 45 45"
@@ -577,7 +577,7 @@ const App: React.FC = () => {
                       </button>
 
                       <button
-                        className="w-auto h-auto text-white rounded"
+                        className="sm:w-auto sm:h-auto text-white rounded"
                         onClick={() =>
                           kakaoShare(
                             item.id,
@@ -588,7 +588,7 @@ const App: React.FC = () => {
                       >
                         <div className="group rounded-full transition duration-300 ease-in-out">
                           <svg
-                            className="w-12 h-12 group-hover:scale-110 transition-transform duration-300 ease-in-out"
+                            className="w-10 h-10 sm:w-12 sm:h-12 group-hover:scale-110 transition-transform duration-300 ease-in-out"
                             width="45"
                             height="45"
                             viewBox="0 0 45 45"
