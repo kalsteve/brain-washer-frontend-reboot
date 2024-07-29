@@ -747,8 +747,13 @@ export default function Chat({ description }: ChatProps) {
   return (
     <div className="flex flex-row w-screen h-screen px-[3%] py-[3%] gap-10">
       <div className="fixed top-0 left-0 w-screen h-screen bg-[url(https://i.ibb.co/W5LP6yn/Brain-Wahser.png)] bg-cover bg-fixed z-10 transform scale-y-[-1]" />
-      <div className=" justify-evenly flex flex-col basis-1/4 h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl">
-        <div data-aos="zoom-in" className="flex flex-col space-y-12">
+      <div
+        data-aos="fade-right"
+        data-aos-duration="500"
+        data-aos-easing="linear"
+        className="justify-evenly flex flex-col basis-1/4 h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl"
+      >
+        <div className="flex flex-col space-y-12">
           <img
             src={image}
             alt={name}
@@ -968,7 +973,12 @@ export default function Chat({ description }: ChatProps) {
           </div>
         )}
       </div>
-      <div className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]">
+      <div
+        data-aos="fade-left"
+        data-aos-duration="500"
+        data-aos-easing="linear"
+        className="basis-3/4 w-full h-full backdrop-blur backdrop-filter bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10 relative z-10 rounded-xl shadow-xl justify-between flex flex-col py-[2%]"
+      >
         <ChatHeader name={name} chatName={chatName} image={image} />
         <div className="flex flex-col space-y-4 overflow-auto mb-auto">
           {messages.map((msg, index) => (
