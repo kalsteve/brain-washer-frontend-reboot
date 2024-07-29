@@ -49,13 +49,15 @@ const Onboarding = () => {
   return (
     <div className="w-screen h-[90%] flex flex-col text-white items-start px-[10%] justify-evenly">
       <div
-        className="flex flex-col w-[40%] space-y-4"
+        className="flex flex-col w-fit space-y-4"
         data-aos="fade-down-right"
         data-aos-duration="1000"
         data-aos-easing="ease-in-out"
       >
-        <h2 className="text-[4rem] m-0 font-bold">Brain Washer</h2>
-        <h2 className="text-[1.75rem] m-0">
+        <h2 className="text-[3.25rem] lg:text-[3.5rem] xl:text-[3.75rem]  2xl:text-[4rem] m-0 font-bold">
+          Brain Washer
+        </h2>
+        <h2 className="m-0 text-[1rem] lg:text-[1.25rem] xl:text-[1.55rem]  2xl:text-[1.75rem]">
           당신의 목표 달성을 돕기 위해 설계된 동기부여 플랫폼입니다. <br />
           엄선된 멘토들의 날카로운 조언과 피드백을 통해
           <br /> 나태함을 깨뜨리고, 성장의 길로 나아가세요.
@@ -67,11 +69,14 @@ const Onboarding = () => {
         data-aos-duration="1000"
         data-aos-easing="ease-in-out"
       >
-        <div className="flex flex-col space-y-4 justify-center w-[30%] ml-auto">
-          <h2 className="text-[3rem] m-0 font-bold">독한 피드백</h2>
-          <h2 className="text-[1.75rem] m-0">
-            멘토의 생생한 목소리로 전달되는 강렬한 피드백을 통해, 진정한
-            동기부여와 변화를 경험해보세요.
+        <div className="flex flex-col space-y-4 justify-center w-fit ml-auto">
+          <h2 className="text-[2.25rem] lg:text-[2.5rem] xl:text-[2.75rem]  2xl:text-[3rem] m-0 font-bold">
+            독한 피드백
+          </h2>
+          <h2 className="text-[1rem] lg:text-[1.25rem] xl:text-[1.55rem] 2xl:text-[1.75rem] m-0">
+            멘토의 생생한 목소리로 전달되는 강렬한 피드백을 통해,
+            <br />
+            진정한 동기부여와 변화를 경험해보세요.
             <br /> 독한 말로 새로운 도전에 맞설 준비가 되셨나요?
           </h2>
         </div>
@@ -90,7 +95,9 @@ const Onboarding = () => {
         data-aos-delay="2000"
         data-aos-easing="linear"
       >
-        <p className="my-auto text-2xl">Scroll Down</p>
+        <p className="my-auto text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+          Scroll Down
+        </p>
         <img
           src="https://i.ibb.co/cN37MBb/chevron-down.png"
           alt="Scroll Down"
@@ -101,11 +108,15 @@ const Onboarding = () => {
   );
 };
 
-const TransitionPage = ({ onTransitionEnd }) => {
+const TransitionPage = ({
+  onTransitionEnd,
+}: {
+  onTransitionEnd: () => void;
+}) => {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    const animate = (star) => {
+    const animate = (star: HTMLElement) => {
       star.style.setProperty("--star-left", `${rand(-10, 100)}%`);
       star.style.setProperty("--star-top", `${rand(-40, 80)}%`);
 
@@ -120,8 +131,8 @@ const TransitionPage = ({ onTransitionEnd }) => {
     const stars = document.getElementsByClassName("magic-star");
     Array.from(stars).forEach((star, index) => {
       setTimeout(() => {
-        animate(star);
-        setInterval(() => animate(star), 1000);
+        animate(star as HTMLElement);
+        setInterval(() => animate(star as HTMLElement), 1000);
       }, index * 333); // interval/3 = 1000ms / 3
     });
 
