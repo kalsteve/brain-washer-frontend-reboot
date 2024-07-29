@@ -16,9 +16,11 @@ const CharacterSelect = () => {
     >
       <div className="w-[80%] h-[60%] px-6 py-12 sm:px-10 sm:py-16 rounded-3xl shadow-xl backdrop-filter backdrop-blur bg-gradient-to-t from-[#7a7a7a1e] to-[#e0e0e024] bg-opacity-10">
         <div className="grid gap-8 h-full">
-          <div className="text-center my-auto">
-            <h1 className="text-4xl">따끔한 말로 정신 좀 차리세요!</h1>
-            <p className="text-muted-foreground text-2xl mt-2">
+          <div className="text-center my-auto space-y-1 xl:space-y-2 2xl:space-y-3">
+            <h1 className="text-2xl xl:text-2xl 2xl:text-3xl font-semibold p-0">
+              따끔한 말로 정신 좀 차리세요!
+            </h1>
+            <p className="text-muted-foreground text-lg xl:text-lg 2xl:text-xl">
               캐릭터를 선택하세요
             </p>
           </div>
@@ -49,15 +51,15 @@ const Onboarding = () => {
   return (
     <div className="w-screen h-[90%] flex flex-col text-white items-start px-[10%] justify-evenly">
       <div
-        className="flex flex-col w-fit space-y-4"
+        className="flex flex-col w-fit space-y-2"
         data-aos="fade-down-right"
         data-aos-duration="1000"
         data-aos-easing="ease-in-out"
       >
-        <h2 className="text-[3.25rem] lg:text-[3.5rem] xl:text-[3.75rem]  2xl:text-[4rem] m-0 font-bold">
+        <h2 className="text-[2.25rem] lg:text-[2.5rem] xl:text-[2.75rem]  2xl:text-[3rem] m-0 font-bold">
           Brain Washer
         </h2>
-        <h2 className="m-0 text-[1rem] lg:text-[1.25rem] xl:text-[1.55rem]  2xl:text-[1.75rem]">
+        <h2 className="m-0 text-[0.75rem] lg:text-[1rem] xl:text-[1.25rem]  2xl:text-[1.5rem]">
           당신의 목표 달성을 돕기 위해 설계된 동기부여 플랫폼입니다. <br />
           엄선된 멘토들의 날카로운 조언과 피드백을 통해
           <br /> 나태함을 깨뜨리고, 성장의 길로 나아가세요.
@@ -70,10 +72,10 @@ const Onboarding = () => {
         data-aos-easing="ease-in-out"
       >
         <div className="flex flex-col space-y-4 justify-center w-fit ml-auto">
-          <h2 className="text-[2.25rem] lg:text-[2.5rem] xl:text-[2.75rem]  2xl:text-[3rem] m-0 font-bold">
+          <h2 className="text-[1.75rem] lg:text-[2rem] xl:text-[2.25rem]  2xl:text-[2.5rem] m-0 font-bold">
             독한 피드백
           </h2>
-          <h2 className="text-[1rem] lg:text-[1.25rem] xl:text-[1.55rem] 2xl:text-[1.75rem] m-0">
+          <h2 className="text-[0.75rem] lg:text-[1rem] xl:text-[1.25rem]  2xl:text-[1.5rem] m-0">
             멘토의 생생한 목소리로 전달되는 강렬한 피드백을 통해,
             <br />
             진정한 동기부여와 변화를 경험해보세요.
@@ -92,16 +94,16 @@ const Onboarding = () => {
         className="flex flex-row self-center space-x-4 animate-bounce"
         data-aos="zoom-in"
         data-aos-duration="1000"
-        data-aos-delay="2000"
+        data-aos-delay="1500"
         data-aos-easing="linear"
       >
-        <p className="my-auto text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+        <p className="my-auto text-base lg:text-lg xl:text-xl 2xl:text-xl">
           Scroll Down
         </p>
         <img
           src="https://i.ibb.co/cN37MBb/chevron-down.png"
           alt="Scroll Down"
-          className="self-center size-10"
+          className="self-center size-6 lg:size-8 xl:size-10 2xl:size-10"
         />
       </div>
     </div>
