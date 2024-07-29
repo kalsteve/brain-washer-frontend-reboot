@@ -6,7 +6,7 @@ on:
   push:
     branches:
       - main
-      - set/#26
+      - set/#38
 
 # 위의 이벤트가 트리거되면 실행할 목록입니다.
 jobs:
@@ -30,6 +30,12 @@ jobs:
         uses: threeal/setup-yarn-action@v2.0.0
         with:
           version: latest
+
+      # 환경 변수를 설정합니다.
+      - name: Set Environment Variables
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL}}" >> .env
+          echo "VITE_APP_KAKAO_KEY=${{ secrets.VITE_APP_KAKAO_KEY}}" >> .env
 
       - name: Build Static Files by Yarn
         run: |
@@ -60,4 +66,4 @@ jobs:
           CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID}}
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id $CLOUD_FRONT_ID --paths /*
+            --distribution-id $CLOUD_FRONT_ID --paths "/*"
