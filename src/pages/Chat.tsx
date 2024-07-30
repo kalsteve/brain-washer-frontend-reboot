@@ -446,9 +446,9 @@ export default function Chat() {
   const [currentAudioUrl, setCurrentAudioUrl] = useState<string | null>(null);
   const [description, setDescription] = useState<string | null>(null);
   const images = [
-    "https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png",
-    "https://i.ibb.co/yBFH4tY/2024-07-02-2-53-32.png",
-    "https://i.ibb.co/mhx194f/2024-07-02-2-51-19-1.png",
+    "https://i.ibb.co/RPSGFRn/Andrew.png",
+    "https://i.ibb.co/2tnxVm0/image.jpg",
+    "https://i.ibb.co/C2CVxdm/image.png",
   ];
   const descriptions = ["MZ 저격수", "Certified 믹서기", "Lovely 정신 탈곡기"];
 
