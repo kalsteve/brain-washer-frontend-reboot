@@ -105,14 +105,17 @@ const ChatMessage = ({
   id,
   character,
   lastBubbleId,
+  isLastMessage,
 }: ChatProps & {
   message: string;
   isUser: boolean;
   id?: number;
   character: string;
   lastBubbleId?: number;
+  isLastMessage?: boolean;
 }) => {
   const [isShow, setIsShow] = useState(false);
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null); // 첫 번째 호출에서 다운로드 URL을 저장할 상태 변수
 
   const showModal = () => {
     const modal = document.getElementById("my_modal_3") as HTMLDialogElement;
@@ -123,20 +126,41 @@ const ChatMessage = ({
 
   const DownloadTts = async (e: React.MouseEvent<SVGSVGElement>) => {
     e.stopPropagation();
-    if (!id) {
-      id = lastBubbleId;
-    }
-    const response = await postTts(id?.toString());
-    const voiceUrl = await response.audio_url;
-    // Check if the URL is from S3
-    if (voiceUrl) {
-      const a = document.createElement("a");
-      a.href = voiceUrl;
-      a.download = "tts.mp3"; // Set the desired file name
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
+    // TTS 다운로드 함수
+    const handleDownload = async () => {
+      // 이미 다운로드 URL이 있는 경우
+      if (downloadUrl) {
+        // 다운로드만 수행
+        const a = document.createElement("a");
+        a.href = downloadUrl;
+        a.download = "tts.mp3"; // 다운로드할 파일명 설정
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } else {
+        // 다운로드 URL이 없는 경우 (첫 번째 호출)
+        if (!id) {
+          id = lastBubbleId;
+        }
+        const response = await postTts(id?.toString());
+        const voiceUrl = await response.data.audio_url;
+
+        // URL이 유효한 경우 상태 변수에 저장
+        if (voiceUrl) {
+          setDownloadUrl(voiceUrl);
+
+          // 다운로드 수행
+          const a = document.createElement("a");
+          a.href = voiceUrl;
+          a.download = "tts.mp3"; // 다운로드할 파일명 설정
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        }
+      }
+    };
+
+    handleDownload();
   };
 
   const bubbleId = id ?? lastBubbleId;
@@ -170,7 +194,7 @@ const ChatMessage = ({
                 viewBox="0 0 30 30"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="cursor-pointer"
+                className="cursor-pointer size-5 lg:size-6 xl:size-7 2xl:size-7"
                 onClick={(e) => {
                   e.stopPropagation();
                   showModal();
@@ -199,23 +223,25 @@ const ChatMessage = ({
                   />
                 </dialog>
               )}
-              <svg
-                width="30"
-                height="30"
-                viewBox="0 0 30 30"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="cursor-pointer"
-                onClick={(e) => DownloadTts(e)}
-              >
-                <path
-                  d="M21.25 15L15 21.25M15 21.25L8.75 15M15 21.25V5M21.25 25H8.75"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              {isLastMessage && (
+                <svg
+                  width="30"
+                  height="30"
+                  viewBox="0 0 30 30"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="cursor-pointer size-5 lg:size-6 xl:size-7 2xl:size-7"
+                  onClick={(e) => DownloadTts(e)}
+                >
+                  <path
+                    d="M21.25 15L15 21.25M15 21.25L8.75 15M15 21.25V5M21.25 25H8.75"
+                    stroke="white"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              )}
             </div>
           </div>
         )}
@@ -996,6 +1022,7 @@ export default function Chat() {
               id={msg.bubble_id}
               character={name}
               lastBubbleId={lastBubbleId}
+              isLastMessage={index === messages.length - 1}
             />
           ))}
           {currentResponse && (
