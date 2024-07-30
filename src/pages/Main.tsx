@@ -85,7 +85,7 @@ const Onboarding = () => {
         <CharacterCard
           name="Andrew"
           description="MZ 저격수"
-          image="https://i.ibb.co/hFy5Cbz/2024-07-02-4-08-52.png"
+          image="https://i.ibb.co/RPSGFRn/Andrew.png"
           className="w-fit-content h-fit-content px-[5%] py-[2%]"
           imageSizeClass="w-24 h-24 lg:w-32 lg:h-32 xl:w-48 xl:h-48 2xl:w-48 2xl:h-48"
         />
