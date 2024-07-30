@@ -194,7 +194,7 @@ const ChatMessage = ({
                 viewBox="0 0 30 30"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="cursor-pointer"
+                className="cursor-pointer size-5 lg:size-6 xl:size-7 2xl:size-7"
                 onClick={(e) => {
                   e.stopPropagation();
                   showModal();
@@ -230,7 +230,7 @@ const ChatMessage = ({
                   viewBox="0 0 30 30"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="cursor-pointer"
+                  className="cursor-pointer size-5 lg:size-6 xl:size-7 2xl:size-7"
                   onClick={(e) => DownloadTts(e)}
                 >
                   <path
