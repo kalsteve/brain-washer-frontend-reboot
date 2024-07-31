@@ -370,48 +370,19 @@ const App: React.FC = () => {
     }
   };
 
-  const kakaoImageShare = async (content: string, imageUrl: string) => {
-    try {
-      // Kakao SDK 초기화 상태 체크
-      if (!window.Kakao.isInitialized()) {
-        window.Kakao.init(import.meta.env.VITE_APP_KAKAO_KEY);
-      }
-
-      // 공유할 내용과 URL 설정
-      const url = `http://localhost:5173`;
-      const shareContent = {
-        title: "Brain Washer | 브레인 워셔",
-        description: content,
-        imageUrl: imageUrl,
-        link: {
-          mobileWebUrl: url,
-          webUrl: url,
-        },
-      };
-
-      // 카카오톡 공유하기
-      window.Kakao.Share.sendDefault({
-        objectType: "feed",
-        content: shareContent,
-        buttons: [
-          {
-            title: "자세히 보기",
-            link: {
-              mobileWebUrl: url,
-              webUrl: url,
-            },
-          },
-        ],
-      });
-    } catch (error) {
-      console.error("Error sharing to KakaoTalk:", error);
-    }
-  };
-
   const downloadAudio = (audioUrl: string, voiceId: number) => {
     const link = document.createElement("a");
     link.href = audioUrl;
     link.download = `voice_${voiceId}.mp3`; // 다운로드할 파일명 지정
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const downloadImage = (url: string) => {
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "image.jpg"; // You can set the default download name here
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -463,8 +434,7 @@ const App: React.FC = () => {
             </a>
           </div>
 
-          <div className="bg-white bg-opacity-25 px-6 pt-[0.5%] rounded-b-lg pb-[2%] mb-[10%] sm:mb-[10%] shadow-md w-full h-full ">
-            <div className="flex justify-center space-x-8 mb-8 "></div>
+          <div className="bg-white bg-opacity-25 px-6 pt-[0.5%] rounded-b-lg pb-[2%] mb-[10%] sm:mb-[10%] shadow-md w-full h-full">
             {showTts ? (
               <div className="grid lg:grid-cols-2 grid-cols-1 gap-6 mx-[2%] max-h-[445px] sm:max-h-[660px] overflow-y-auto overflow-x-hidden">
                 {voices?.map((item: Voice, index: number) => (
@@ -709,7 +679,7 @@ const App: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="overflow-y-auto h-[695px]">
+              <div className="overflow-y-auto max-h-[445px] sm:max-h-[660px]">
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-0.5 gap-y-8">
                   {Images.map((image, index) => (
                     <div
@@ -732,9 +702,7 @@ const App: React.FC = () => {
 
                         <button
                           className="w-auto h-auto text-white rounded"
-                          onClick={() =>
-                            kakaoImageShare(image.content, image.image_url)
-                          }
+                          onClick={() => downloadImage(image.image_url)}
                         >
                           <div className="group rounded-full transition duration-300 ease-in-out">
                             <svg
