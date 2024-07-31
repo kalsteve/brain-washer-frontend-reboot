@@ -706,33 +706,31 @@ const App: React.FC = () => {
                         >
                           <div className="group rounded-full transition duration-300 ease-in-out">
                             <svg
-                              className="w-12 h-12 group-hover:scale-110 transition-transform duration-300 ease-in-out"
+                              className="w-10 h-10 sm:w-12 sm:h-12 group-hover:scale-110 transition-transform duration-300 ease-in-out"
                               width="45"
                               height="45"
                               viewBox="0 0 45 45"
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
                             >
-                              <g filter="url(#filter0_d_599_396)">
+                              <g filter="url(#filter0_d_924_519)">
                                 <circle
                                   cx="22.5"
                                   cy="18.5"
                                   r="18.5"
-                                  fill="url(#paint0_linear_599_396)"
+                                  fill="url(#paint0_linear_924_519)"
                                 />
                               </g>
-                              <g filter="url(#filter1_d_599_396)">
-                                <path
-                                  d="M24.8752 13.75L22.5002 11.375M22.5002 11.375L20.1252 13.75M22.5002 11.375V20.875M25.6668 16.9167H26.0418C27.1464 16.9167 28.0418 17.8121 28.0418 18.9167V22.8333C28.0418 23.9379 27.1464 24.8333 26.0418 24.8333H18.9585C17.8539 24.8333 16.9585 23.9379 16.9585 22.8333V18.9167C16.9585 17.8121 17.8539 16.9167 18.9585 16.9167H19.3335"
-                                  stroke="white"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </g>
+                              <path
+                                d="M28.4168 17.9999L23.0002 23.4166M23.0002 23.4166L17.5835 17.9999M23.0002 23.4166V9.33325M28.4168 26.6666H17.5835"
+                                stroke="white"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
                               <defs>
                                 <filter
-                                  id="filter0_d_599_396"
+                                  id="filter0_d_924_519"
                                   x="0"
                                   y="0"
                                   width="45"
@@ -760,55 +758,17 @@ const App: React.FC = () => {
                                   <feBlend
                                     mode="normal"
                                     in2="BackgroundImageFix"
-                                    result="effect1_dropShadow_599_396"
+                                    result="effect1_dropShadow_924_519"
                                   />
                                   <feBlend
                                     mode="normal"
                                     in="SourceGraphic"
-                                    in2="effect1_dropShadow_599_396"
-                                    result="shape"
-                                  />
-                                </filter>
-                                <filter
-                                  id="filter1_d_599_396"
-                                  x="9"
-                                  y="9"
-                                  width="27"
-                                  height="27"
-                                  filterUnits="userSpaceOnUse"
-                                  colorInterpolationFilters="sRGB"
-                                >
-                                  <feFlood
-                                    floodOpacity="0"
-                                    result="BackgroundImageFix"
-                                  />
-                                  <feColorMatrix
-                                    in="SourceAlpha"
-                                    type="matrix"
-                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                                    result="hardAlpha"
-                                  />
-                                  <feOffset dy="4" />
-                                  <feGaussianBlur stdDeviation="2" />
-                                  <feComposite in2="hardAlpha" operator="out" />
-                                  <feColorMatrix
-                                    type="matrix"
-                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
-                                  />
-                                  <feBlend
-                                    mode="normal"
-                                    in2="BackgroundImageFix"
-                                    result="effect1_dropShadow_599_396"
-                                  />
-                                  <feBlend
-                                    mode="normal"
-                                    in="SourceGraphic"
-                                    in2="effect1_dropShadow_599_396"
+                                    in2="effect1_dropShadow_924_519"
                                     result="shape"
                                   />
                                 </filter>
                                 <linearGradient
-                                  id="paint0_linear_599_396"
+                                  id="paint0_linear_924_519"
                                   x1="22.5"
                                   y1="0"
                                   x2="22.5"
