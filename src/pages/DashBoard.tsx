@@ -484,29 +484,31 @@ const OverView = () => {
 
   return (
     <div className="flex flex-col basis-5/6 gap-8 h-full">
-  <div className="flex flex-col w-full h-full gap-4 basis-1/2">
-    <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">카테고리</p>
-    <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[1%]">
-      <CategoryChart data={processCategoryData(categoryData)} />
-    </div>
-  </div>
-  <div className="flex flex-col sm:flex-row basis-1/2 gap-8">
-  <div className="flex flex-col w-full h-full gap-4 sm:basis-1/2">
-      <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">인기순위</p>
-      <div className="h-full sm:min-h-[300px] bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
-        <PopularChart data={processPopularData(categoryData)} />
+      <div className="flex flex-col w-full h-full gap-4 basis-1/2">
+        <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">카테고리</p>
+        <div className="h-full bg-glass backdrop-blur rounded-xl shadow-2xl py-[1%]">
+          <CategoryChart data={processCategoryData(categoryData)} />
+        </div>
+      </div>
+      <div className="flex flex-col sm:flex-row basis-1/2 gap-8">
+        <div className="flex flex-col w-full h-full gap-4 sm:basis-1/2">
+          <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">
+            인기순위
+          </p>
+          <div className="h-full sm:min-h-[300px] bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
+            <PopularChart data={processPopularData(categoryData)} />
+          </div>
+        </div>
+        <div className="flex flex-col w-full h-full gap-4 sm:basis-1/2">
+          <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">
+            매운맛 빈도
+          </p>
+          <div className="h-full sm:min-h-[300px] bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
+            <SpicyChart data={processSpicyData(categoryData)} />
+          </div>
+        </div>
       </div>
     </div>
-    <div className="flex flex-col w-full h-full gap-4 sm:basis-1/2">
-      <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-50">매운맛 빈도</p>
-      <div className="h-full sm:min-h-[300px] bg-glass backdrop-blur rounded-xl shadow-2xl py-[5%]">
-        <SpicyChart data={processSpicyData(categoryData)} />
-      </div>
-    </div>
-  </div>
-</div>
-
-
   );
 };
 
@@ -671,9 +673,27 @@ const CharacterChart = ({ character }: { character: string }) => {
   };
 
   const TtsList = ({ data }: { data: Voice[] }) => {
+    const [currentAudioUrl, setCurrentAudioUrl] = useState<string | null>(null);
+    const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+
     const playAudio = (audioUrl: string) => {
-      const audio = new Audio(audioUrl);
-      audio.play();
+      if (audio && currentAudioUrl === audioUrl) {
+        // 현재 재생 중인 오디오를 일시 정지
+        audio.pause();
+        setCurrentAudioUrl(null);
+      } else {
+        // 새로운 오디오 재생 또는 다른 오디오로 변경
+        if (audio) {
+          // 기존 오디오가 있으면 정지
+          audio.pause();
+        }
+        const newAudio = new Audio(audioUrl);
+        setAudio(newAudio);
+        setCurrentAudioUrl(audioUrl);
+        newAudio.play().catch((error) => {
+          console.error("Error playing audio:", error);
+        });
+      }
     };
 
     const downloadAudio = (audioUrl: string, voiceId: number) => {
@@ -771,40 +791,118 @@ const CharacterChart = ({ character }: { character: string }) => {
                   </linearGradient>
                 </defs>
               </svg>
-
-              <svg
-                className="cursor-pointer transition-all duration-200 ease-linear hover:scale-125"
-                width="35"
-                height="35"
-                viewBox="0 0 26 26"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                onClick={() => playAudio(item.url)}
-              >
-                <circle
-                  cx="13"
-                  cy="13"
-                  r="13"
-                  fill="url(#paint0_linear_779_384)"
-                />
-                <path
-                  d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
-                  fill="white"
-                />
-                <defs>
-                  <linearGradient
-                    id="paint0_linear_779_384"
-                    x1="13"
-                    y1="0"
-                    x2="13"
-                    y2="26"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="#631C43" />
-                    <stop offset="1" stopColor="#C93988" />
-                  </linearGradient>
-                </defs>
-              </svg>
+              {currentAudioUrl === item.url ? (
+                <svg
+                  className="cursor-pointer transition-all duration-200 ease-linear hover:scale-125"
+                  width="35"
+                  height="35"
+                  viewBox="0 0 43 43"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={() => playAudio(item.url)}
+                >
+                  <g filter="url(#filter0_d_1565_538)">
+                    <path
+                      d="M39 17.5C39 27.165 31.165 35 21.5 35C11.835 35 4 27.165 4 17.5C4 7.83502 11.835 0 21.5 0C31.165 0 39 7.83502 39 17.5Z"
+                      fill="url(#paint0_linear_1565_538)"
+                    />
+                  </g>
+                  <path
+                    d="M17 11L17 24"
+                    stroke="white"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M26 11L26 24"
+                    stroke="white"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                  />
+                  <defs>
+                    <filter
+                      id="filter0_d_1565_538"
+                      x="0"
+                      y="0"
+                      width="43"
+                      height="43"
+                      filterUnits="userSpaceOnUse"
+                      colorInterpolationFilters="sRGB"
+                    >
+                      <feFlood floodOpacity="0" result="BackgroundImageFix" />
+                      <feColorMatrix
+                        in="SourceAlpha"
+                        type="matrix"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                        result="hardAlpha"
+                      />
+                      <feOffset dy="4" />
+                      <feGaussianBlur stdDeviation="2" />
+                      <feComposite in2="hardAlpha" operator="out" />
+                      <feColorMatrix
+                        type="matrix"
+                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                      />
+                      <feBlend
+                        mode="normal"
+                        in2="BackgroundImageFix"
+                        result="effect1_dropShadow_1565_538"
+                      />
+                      <feBlend
+                        mode="normal"
+                        in="SourceGraphic"
+                        in2="effect1_dropShadow_1565_538"
+                        result="shape"
+                      />
+                    </filter>
+                    <linearGradient
+                      id="paint0_linear_1565_538"
+                      x1="21.5"
+                      y1="0"
+                      x2="21.5"
+                      y2="35"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stopColor="#631C43" />
+                      <stop offset="1" stopColor="#C93988" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              ) : (
+                <svg
+                  className="cursor-pointer transition-all duration-200 ease-linear hover:scale-125"
+                  width="35"
+                  height="35"
+                  viewBox="0 0 26 26"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  onClick={() => playAudio(item.url)}
+                >
+                  <circle
+                    cx="13"
+                    cy="13"
+                    r="13"
+                    fill="url(#paint0_linear_779_384)"
+                  />
+                  <path
+                    d="M10.6742 8.20118C9.89647 7.74368 8.91602 8.30444 8.91602 9.20677V16.7938C8.91602 17.6961 9.89647 18.2569 10.6742 17.7994L17.1232 14.0059C17.89 13.5548 17.89 12.4458 17.1232 11.9947L10.6742 8.20118Z"
+                    fill="white"
+                  />
+                  <defs>
+                    <linearGradient
+                      id="paint0_linear_779_384"
+                      x1="13"
+                      y1="0"
+                      x2="13"
+                      y2="26"
+                      gradientUnits="userSpaceOnUse"
+                    >
+                      <stop stopColor="#631C43" />
+                      <stop offset="1" stopColor="#C93988" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              )}
             </li>
           ))}
         </ul>
