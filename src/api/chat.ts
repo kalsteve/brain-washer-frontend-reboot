@@ -31,7 +31,7 @@ const sendChat = async (chat_id: number | null, content: string) => {
   }
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/chats/${chat_id}`,
+      `chats/${chat_id}`,
       {
         method: "POST",
         headers: {
