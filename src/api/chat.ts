@@ -31,7 +31,7 @@ const sendChat = async (chat_id: number | null, content: string) => {
   }
   try {
     const response = await fetch(
-      `/chats/${chat_id}`,
+      `/api/v1/chats/${chat_id}`,
       {
         method: "POST",
         headers: {
